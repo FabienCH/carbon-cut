@@ -1,0 +1,14 @@
+{
+  "extends": ["../../.eslintrc", "@react-native-community", "eslint-config-prettier"],
+  "plugins": ["prettier", "react-native"],
+  "ignorePatterns": [".eslintrc.js"],
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "module",
+    "jsx": true,
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off"
+  }
+}
