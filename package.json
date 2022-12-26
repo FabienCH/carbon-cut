@@ -6,9 +6,11 @@
     "packages/*"
   ],
   "scripts": {
-    "start:mobile": "yarn workspace carbon-cut-mobile run start",
+    "start:mobile": "yarn workspace carbon-cut-mobile run dev",
+    "start:back": "yarn workspace carbon-cut-back run start:dev",
     "start": "yarn start:back && yarn start:mobile",
     "lint:mobile": "yarn workspace carbon-cut-mobile run lint",
+    "lint:back": "yarn workspace carbon-cut-back run lint",
     "lint": "yarn workspaces foreach -vpi run lint"
   },
   "devDependencies": {
