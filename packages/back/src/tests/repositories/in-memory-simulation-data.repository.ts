@@ -2,7 +2,7 @@ import { DataRecord } from '../../domain/entities/data-record';
 import { SimulationDataRepository } from '../../domain/repositories/simulation-data.repository';
 
 export class InMemorySimulationDataRepository implements SimulationDataRepository {
-  constructor(private readonly returnDataToImport = true) {}
+  constructor(private readonly returnIncorrectData = false) {}
 
   readonly #dataToImport: DataRecord = {
     'alimentation . boisson': { icônes: '🥤', formule: { somme: ['chaude', 'froide'] } },
@@ -275,7 +275,6 @@ export class InMemorySimulationDataRepository implements SimulationDataRepositor
       },
       question: 'Choisissez les plats de vos midis et dîners pour une semaine type',
       titre: 'Empreinte de 14 repas',
-
       formule: { somme: ['viande 1', 'viande 2', 'végétalien', 'végétarien', 'poisson 1', 'poisson 2'] },
     },
     'alimentation . plats . végétalien': {
@@ -531,7 +530,8 @@ export class InMemorySimulationDataRepository implements SimulationDataRepositor
       formule: '7.3%',
     },
   };
-  readonly #dataWithIncorrectFormula: DataRecord = {
+
+  readonly #dataToIgnore: DataRecord = {
     'alimentation . boisson . tasse de café . quantité café par tasse': {
       formule: 'a string formula',
       unité: 'kg/tasse',
@@ -541,9 +541,20 @@ export class InMemorySimulationDataRepository implements SimulationDataRepositor
       unité: 'kgCO2e/kg',
       références: ['https://agribalyse.ademe.fr/app/aliments/18003#Caf%C3%A9,_moulu'],
     },
+    'alimentation . local . part locale': {
+      résumé: '**6 repas** représentatifs de notre consommation\n',
+      mosaique: {
+        type: 'nombre',
+        clé: 'nombre',
+        total: 14,
+      },
+      question: 'Choisissez les plats de vos midis et dîners pour une semaine type',
+      titre: 'Empreinte de 14 repas',
+      formule: { somme: ['viande 1', 'viande 2', 'végétalien', 'végétarien', 'poisson 1', 'poisson 2'] },
+    },
   };
 
   async getBySector(): Promise<DataRecord> {
-    return this.returnDataToImport ? this.#dataToImport : this.#dataWithIncorrectFormula;
+    return this.returnIncorrectData ? this.#dataToIgnore : this.#dataToImport;
   }
 }
