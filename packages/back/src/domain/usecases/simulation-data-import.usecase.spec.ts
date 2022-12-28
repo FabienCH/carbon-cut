@@ -26,9 +26,9 @@ describe('Simulation data importer use case', () => {
   });
 
   describe('If "formule" is a string, it should import ', () => {
-    it('tea heating footprint percentage', async () => {
+    it('tea heating reduction percentage', async () => {
       const alimentationData = await simulationDataImportUseCase.execute();
-      expect(alimentationData.footprints.teaHeatingPercent).toEqual(0.25);
+      expect(alimentationData.multipliers.teaHeatingPercent).toEqual(0.25);
     });
   });
 
@@ -47,7 +47,7 @@ describe('Simulation data importer use case', () => {
         redMeat: 0.01,
         fish: 0.05,
         whiteFish: 0.06,
-        breakfast: 0.011,
+        breakfast: 0.08,
       });
     });
   });

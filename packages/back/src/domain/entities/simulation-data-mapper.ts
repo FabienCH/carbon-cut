@@ -3,6 +3,8 @@ import { DataRecord, Formula } from './data-record';
 enum QuantitiesMapping {
   coffeePerCup = 'alimentation . boisson . tasse de café . quantité café par tasse',
   teaPerCup = 'alimentation . boisson . tasse de thé . quantité thé par tasse',
+  cacaoPerCup = 'alimentation . boisson . tasse de chocolat chaud . quantité cacao par tasse',
+  milkPerCup = 'alimentation . boisson . tasse de chocolat chaud . quantité lait par tasse',
 }
 
 type AlimentationQuantities = {
@@ -12,7 +14,28 @@ type AlimentationQuantities = {
 enum FootprintsMapping {
   groundedCoffee = 'alimentation . boisson . tasse de café . empreinte café moulu',
   infusedTea = 'alimentation . boisson . tasse de thé . empreinte thé infusé',
-  teaHeatingPercent = 'alimentation . boisson . tasse de thé . part consommation empreinte thé infusé',
+  cacaoPowder = 'alimentation . boisson . tasse de chocolat chaud . empreinte cacao en poudre',
+  cowMilk = 'alimentation . empreinte lait de vache',
+  sojaMilk = 'alimentation . empreinte lait de soja',
+  oatsMilk = "alimentation . empreinte lait d'avoine",
+  waterBottle = 'alimentation . boisson . eau en bouteille . empreinte',
+  sodas = 'alimentation . boisson . sucrées . facteur sodas',
+  fruitsJuice = 'alimentation . boisson . sucrées . facteur jus de fruits',
+  sirops = 'alimentation . boisson . sucrées . facteur sirops',
+  beer = 'alimentation . boisson . alcool . facteur bière',
+  cocktail = 'alimentation . boisson . alcool . facteur coktail',
+  veganMeal = 'alimentation . plats . végétalien . empreinte',
+  vegetarianMeal = 'alimentation . plats . végétarien . empreinte',
+  whiteMeatMeal = 'alimentation . plats . viande 1 . empreinte',
+  redMeatMeal = 'alimentation . plats . viande 2 . empreinte',
+  fishMeal = 'alimentation . plats . poisson 1 . empreinte',
+  whiteFishMeal = 'alimentation . plats . poisson 2 . nombre',
+  continentalBreakfast = 'alimentation . petit déjeuner . continental',
+  cowMilkBreakfast = 'alimentation . petit déjeuner . lait vache céréales',
+  sojaMilkBreakfast = 'alimentation . petit déjeuner . lait soja céréales',
+  oatsMilkBreakfast = 'alimentation . petit déjeuner . lait avoine céréales',
+  britishBreakfast = 'alimentation . petit déjeuner . britannique',
+  veganBreakfast = 'alimentation . petit déjeuner . végétalien',
 }
 
 type AlimentationFootprints = {
@@ -22,6 +45,10 @@ type AlimentationFootprints = {
 enum MultipliersMapping {
   localFoodReductionPercent = 'alimentation . local . niveau',
   localMealReductionPercent = 'alimentation . local . part locale',
+  seasonMealReductionPercent = 'alimentation . de saison . niveau',
+  seasonMealRatio = 'alimentation . de saison . niveau',
+  seasonablePercent = 'alimentation . de saison . pourcentage saisonable',
+  teaHeatingPercent = 'alimentation . boisson . tasse de thé . part consommation empreinte thé infusé',
 }
 
 type AlimentationMultipliers = {
@@ -104,7 +131,7 @@ export class SimulationDataMapper {
         const percentage = this.getPercentageFormula(sommeItem);
 
         if (sommeKey && !isNaN(percentage)) {
-          sommeAcc = { ...(sommeAcc ?? {}), [sommeKey]: sommeKey === 'breakfast' ? this.roundPercentage(percentage / 7) : percentage };
+          sommeAcc = { ...(sommeAcc ?? {}), [sommeKey]: percentage };
         }
         return sommeAcc;
       }, undefined);
