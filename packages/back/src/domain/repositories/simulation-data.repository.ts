@@ -1,7 +1,5 @@
-import { DataRecord } from '../entities/data-record';
-
-export type SimulationSectors = 'alimentation';
+import { AlimentationData } from '../entities/simulation-data';
 
 export interface SimulationDataRepository {
-  getBySector(sector: SimulationSectors): Promise<DataRecord>;
+  insert(simulationData: AlimentationData): Promise<void>;
 }

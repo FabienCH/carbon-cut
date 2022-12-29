@@ -2,7 +2,7 @@ import { DataRecord } from './data-record';
 import { Formula } from './formula';
 import { AlimentationData, FootprintsMapping, MultipliersMapping, QuantitiesMapping } from './simulation-data';
 
-export class SimulationDataMapper {
+export class SimulationDataSourceMapper {
   mapAlimentationData(alimentation: DataRecord): AlimentationData {
     return {
       quantities: this.mapObject(alimentation, QuantitiesMapping),
