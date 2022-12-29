@@ -1,3 +1,3 @@
-export type Formula = number | string | { variations: Array<{ si: string; alors: string }> } | { somme: string[] } | object;
+import { FormulaValue } from './formula';
 
-export type DataRecord = Record<string, (Record<string, unknown> | string) & { formule?: Formula }>;
+export type DataRecord = Record<string, (Record<string, unknown> | string) & { formule?: FormulaValue }>;

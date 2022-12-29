@@ -62,12 +62,12 @@ describe('Simulation data importer use case', () => {
       expect(alimentationData.footprints.groundedCoffee).toBeUndefined();
     });
 
-    it('string formula', async () => {
+    it('string formula without numerical value', async () => {
       const alimentationData = await simulationDataImportUseCase.execute();
       expect(alimentationData.quantities.coffeePerCup).toBeUndefined();
     });
 
-    it('object formula', async () => {
+    it('object formula without numerical "somme" or "variation"', async () => {
       const alimentationData = await simulationDataImportUseCase.execute();
       expect(alimentationData.footprints.infusedTea).toBeUndefined();
     });

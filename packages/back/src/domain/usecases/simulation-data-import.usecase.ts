@@ -1,6 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { SimulationDataRepositoryToken } from '../../adapters/repositories/file-simulation-data.repository';
-import { AlimentationData, SimulationDataMapper } from '../entities/simulation-data-mapper';
+import { AlimentationData } from '../entities/simulation-data';
+import { SimulationDataMapper } from '../entities/simulation-data-mapper';
 import { SimulationDataRepository } from '../repositories/simulation-data.repository';
 
 export class SimulationDataImportUseCase {
