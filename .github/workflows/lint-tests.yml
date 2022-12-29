@@ -1,0 +1,22 @@
+name: Lint and Tests
+
+on: [push]
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - run: yarn
+      - run: yarn lint
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - run: yarn install
+      - run: yarn test
+      - run: bash <(curl -Os https://uploader.codecov.io/latest/linux/codecov)
+      - run: bash <(chmod +x codecov)
+      - run: bash <(./codecov)
