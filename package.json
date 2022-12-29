@@ -2,11 +2,12 @@
   "name": "carbon-cut",
   "packageManager": "yarn@3.2.4",
   "private": true,
+  "main": "index.ts",
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "start:mobile": "yarn workspace carbon-cut-mobile run dev",
+    "start:mobile": "yarn workspace carbon-cut-mobile run start",
     "start:back": "yarn workspace carbon-cut-back run start:dev",
     "start": "yarn start:back && yarn start:mobile",
     "lint:mobile": "yarn workspace carbon-cut-mobile run lint",
