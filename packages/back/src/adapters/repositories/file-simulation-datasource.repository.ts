@@ -3,11 +3,11 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as YAML from 'yaml';
 import { DataRecord } from '../../domain/entities/data-record';
-import { SimulationDataRepository, SimulationSectors } from '../../domain/repositories/simulation-data.repository';
+import { SimulationDataSourceRepository, SimulationSectors } from '../../domain/repositories/simulation-datasource.repository';
 
-export const SimulationDataRepositoryToken: InjectionToken = 'SimulationDataRepository';
+export const SimulationDataSourceRepositoryToken: InjectionToken = 'SimulationDataSourceRepository';
 
-export class FileSimulationDataRepository implements SimulationDataRepository {
+export class FileSimulationDataSourceRepository implements SimulationDataSourceRepository {
   async getBySector(sector: SimulationSectors): Promise<DataRecord> {
     const filesContent = await this.getFilesContent(sector);
     return this.parseFiles(filesContent);
