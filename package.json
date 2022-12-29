@@ -14,7 +14,8 @@
     "lint": "yarn workspaces foreach -vpi run lint",
     "test:mobile": "yarn workspace carbon-cut-mobile run test",
     "test:back": "yarn workspace carbon-cut-back run test",
-    "test": "yarn workspaces foreach -vpi run test"
+    "test": "yarn workspaces foreach -vpi run test",
+    "test:ci": "yarn workspaces foreach -vpi run test:ci"
   },
   "devDependencies": {
     "@types/jest": "^29.2.4",

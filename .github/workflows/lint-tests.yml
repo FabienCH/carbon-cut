@@ -1,0 +1,22 @@
+name: Lint and Tests
+
+on: [push]
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - run: yarn
+      - run: yarn lint
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - run: yarn
+      - run: yarn test:ci
+      - run: bash <(curl -Os https://uploader.codecov.io/latest/linux/codecov)
+      - run: chmod +x codecov
+      - run: ./codecov -t ${{ secrets.CODECOV_TOKEN }} -f packages/back/coverage/lcov.info -F back
