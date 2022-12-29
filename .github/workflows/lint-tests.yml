@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - run: yarn install
-      - run: yarn test
+      - run: yarn
+      - run: yarn test:ci
       - run: bash <(curl -Os https://uploader.codecov.io/latest/linux/codecov)
-      - run: bash <(chmod +x codecov)
-      - run: bash <(./codecov)
+      - run: chmod +x codecov
+      - run: ./codecov -t ${{ secrets.CODECOV_TOKEN }} -f packages/back/coverage/lcov.info -F back

@@ -4,6 +4,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noImplicitAny": true,
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "strict": true,
     "noUnusedLocals": true,
