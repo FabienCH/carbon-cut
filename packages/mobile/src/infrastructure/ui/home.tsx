@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   description: {
+    textAlign: 'center',
     fontSize: 16,
     marginBottom: 50,
   },
