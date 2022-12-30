@@ -1,5 +1,10 @@
 import Layout from './layout';
+import React from 'react';
 
 export default function App() {
-  return <Layout />;
+  return (
+    <React.StrictMode>
+      <Layout />
+    </React.StrictMode>
+  );
 }

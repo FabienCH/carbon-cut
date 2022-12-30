@@ -1,10 +1,10 @@
 import { StyleSheet, View } from 'react-native';
-import Header from './header';
+import Home from './home';
 
 export default function Layout() {
   return (
     <View style={styles.container}>
-      <Header />
+      <Home />
     </View>
   );
 }
@@ -13,6 +13,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    justifyContent: 'space-between',
   },
 });
