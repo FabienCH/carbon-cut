@@ -1,9 +1,14 @@
 import { Button, Colors, Theme, useTheme } from '@rneui/themed';
 import { Image, StyleSheet, Text, View } from 'react-native';
+import { RootStackParamList } from './App';
+import type { NavigationProp } from '@react-navigation/native';
 
-export default function Home() {
+type HomeNavigationProp = NavigationProp<RootStackParamList, 'Home'>;
+
+export default function Home({ navigation }: { navigation: HomeNavigationProp }) {
   const { theme } = useTheme();
 
+  console.log('navigation', navigation);
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={require('./assets/carbon-cut.png')} />
@@ -13,7 +18,7 @@ export default function Home() {
         afin de la réduire.
       </Text>
       <Text style={styles.emphasis}>Commençons par calculer votre empreinte actuelle</Text>
-      <Button titleStyle={styles.button} size="lg">
+      <Button titleStyle={styles.button} size="lg" onPress={() => navigation.navigate('Breakfast')}>
         C'est parti !
       </Button>
     </View>
