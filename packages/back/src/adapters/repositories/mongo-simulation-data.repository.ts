@@ -2,7 +2,7 @@ import { InjectionToken } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
 import { AlimentationData } from '../../domain/entities/simulation-data';
-import { SimulationDataRepository } from '../../domain/repositories/simulation-data.repository';
+import { SimulationDataRepository } from '../../domain/ports/repositories/simulation-data.repository';
 import {
   AlimentationCollectionName,
   AlimentationDataDocument,
@@ -21,5 +21,9 @@ export class MongoSimulationDataRepository implements SimulationDataRepository {
     await this.connection.collection(AlimentationCollectionName).deleteMany({});
     const createdAlimentationData = new this.alimentationDataModel(simulationData);
     await createdAlimentationData.save();
+  }
+
+  async get(): Promise<AlimentationData> {
+    return this.alimentationDataModel.findOne();
   }
 }

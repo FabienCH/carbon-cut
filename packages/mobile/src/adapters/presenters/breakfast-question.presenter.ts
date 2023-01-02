@@ -10,7 +10,7 @@ export class BreakfastQuestionPresenter implements QuestionPresenter {
     { label: 'Viennoiserie / Pain', value: 'continental', selected: false },
     { label: 'Céréales avec lait ou yaourt', value: 'milkCereal', selected: false },
     { label: 'Salé (britannique)', value: 'british', selected: false },
-    { label: 'Fruits', value: 'fruits', selected: false },
+    { label: 'Fruits', value: 'vegan', selected: false },
     { label: 'Pas de petits déjeuner', value: 'none', selected: false },
   ];
 

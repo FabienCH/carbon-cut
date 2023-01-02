@@ -1,3 +1,5 @@
+import { NumberFormatter } from './number-formatter';
+
 interface Variation {
   si: string;
   alors: string;
@@ -44,7 +46,7 @@ export class Formula {
     const percentageFormulaMatches = typeof formulaValue === 'string' ? formulaValue.match(/([0-9]{1,2}[,.]?[0-9]{0,2}|100)%/) : undefined;
     const percentageFormula = parseFloat(percentageFormulaMatches?.at(1));
 
-    return this.roundPercentage(percentageFormula / 100);
+    return NumberFormatter.roundNumber(percentageFormula / 100, 3);
   }
 
   private getPercentagesFromObject(): Record<string, number> {
@@ -71,10 +73,6 @@ export class Formula {
         return this.value.somme;
       }
     }
-  }
-
-  private roundPercentage(percentageFormula: number): number {
-    return Math.round(percentageFormula * 1000) / 1000;
   }
 
   private getKey(formulaValue: string | Variation): string | void {

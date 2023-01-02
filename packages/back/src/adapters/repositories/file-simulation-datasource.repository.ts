@@ -3,7 +3,7 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as YAML from 'yaml';
 import { DataRecord } from '../../domain/entities/data-record';
-import { SimulationDataSourceRepository, SimulationSectors } from '../../domain/repositories/simulation-datasource.repository';
+import { SimulationDataSourceRepository, SimulationSectors } from '../../domain/ports/repositories/simulation-datasource.repository';
 
 export const SimulationDataSourceRepositoryToken: InjectionToken = 'SimulationDataSourceRepository';
 
@@ -14,7 +14,7 @@ export class FileSimulationDataSourceRepository implements SimulationDataSourceR
   }
 
   private async getFilesContent(sector: SimulationSectors): Promise<Buffer[]> {
-    const dirPath = `${__dirname}/../../infrastructure/simulation-data/${sector}`;
+    const dirPath = path.join(__dirname, '../../../infrastructure/simulation-data', sector);
     const files = await fs.readdir(dirPath);
 
     const filesContent = files.flatMap(async (file) => {

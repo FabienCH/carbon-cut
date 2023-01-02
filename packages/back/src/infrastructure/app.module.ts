@@ -6,6 +6,7 @@ import {
 } from '../adapters/repositories/file-simulation-datasource.repository';
 import { MongoSimulationDataRepository, SimulationDataRepositoryToken } from '../adapters/repositories/mongo-simulation-data.repository';
 import { SimulationDataSourceMapper } from '../domain/entities/simulation-datasource-mapper';
+import { CalculateCarbonFootprintUseCase } from '../domain/usecases/calculate-carbon-footprint.usecase';
 import { SimulationDataImportUseCase } from '../domain/usecases/simulation-data-import.usecase';
 import { AlimentationDataSchema, AlimentationModelName } from './mongo-models/alimentation-data.schema';
 
@@ -17,6 +18,7 @@ import { AlimentationDataSchema, AlimentationModelName } from './mongo-models/al
   providers: [
     SimulationDataImportUseCase,
     SimulationDataSourceMapper,
+    CalculateCarbonFootprintUseCase,
     { provide: SimulationDataSourceRepositoryToken, useClass: FileSimulationDataSourceRepository },
     { provide: SimulationDataRepositoryToken, useClass: MongoSimulationDataRepository },
   ],

@@ -1,19 +1,19 @@
 import { DataRecord } from './data-record';
 import { Formula } from './formula';
-import { AlimentationData, FootprintsMapping, MultipliersMapping, QuantitiesMapping } from './simulation-data';
+import { AlimentationData, FoodFootprintsMapping, MultipliersMapping, QuantitiesMapping } from './simulation-data';
 
 export class SimulationDataSourceMapper {
   mapAlimentationData(alimentation: DataRecord): AlimentationData {
     return {
       quantities: this.mapObject(alimentation, QuantitiesMapping),
-      footprints: this.mapObject(alimentation, FootprintsMapping),
+      footprints: this.mapObject(alimentation, FoodFootprintsMapping),
       multipliers: this.mapObject(alimentation, MultipliersMapping),
     };
   }
 
   private mapObject<T>(
     alimentation: DataRecord,
-    mappingObject: typeof QuantitiesMapping | typeof FootprintsMapping | typeof MultipliersMapping,
+    mappingObject: typeof QuantitiesMapping | typeof FoodFootprintsMapping | typeof MultipliersMapping,
   ): T {
     return Object.keys(mappingObject).reduce((acc, key): T => {
       const alimentationKey = mappingObject[key as keyof typeof mappingObject];

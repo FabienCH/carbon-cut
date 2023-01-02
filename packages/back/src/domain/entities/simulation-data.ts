@@ -9,7 +9,18 @@ export type AlimentationQuantities = {
   [quantityKey in keyof typeof QuantitiesMapping]: number;
 };
 
-export enum FootprintsMapping {
+export enum BreakfastFootprintsMapping {
+  continentalBreakfast = 'alimentation . petit déjeuner . continental',
+  cowMilkCerealBreakfast = 'alimentation . petit déjeuner . lait vache céréales',
+  sojaMilkCerealBreakfast = 'alimentation . petit déjeuner . lait soja céréales',
+  oatsMilkCerealBreakfast = 'alimentation . petit déjeuner . lait avoine céréales',
+  britishBreakfast = 'alimentation . petit déjeuner . britannique',
+  veganBreakfast = 'alimentation . petit déjeuner . végétalien',
+}
+
+export type BreakfastTypes = keyof typeof BreakfastFootprintsMapping;
+
+export enum FoodFootprintsMapping {
   groundedCoffee = 'alimentation . boisson . tasse de café . empreinte café moulu',
   infusedTea = 'alimentation . boisson . tasse de thé . empreinte thé infusé',
   cacaoPowder = 'alimentation . boisson . tasse de chocolat chaud . empreinte cacao en poudre',
@@ -27,17 +38,13 @@ export enum FootprintsMapping {
   whiteMeatMeal = 'alimentation . plats . viande 1 . empreinte',
   redMeatMeal = 'alimentation . plats . viande 2 . empreinte',
   fishMeal = 'alimentation . plats . poisson 1 . empreinte',
-  whiteFishMeal = 'alimentation . plats . poisson 2 . nombre',
-  continentalBreakfast = 'alimentation . petit déjeuner . continental',
-  cowMilkCerealBreakfast = 'alimentation . petit déjeuner . lait vache céréales',
-  sojaMilkCerealBreakfast = 'alimentation . petit déjeuner . lait soja céréales',
-  oatsMilkCerealBreakfast = 'alimentation . petit déjeuner . lait avoine céréales',
-  britishBreakfast = 'alimentation . petit déjeuner . britannique',
-  veganBreakfast = 'alimentation . petit déjeuner . végétalien',
+  whiteFishMeal = 'alimentation . plats . poisson 2 . empreinte',
 }
 
+type FoodTypes = keyof typeof FoodFootprintsMapping;
+
 export type AlimentationFootprints = {
-  [footprintKey in keyof typeof FootprintsMapping]: number;
+  [footprintKey in FoodTypes | BreakfastTypes]: number;
 };
 
 export enum MultipliersMapping {
@@ -50,7 +57,7 @@ export enum MultipliersMapping {
 }
 
 export type AlimentationMultipliers = {
-  [multiplierKey in keyof typeof MultipliersMapping]: number;
+  [multiplierKey in keyof typeof MultipliersMapping]: number | Record<string, number>;
 };
 
 export interface AlimentationData {
