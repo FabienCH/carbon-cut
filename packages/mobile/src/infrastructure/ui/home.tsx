@@ -8,7 +8,6 @@ type HomeNavigationProp = NavigationProp<RootStackParamList, 'Home'>;
 export default function Home({ navigation }: { navigation: HomeNavigationProp }) {
   const { theme } = useTheme();
 
-  console.log('navigation', navigation);
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={require('./assets/carbon-cut.png')} />
