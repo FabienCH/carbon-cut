@@ -29,9 +29,9 @@ export enum FootprintsMapping {
   fishMeal = 'alimentation . plats . poisson 1 . empreinte',
   whiteFishMeal = 'alimentation . plats . poisson 2 . nombre',
   continentalBreakfast = 'alimentation . petit déjeuner . continental',
-  cowMilkBreakfast = 'alimentation . petit déjeuner . lait vache céréales',
-  sojaMilkBreakfast = 'alimentation . petit déjeuner . lait soja céréales',
-  oatsMilkBreakfast = 'alimentation . petit déjeuner . lait avoine céréales',
+  cowMilkCerealBreakfast = 'alimentation . petit déjeuner . lait vache céréales',
+  sojaMilkCerealBreakfast = 'alimentation . petit déjeuner . lait soja céréales',
+  oatsMilkCerealBreakfast = 'alimentation . petit déjeuner . lait avoine céréales',
   britishBreakfast = 'alimentation . petit déjeuner . britannique',
   veganBreakfast = 'alimentation . petit déjeuner . végétalien',
 }
