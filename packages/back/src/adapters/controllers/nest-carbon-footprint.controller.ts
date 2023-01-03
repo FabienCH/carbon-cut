@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { BreakfastTypes } from '../../domain/entities/simulation-data';
+import { BreakfastTypes } from 'carbon-cut-types';
 import { CarbonFootprintController } from '../../domain/ports/controllers/carbon-footprint.controller';
 import { CalculateCarbonFootprintUseCase } from '../../domain/usecases/calculate-carbon-footprint.usecase';
 
