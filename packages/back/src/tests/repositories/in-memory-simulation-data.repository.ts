@@ -38,6 +38,7 @@ export class InMemorySimulationDataRepository implements SimulationDataRepositor
           oatsMilkCerealBreakfast: 0.312,
           britishBreakfast: 1.124,
           veganBreakfast: 0.419,
+          noBreakfast: 0,
         },
         multipliers: {
           localFoodReductionPercent: {

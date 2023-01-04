@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { NestCarbonFootprintController } from '../adapters/controllers/nest-carbon-footprint.controller';
 import {
   FileSimulationDataSourceRepository,
   SimulationDataSourceRepositoryToken,
@@ -15,6 +16,7 @@ import { AlimentationDataSchema, AlimentationModelName } from './mongo-models/al
     MongooseModule.forRoot('mongodb://127.0.0.1:27017/carbon_cut'),
     MongooseModule.forFeature([{ name: AlimentationModelName, schema: AlimentationDataSchema }]),
   ],
+  controllers: [NestCarbonFootprintController],
   providers: [
     SimulationDataImportUseCase,
     SimulationDataSourceMapper,

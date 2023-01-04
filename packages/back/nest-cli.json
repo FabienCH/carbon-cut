@@ -4,6 +4,7 @@
   "sourceRoot": "src",
   "entryFile": "infrastructure/main",
   "compilerOptions": {
-    "assets": ["infrastructure/simulation-data/**/*"]
+    "assets": ["infrastructure/simulation-data/**/*"],
+    "plugins": ["@nestjs/swagger"]
   }
 }

@@ -11,7 +11,10 @@ export type AlimentationQuantities = {
   [quantityKey in keyof typeof QuantitiesMapping]: number;
 };
 
-export type AlimentationFootprintsMappingType = Record<BreakfastTypes | FoodTypes | BeverageTypes, string>;
+export type AlimentationFootprintsMappingType = Record<
+  Exclude<BreakfastTypes, BreakfastTypes.noBreakfast> | FoodTypes | BeverageTypes,
+  string
+>;
 
 export const AlimentationFootprintsMapping: AlimentationFootprintsMappingType = {
   [BreakfastTypes.continentalBreakfast]: 'alimentation . petit déjeuner . continental',
@@ -41,7 +44,7 @@ export const AlimentationFootprintsMapping: AlimentationFootprintsMappingType = 
 };
 
 export type AlimentationFootprints = {
-  [footprintKey in keyof typeof AlimentationFootprintsMapping]: number;
+  [footprintKey in keyof typeof AlimentationFootprintsMapping | BreakfastTypes.noBreakfast]: number;
 };
 
 export enum MultipliersMapping {
