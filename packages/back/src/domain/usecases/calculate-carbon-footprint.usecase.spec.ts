@@ -26,5 +26,11 @@ describe('Carbon footprint calculation use case', () => {
 
       expect(footprint).toEqual(152.935);
     });
+
+    it('for no breakfast ', async () => {
+      const footprint = await calculateCarbonFootprintUseCase.execute({ breakfast: BreakfastTypes.noBreakfast });
+
+      expect(footprint).toEqual(0);
+    });
   });
 });
