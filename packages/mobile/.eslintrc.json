@@ -1,7 +1,7 @@
 {
   "extends": ["../../.eslintrc", "@react-native-community", "eslint-config-prettier"],
   "plugins": ["prettier", "react-native"],
-  "ignorePatterns": [".eslintrc.js"],
+  "ignorePatterns": [".eslintrc.js", "src/infrastructure/inversify.config.ts"],
   "parserOptions": {
     "ecmaVersion": 2017,
     "sourceType": "module",

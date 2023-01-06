@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeProvider } from '@rneui/themed';
 import { theme } from './theme';
-import Home from './home';
+import Home from './home/home';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Breakfast from './simulation/breakfast';

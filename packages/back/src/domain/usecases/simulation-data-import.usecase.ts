@@ -1,9 +1,10 @@
 import { Inject } from '@nestjs/common';
-import { SimulationDataSourceRepositoryToken } from '../../adapters/repositories/file-simulation-datasource.repository';
-import { SimulationDataRepositoryToken } from '../../adapters/repositories/mongo-simulation-data.repository';
 import { SimulationDataSourceMapper } from '../entities/simulation-datasource-mapper';
-import { SimulationDataRepository } from '../repositories/simulation-data.repository';
-import { SimulationDataSourceRepository } from '../repositories/simulation-datasource.repository';
+import { SimulationDataRepository, SimulationDataRepositoryToken } from '../ports/repositories/simulation-data.repository';
+import {
+  SimulationDataSourceRepository,
+  SimulationDataSourceRepositoryToken,
+} from '../ports/repositories/simulation-datasource.repository';
 
 export class SimulationDataImportUseCase {
   constructor(
