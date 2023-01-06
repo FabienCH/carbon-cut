@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { NestCarbonFootprintController } from '../adapters/controllers/nest-carbon-footprint.controller';
-import {
-  FileSimulationDataSourceRepository,
-  SimulationDataSourceRepositoryToken,
-} from '../adapters/repositories/file-simulation-datasource.repository';
-import { MongoSimulationDataRepository, SimulationDataRepositoryToken } from '../adapters/repositories/mongo-simulation-data.repository';
+import { FileSimulationDataSourceRepository } from '../adapters/repositories/file-simulation-datasource.repository';
+import { MongoSimulationDataRepository } from '../adapters/repositories/mongo-simulation-data.repository';
 import { SimulationDataSourceMapper } from '../domain/entities/simulation-datasource-mapper';
+import { SimulationDataRepositoryToken } from '../domain/ports/repositories/simulation-data.repository';
+import { SimulationDataSourceRepositoryToken } from '../domain/ports/repositories/simulation-datasource.repository';
 import { CalculateCarbonFootprintUseCase } from '../domain/usecases/calculate-carbon-footprint.usecase';
 import { SimulationDataImportUseCase } from '../domain/usecases/simulation-data-import.usecase';
 import { AlimentationDataSchema, AlimentationModelName } from './mongo-models/alimentation-data.schema';

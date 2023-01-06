@@ -5,7 +5,6 @@
 /* eslint-env node */
 module.exports = {
   collectCoverage: true,
-  coverageDirectory: '../coverage',
   coverageReporters: ['json', 'text', 'lcov', 'clover'],
   moduleFileExtensions: ['js', 'json', 'jsx', 'ts', 'tsx', 'node'],
   preset: 'ts-jest',

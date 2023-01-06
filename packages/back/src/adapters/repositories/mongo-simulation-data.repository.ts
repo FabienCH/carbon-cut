@@ -1,4 +1,3 @@
-import { InjectionToken } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
 import { AlimentationData } from '../../domain/entities/simulation-data';
@@ -8,8 +7,6 @@ import {
   AlimentationDataDocument,
   AlimentationModelName,
 } from '../../infrastructure/mongo-models/alimentation-data.schema';
-
-export const SimulationDataRepositoryToken: InjectionToken = 'SimulationDataRepository';
 
 export class MongoSimulationDataRepository implements SimulationDataRepository {
   constructor(

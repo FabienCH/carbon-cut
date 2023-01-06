@@ -1,35 +1,60 @@
 import { Text } from '@rneui/base';
 import { Button, Chip } from '@rneui/themed';
+import { BreakfastTypes } from 'carbon-cut-types';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { AnswerVM, BreakfastQuestionPresenter } from '../../../adapters/presenters/breakfast-question.presenter';
+import { BreakfastQuestionPresenter } from '../../../adapters/presenters/breakfast-question.presenter';
+import { Answer, QuestionPresenter } from '../../../domain/ports/presenters/question.presenter';
+import { CarbonFootprintSimulationUseCase } from '../../../domain/usecases/carbon-footprint-simulation.usescase';
+import { TYPES } from '../inversify-types';
+import { diContainer } from '../inversify.config';
 
-const presenter: BreakfastQuestionPresenter = new BreakfastQuestionPresenter();
+const presenter: BreakfastQuestionPresenter = diContainer.get<QuestionPresenter<BreakfastTypes>>(TYPES.BreakfastQuestionPresenter);
+const carbonFootprintSimulationUseCase: CarbonFootprintSimulationUseCase = diContainer.get<CarbonFootprintSimulationUseCase>(
+  TYPES.CarbonFootprintSimulationUseCase,
+);
+
+type BreakfastAnswer = Answer<BreakfastTypes>;
 
 export default function Breakfast() {
-  const [answers, updateAnswers] = useState<AnswerVM[]>(presenter.answers);
+  const { viewModel } = presenter;
+  const [answers, updateAnswers] = useState<BreakfastAnswer[]>(viewModel.answers);
 
-  const setSelectedAnswer = (answer: AnswerVM): void => {
+  const setSelectedBreakfast = (answer: BreakfastAnswer): void => {
     presenter.setSelectedAnswer(answer.value);
-    updateAnswers(presenter.answers);
+    updateAnswers(viewModel.answers);
   };
+
+  function runCalculation(): void {
+    carbonFootprintSimulationUseCase.execute(viewModel.selectedAnswer);
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.question}>{presenter.question}</Text>
+      <Text accessibilityRole="header" style={styles.question}>
+        {viewModel.question}
+      </Text>
       {answers.map((answer) => {
         const type = answer.selected ? 'solid' : 'outline';
         return (
           <Chip
+            accessibilityRole="radio"
             title={answer.label}
             key={answer.value}
             containerStyle={styles.answer}
             type={type}
-            onPress={() => setSelectedAnswer(answer)}
+            onPress={() => setSelectedBreakfast(answer)}
           />
         );
       })}
-      <Button containerStyle={styles.button}>Calculer mon empreinte</Button>
+      <Button
+        accessibilityRole="button"
+        containerStyle={styles.button}
+        disabled={!viewModel.selectedAnswer}
+        onPress={() => runCalculation()}
+      >
+        Calculer mon empreinte
+      </Button>
     </View>
   );
 }
