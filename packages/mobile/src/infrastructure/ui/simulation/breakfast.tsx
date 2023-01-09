@@ -3,7 +3,7 @@ import { Button, Chip } from '@rneui/themed';
 import { BreakfastTypes } from 'carbon-cut-types';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { BreakfastQuestionPresenter } from '../../../adapters/presenters/breakfast-question.presenter';
+import { WebBreakfastQuestionPresenter } from '../../../adapters/presenters/web-breakfast-question.presenter';
 import { Answer, BreakfastQuestionPresenterToken, QuestionPresenter } from '../../../domain/ports/presenters/question.presenter';
 import {
   CarbonFootprintSimulationUseCase,
@@ -11,7 +11,7 @@ import {
 } from '../../../domain/usecases/carbon-footprint-simulation.usescase';
 import { diContainer } from '../../inversify.config';
 
-const presenter: BreakfastQuestionPresenter = diContainer.get<QuestionPresenter<BreakfastTypes>>(BreakfastQuestionPresenterToken);
+const presenter: WebBreakfastQuestionPresenter = diContainer.get<QuestionPresenter<BreakfastTypes>>(BreakfastQuestionPresenterToken);
 const carbonFootprintSimulationUseCase: CarbonFootprintSimulationUseCase = diContainer.get<CarbonFootprintSimulationUseCase>(
   CarbonFootprintSimulationUseCaseToken,
 );
@@ -28,7 +28,7 @@ export default function Breakfast() {
   };
 
   const runCalculation = (): void => {
-    carbonFootprintSimulationUseCase.execute(viewModel.selectedAnswer).then();
+    carbonFootprintSimulationUseCase.execute(viewModel.selectedAnswer);
   };
 
   return (

@@ -3,7 +3,7 @@ import { injectable } from 'inversify';
 import { QuestionPresenter, QuestionViewModel } from '../../domain/ports/presenters/question.presenter';
 
 @injectable()
-export class BreakfastQuestionPresenter implements QuestionPresenter<BreakfastTypes> {
+export class WebBreakfastQuestionPresenter implements QuestionPresenter<BreakfastTypes> {
   readonly viewModel: QuestionViewModel<BreakfastTypes> = {
     question: 'Quel type de petit déjeuner prenez-vous habituellement ?',
     answers: [

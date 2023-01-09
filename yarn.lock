@@ -6254,9 +6254,11 @@ __metadata:
     react-dom: 18.1.0
     react-native: 0.70.5
     react-native-animation-library: ^0.0.8
+    react-native-echarts-pro: ^1.8.9
     react-native-safe-area-context: ^4.4.1
     react-native-screens: ^3.18.2
     react-native-web: ~0.18.7
+    react-native-webview: ~11.23.1
     react-redux: ^8.0.5
     react-test-renderer: ^18.2.0
     redux: ^4.2.0
@@ -7421,17 +7423,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"escape-string-regexp@npm:2.0.0, escape-string-regexp@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "escape-string-regexp@npm:2.0.0"
+  checksum: 9f8a2d5743677c16e85c810e3024d54f0c8dea6424fad3c79ef6666e81dd0846f7437f5e729dfcdac8981bc9e5294c39b4580814d114076b8d36318f46ae4395
+  languageName: node
+  linkType: hard
+
 "escape-string-regexp@npm:^1.0.5":
   version: 1.0.5
   resolution: "escape-string-regexp@npm:1.0.5"
   checksum: 6092fda75c63b110c706b6a9bfde8a612ad595b628f0bd2147eea1d3406723020810e591effc7db1da91d80a71a737a313567c5abb3813e8d9c71f4aa595b410
-  languageName: node
-  linkType: hard
-
-"escape-string-regexp@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "escape-string-regexp@npm:2.0.0"
-  checksum: 9f8a2d5743677c16e85c810e3024d54f0c8dea6424fad3c79ef6666e81dd0846f7437f5e729dfcdac8981bc9e5294c39b4580814d114076b8d36318f46ae4395
   languageName: node
   linkType: hard
 
@@ -9361,7 +9363,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"invariant@npm:^2.2.4":
+"invariant@npm:2.2.4, invariant@npm:^2.2.4":
   version: 2.2.4
   resolution: "invariant@npm:2.2.4"
   dependencies:
@@ -12893,6 +12895,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-echarts-pro@npm:^1.8.9":
+  version: 1.8.9
+  resolution: "react-native-echarts-pro@npm:1.8.9"
+  peerDependencies:
+    react-native-webview: ^6.9.0
+  checksum: c6369c8fa896277f51bcaac334e712151f43041d5c2e7a6940edc372bb2b5c70d79612695eb991e154d95a05d9d50d50039595533ad345c7956ec471fed04dc8
+  languageName: node
+  linkType: hard
+
 "react-native-gradle-plugin@npm:^0.70.3":
   version: 0.70.3
   resolution: "react-native-gradle-plugin@npm:0.70.3"
@@ -12959,6 +12970,19 @@ __metadata:
     react: ^17.0.2 || ^18.0.0
     react-dom: ^17.0.2 || ^18.0.0
   checksum: 2549a7e316e5e6ac2b59eac0c500bc8e021f32854bd852d4bf719eebad9ef9fbccbeb6fd3f4654d3d3f971c7af43240139affc8b3f36ad288908e7aeea32c43e
+  languageName: node
+  linkType: hard
+
+"react-native-webview@npm:~11.23.1":
+  version: 11.23.1
+  resolution: "react-native-webview@npm:11.23.1"
+  dependencies:
+    escape-string-regexp: 2.0.0
+    invariant: 2.2.4
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 58367276b4457a12c0ecb24084c237048a31a8b4d49f53615634052c2dfcb318824e9239909b6bfb80cc8abacab658d278f480f7ff96267d10d5ff84a8ff1373
   languageName: node
   linkType: hard
 

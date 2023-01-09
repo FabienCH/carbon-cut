@@ -1,12 +1,25 @@
-import { Text } from '@rneui/base';
-import { StyleSheet, View } from 'react-native';
+import { Colors, Theme } from '@rneui/base';
+import { Dimensions, StyleSheet, View } from 'react-native';
+import { WebSimulationResultsPresenter } from '../../../adapters/presenters/web-simulation-results.presenter';
+import { SimulationResultsPresenterToken } from '../../../domain/ports/presenters/simulation-results.presenter';
+import { diContainer } from '../../inversify.config';
+import { Text, useTheme } from '@rneui/themed';
+import RNEChartsPro from 'react-native-echarts-pro';
+
+const presenter: WebSimulationResultsPresenter = diContainer.get<WebSimulationResultsPresenter>(SimulationResultsPresenterToken);
 
 export default function SimulationResults() {
+  const { theme } = useTheme();
+  const { width, height } = Dimensions.get('window');
+  const chartHeight = Math.min(width, height) - 40;
+
   return (
-    <View style={styles.container}>
+    <View testID="SIMULATION_RESULTS" style={styles.container}>
       <Text accessibilityRole="header" style={styles.title}>
-        Votre empreinte carbon actuelle
+        Votre empreinte carbon actuelle :
       </Text>
+      <Text style={footprintStyles(theme).title}>{presenter.viewModel.results} </Text>
+      <RNEChartsPro height={chartHeight} option={presenter.viewModel.chartOption} />
     </View>
   );
 }
@@ -25,3 +38,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+const footprintStyles = (
+  theme: {
+    colors: Colors;
+  } & Theme,
+) =>
+  StyleSheet.create({
+    title: { fontSize: 26, marginBottom: 20, fontWeight: 'bold', textAlign: 'center', color: theme.colors.primary },
+  });
