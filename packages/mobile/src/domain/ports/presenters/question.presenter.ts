@@ -1,3 +1,5 @@
+export const BreakfastQuestionPresenterToken = Symbol.for('BreakfastQuestionPresenter');
+
 export interface Answer<T> {
   label: string;
   value: T;

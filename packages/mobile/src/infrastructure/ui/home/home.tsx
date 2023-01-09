@@ -1,9 +1,9 @@
 import { Button, Colors, Theme, useTheme } from '@rneui/themed';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { RootStackParamList } from '../App';
 import type { NavigationProp } from '@react-navigation/native';
+import { RootStackParamList, Routes } from '../../root-navigation';
 
-type HomeNavigationProp = NavigationProp<RootStackParamList, 'Home'>;
+type HomeNavigationProp = NavigationProp<RootStackParamList, Routes.Home>;
 
 export default function Home({ navigation }: { navigation: HomeNavigationProp }) {
   const { theme } = useTheme();
@@ -17,7 +17,7 @@ export default function Home({ navigation }: { navigation: HomeNavigationProp })
         afin de la réduire.
       </Text>
       <Text style={styles.emphasis}>Commençons par calculer votre empreinte actuelle</Text>
-      <Button accessibilityRole="button" titleStyle={styles.button} size="lg" onPress={() => navigation.navigate('Breakfast')}>
+      <Button accessibilityRole="button" titleStyle={styles.button} size="lg" onPress={() => navigation.navigate(Routes.Breakfast)}>
         C'est parti !
       </Button>
     </View>
