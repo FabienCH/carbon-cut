@@ -1,4 +1,4 @@
-import { SimulationDto } from 'carbon-cut-types';
+import { SimulationDto } from 'carbon-cut-commons';
 
 export const CarbonFootprintRepositoryToken = Symbol.for('CarbonFootprintRepository');
 

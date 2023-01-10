@@ -1,6 +1,6 @@
 import { Text } from '@rneui/base';
 import { Button, Chip } from '@rneui/themed';
-import { BreakfastTypes } from 'carbon-cut-types';
+import { BreakfastTypes } from 'carbon-cut-commons';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WebBreakfastQuestionPresenter } from '../../../adapters/presenters/web-breakfast-question.presenter';

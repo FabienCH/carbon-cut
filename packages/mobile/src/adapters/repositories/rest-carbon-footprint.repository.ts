@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SimulationDto } from 'carbon-cut-types';
+import { SimulationDto } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
 import { CarbonFootprintRepository } from '../../domain/ports/repositories/carbon-footprint.repository';
 

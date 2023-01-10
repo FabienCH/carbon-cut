@@ -1,4 +1,4 @@
-import { BreakfastTypes } from 'carbon-cut-types';
+import { BreakfastTypes } from 'carbon-cut-commons';
 import { InMemorySimulationDataRepository } from '../../tests/repositories/in-memory-simulation-data.repository';
 import { CalculateCarbonFootprintUseCase } from './calculate-carbon-footprint.usecase';
 

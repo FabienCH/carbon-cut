@@ -1,4 +1,4 @@
-import { BreakfastTypes } from 'carbon-cut-types';
+import { BreakfastTypes } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
 import { QuestionPresenter, QuestionViewModel } from '../../domain/ports/presenters/question.presenter';
 
