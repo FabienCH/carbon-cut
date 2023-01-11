@@ -1,6 +1,6 @@
 import { BreakfastTypes } from 'carbon-cut-commons';
 import { inject, injectable } from 'inversify';
-import { CarbonFootprintRepository, CarbonFootprintRepositoryToken } from '../ports/repositories/carbon-footprint.repository';
+import { CarbonFootprintGateway, CarbonFootprintGatewayToken } from '../ports/gateways/carbon-footprint.gateway';
 import { SimulationStore, SimulationStoreToken } from '../ports/stores/simulation-store';
 
 export const CarbonFootprintSimulationUseCaseToken = Symbol.for('CarbonFootprintSimulationUseCase');
@@ -8,7 +8,7 @@ export const CarbonFootprintSimulationUseCaseToken = Symbol.for('CarbonFootprint
 @injectable()
 export class CarbonFootprintSimulationUseCase {
   constructor(
-    @inject(CarbonFootprintRepositoryToken) private readonly carbonFootprintRepository: CarbonFootprintRepository,
+    @inject(CarbonFootprintGatewayToken) private readonly carbonFootprintRepository: CarbonFootprintGateway,
     @inject(SimulationStoreToken) private readonly simulationStore: SimulationStore,
   ) {}
 

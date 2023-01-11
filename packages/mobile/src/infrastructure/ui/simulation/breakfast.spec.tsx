@@ -3,8 +3,8 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 import Breakfast from './breakfast';
 import { selectSimulationResults } from '../../store/selectors/simulation-selectors';
 import { diContainer } from '../../inversify.config';
-import { CarbonFootprintRepositoryToken } from '../../../domain/ports/repositories/carbon-footprint.repository';
-import { InMemoryCarbonFootprintRepository } from '../../../tests/in-memory-simulation-data.repository';
+import { CarbonFootprintGatewayToken } from '../../../domain/ports/gateways/carbon-footprint.gateway';
+import { InMemoryCarbonFootprintGateway } from '../../../tests/in-memory-carbon-footprint.gateway';
 import { Provider } from 'react-redux';
 import { appStore } from '../../store/app-store';
 
@@ -15,8 +15,8 @@ describe('Breakfast component', () => {
   };
 
   beforeAll(() => {
-    diContainer.unbind(CarbonFootprintRepositoryToken);
-    diContainer.bind(CarbonFootprintRepositoryToken).to(InMemoryCarbonFootprintRepository);
+    diContainer.unbind(CarbonFootprintGatewayToken);
+    diContainer.bind(CarbonFootprintGatewayToken).to(InMemoryCarbonFootprintGateway);
   });
 
   beforeEach(() => {

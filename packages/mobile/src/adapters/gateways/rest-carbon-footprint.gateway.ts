@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { SimulationDto } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
-import { CarbonFootprintRepository } from '../../domain/ports/repositories/carbon-footprint.repository';
+import { CarbonFootprintGateway } from '../../domain/ports/gateways/carbon-footprint.gateway';
 
 @injectable()
-export class RestCarbonFootprintRepository implements CarbonFootprintRepository {
+export class RestCarbonFootprintGateway implements CarbonFootprintGateway {
   readonly baseUrl = 'http://localhost:8080/carbon-footprint/';
 
   async calculate(simulationDto: SimulationDto): Promise<number> {
