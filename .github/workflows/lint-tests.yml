@@ -20,3 +20,4 @@ jobs:
       - run: bash <(curl -Os https://uploader.codecov.io/latest/linux/codecov)
       - run: chmod +x codecov
       - run: ./codecov -t ${{ secrets.CODECOV_TOKEN }} -f packages/back/coverage/lcov.info -F back
+      - run: ./codecov -t ${{ secrets.CODECOV_TOKEN }} -f packages/mobile/coverage/lcov.info -F mobile
