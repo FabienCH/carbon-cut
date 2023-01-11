@@ -8,13 +8,13 @@ export const CarbonFootprintSimulationUseCaseToken = Symbol.for('CarbonFootprint
 @injectable()
 export class CarbonFootprintSimulationUseCase {
   constructor(
-    @inject(CarbonFootprintGatewayToken) private readonly carbonFootprintRepository: CarbonFootprintGateway,
+    @inject(CarbonFootprintGatewayToken) private readonly carbonFootprintGateway: CarbonFootprintGateway,
     @inject(SimulationStoreToken) private readonly simulationStore: SimulationStore,
   ) {}
 
   async execute(breakfast: BreakfastTypes | null): Promise<void> {
     if (breakfast) {
-      const footprint = await this.carbonFootprintRepository.calculate({ breakfast });
+      const footprint = await this.carbonFootprintGateway.calculate({ breakfast });
       this.simulationStore.setFootprint(footprint);
     }
   }

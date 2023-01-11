@@ -33,7 +33,7 @@ describe('Breakfast component', () => {
       'Céréales avec lait ou yaourt',
       'Salé (britannique)',
       'Fruits',
-      'Pas de petits déjeuner',
+      'Pas de petit-déj. (hors boisson)',
     ];
 
     const answers = screen.getAllByRole('radio');
