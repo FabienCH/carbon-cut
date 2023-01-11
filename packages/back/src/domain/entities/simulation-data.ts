@@ -1,4 +1,4 @@
-import { BeverageTypes, BreakfastTypes, FoodTypes } from 'carbon-cut-types';
+import { BeverageTypes, BreakfastTypes, FoodTypes } from 'carbon-cut-commons';
 
 export enum QuantitiesMapping {
   coffeePerCup = 'alimentation . boisson . tasse de café . quantité café par tasse',

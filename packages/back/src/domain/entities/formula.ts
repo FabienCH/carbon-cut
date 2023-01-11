@@ -1,4 +1,4 @@
-import { NumberFormatter } from './number-formatter';
+import { NumberFormatter } from 'carbon-cut-commons';
 
 interface Variation {
   si: string;

@@ -17,7 +17,7 @@
     "test:back": "yarn workspace carbon-cut-back run test",
     "test": "yarn workspaces foreach -vpi run test",
     "test:ci": "yarn workspaces foreach -vpi run test:ci",
-    "build:types": "yarn workspace carbon-cut-types run build",
+    "build:commons": "yarn workspace carbon-cut-commons run build",
     "build": "yarn workspaces foreach -vpi run build"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-import { BreakfastTypes } from 'carbon-cut-types';
+import { BreakfastTypes } from 'carbon-cut-commons';
 import { inject, injectable } from 'inversify';
 import { CarbonFootprintRepository, CarbonFootprintRepositoryToken } from '../ports/repositories/carbon-footprint.repository';
 import { SimulationStore, SimulationStoreToken } from '../ports/stores/simulation-store';

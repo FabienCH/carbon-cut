@@ -1,6 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { BreakfastTypes } from 'carbon-cut-types';
-import { NumberFormatter } from '../entities/number-formatter';
+import { BreakfastTypes, NumberFormatter } from 'carbon-cut-commons';
 import { SimulationDataRepository, SimulationDataRepositoryToken } from '../ports/repositories/simulation-data.repository';
 
 export class CalculateCarbonFootprintUseCase {

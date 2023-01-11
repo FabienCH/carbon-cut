@@ -1,4 +1,4 @@
-import { BreakfastTypes } from 'carbon-cut-types';
+import { BreakfastTypes } from 'carbon-cut-commons';
 import { Container } from 'inversify';
 import 'reflect-metadata';
 import { WebBreakfastQuestionPresenter } from '../adapters/presenters/web-breakfast-question.presenter';

@@ -48,7 +48,7 @@
     "@types/react-native": "~0.70.6",
     "@types/react-redux": "^7.1.25",
     "babel-plugin-transform-typescript-metadata": "^0.3.2",
-    "carbon-cut-types": "workspace:^",
+    "carbon-cut-commons": "workspace:^",
     "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.5.0",
     "prettier": "^2.8.1",
