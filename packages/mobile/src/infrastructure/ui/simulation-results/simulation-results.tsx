@@ -6,9 +6,8 @@ import { diContainer } from '../../inversify.config';
 import { Text, useTheme } from '@rneui/themed';
 import RNEChartsPro from 'react-native-echarts-pro';
 
-const presenter: WebSimulationResultsPresenter = diContainer.get<WebSimulationResultsPresenter>(SimulationResultsPresenterToken);
-
 export default function SimulationResults() {
+  const presenter: WebSimulationResultsPresenter = diContainer.get<WebSimulationResultsPresenter>(SimulationResultsPresenterToken);
   const { theme } = useTheme();
   const { width, height } = Dimensions.get('window');
   const chartHeight = Math.min(width, height) - 40;

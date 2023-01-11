@@ -5,7 +5,7 @@ import { CarbonFootprintRepository } from '../../domain/ports/repositories/carbo
 
 @injectable()
 export class RestCarbonFootprintRepository implements CarbonFootprintRepository {
-  readonly baseUrl = 'http://192.168.1.11:8080/carbon-footprint/';
+  readonly baseUrl = 'http://localhost:8080/carbon-footprint/';
 
   async calculate(simulationDto: SimulationDto): Promise<number> {
     const { data } = await axios.post<number>(`${this.baseUrl}calculate`, simulationDto);

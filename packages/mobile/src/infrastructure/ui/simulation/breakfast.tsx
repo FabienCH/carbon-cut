@@ -11,16 +11,17 @@ import {
 } from '../../../domain/usecases/carbon-footprint-simulation.usescase';
 import { diContainer } from '../../inversify.config';
 
-const presenter: WebBreakfastQuestionPresenter = diContainer.get<QuestionPresenter<BreakfastTypes>>(BreakfastQuestionPresenterToken);
-const carbonFootprintSimulationUseCase: CarbonFootprintSimulationUseCase = diContainer.get<CarbonFootprintSimulationUseCase>(
-  CarbonFootprintSimulationUseCaseToken,
-);
-
 type BreakfastAnswer = Answer<BreakfastTypes>;
 
 export default function Breakfast() {
+  const [presenter] = useState<WebBreakfastQuestionPresenter>(
+    diContainer.get<QuestionPresenter<BreakfastTypes>>(BreakfastQuestionPresenterToken),
+  );
+  const [carbonFootprintSimulationUseCase] = useState<CarbonFootprintSimulationUseCase>(
+    diContainer.get<CarbonFootprintSimulationUseCase>(CarbonFootprintSimulationUseCaseToken),
+  );
+  const [answers, updateAnswers] = useState<BreakfastAnswer[]>(presenter.viewModel.answers);
   const { viewModel } = presenter;
-  const [answers, updateAnswers] = useState<BreakfastAnswer[]>(viewModel.answers);
 
   const setSelectedBreakfast = (answer: BreakfastAnswer): void => {
     presenter.setSelectedAnswer(answer.value);

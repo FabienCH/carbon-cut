@@ -1,6 +1,12 @@
 import 'reflect-metadata';
-import { fireEvent, render, screen, within } from '@testing-library/react-native';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import Breakfast from './breakfast';
+import { selectSimulationResults } from '../../store/selectors/simulation-selectors';
+import { diContainer } from '../../inversify.config';
+import { CarbonFootprintRepositoryToken } from '../../../domain/ports/repositories/carbon-footprint.repository';
+import { InMemoryCarbonFootprintRepository } from '../../../tests/in-memory-simulation-data.repository';
+import { Provider } from 'react-redux';
+import { appStore } from '../../store/app-store';
 
 describe('Breakfast component', () => {
   const unselectedAnswerStyle = {
@@ -8,8 +14,17 @@ describe('Breakfast component', () => {
     borderColor: '#2089dc',
   };
 
+  beforeAll(() => {
+    diContainer.unbind(CarbonFootprintRepositoryToken);
+    diContainer.bind(CarbonFootprintRepositoryToken).to(InMemoryCarbonFootprintRepository);
+  });
+
   beforeEach(() => {
-    render(<Breakfast />);
+    render(
+      <Provider store={appStore}>
+        <Breakfast />
+      </Provider>,
+    );
   });
 
   it('should display a list of answers', () => {
@@ -69,5 +84,19 @@ describe('Breakfast component', () => {
     fireEvent.press(milkCerealAnswer);
 
     expect(submitButton.props.accessibilityState.disabled).toBeFalsy();
+  });
+
+  it('should save the simulation results to store', async () => {
+    const submitButton = screen.getByRole('button');
+    const answers = screen.getAllByRole('radio');
+    const milkCerealAnswer = answers[1];
+
+    fireEvent.press(milkCerealAnswer);
+    fireEvent.press(submitButton);
+
+    await waitFor(() => {
+      const results = selectSimulationResults();
+      expect(results).toEqual(171.234);
+    });
   });
 });
