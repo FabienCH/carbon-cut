@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { fireEvent, render, screen, within } from '@testing-library/react-native';
 import Breakfast from './breakfast';
 

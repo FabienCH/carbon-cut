@@ -3,15 +3,17 @@ import { Button, Chip } from '@rneui/themed';
 import { BreakfastTypes } from 'carbon-cut-types';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { BreakfastQuestionPresenter } from '../../../adapters/presenters/breakfast-question.presenter';
-import { Answer, QuestionPresenter } from '../../../domain/ports/presenters/question.presenter';
-import { CarbonFootprintSimulationUseCase } from '../../../domain/usecases/carbon-footprint-simulation.usescase';
-import { TYPES } from '../inversify-types';
-import { diContainer } from '../inversify.config';
+import { WebBreakfastQuestionPresenter } from '../../../adapters/presenters/web-breakfast-question.presenter';
+import { Answer, BreakfastQuestionPresenterToken, QuestionPresenter } from '../../../domain/ports/presenters/question.presenter';
+import {
+  CarbonFootprintSimulationUseCase,
+  CarbonFootprintSimulationUseCaseToken,
+} from '../../../domain/usecases/carbon-footprint-simulation.usescase';
+import { diContainer } from '../../inversify.config';
 
-const presenter: BreakfastQuestionPresenter = diContainer.get<QuestionPresenter<BreakfastTypes>>(TYPES.BreakfastQuestionPresenter);
+const presenter: WebBreakfastQuestionPresenter = diContainer.get<QuestionPresenter<BreakfastTypes>>(BreakfastQuestionPresenterToken);
 const carbonFootprintSimulationUseCase: CarbonFootprintSimulationUseCase = diContainer.get<CarbonFootprintSimulationUseCase>(
-  TYPES.CarbonFootprintSimulationUseCase,
+  CarbonFootprintSimulationUseCaseToken,
 );
 
 type BreakfastAnswer = Answer<BreakfastTypes>;
@@ -25,9 +27,9 @@ export default function Breakfast() {
     updateAnswers(viewModel.answers);
   };
 
-  function runCalculation(): void {
+  const runCalculation = (): void => {
     carbonFootprintSimulationUseCase.execute(viewModel.selectedAnswer);
-  }
+  };
 
   return (
     <View style={styles.container}>
