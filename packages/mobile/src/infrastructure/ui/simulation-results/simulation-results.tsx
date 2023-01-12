@@ -5,10 +5,12 @@ import { SimulationResultsPresenterToken } from '../../../domain/ports/presenter
 import { diContainer } from '../../inversify.config';
 import { Text, useTheme } from '@rneui/themed';
 import RNEChartsPro from 'react-native-echarts-pro';
-
-const presenter: WebSimulationResultsPresenter = diContainer.get<WebSimulationResultsPresenter>(SimulationResultsPresenterToken);
+import { useState } from 'react';
 
 export default function SimulationResults() {
+  const [presenter] = useState<WebSimulationResultsPresenter>(
+    diContainer.get<WebSimulationResultsPresenter>(SimulationResultsPresenterToken),
+  );
   const { theme } = useTheme();
   const { width, height } = Dimensions.get('window');
   const chartHeight = Math.min(width, height) - 40;
@@ -16,7 +18,7 @@ export default function SimulationResults() {
   return (
     <View testID="SIMULATION_RESULTS" style={styles.container}>
       <Text accessibilityRole="header" style={styles.title}>
-        Votre empreinte carbon actuelle :
+        Votre empreinte carbone actuelle :
       </Text>
       <Text style={footprintStyles(theme).title}>{presenter.viewModel.results} </Text>
       <RNEChartsPro height={chartHeight} option={presenter.viewModel.chartOption} />

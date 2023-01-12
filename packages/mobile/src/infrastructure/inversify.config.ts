@@ -1,12 +1,12 @@
 import { BreakfastTypes } from 'carbon-cut-commons';
 import { Container } from 'inversify';
 import 'reflect-metadata';
+import { RestCarbonFootprintGateway } from '../adapters/gateways/rest-carbon-footprint.gateway';
 import { WebBreakfastQuestionPresenter } from '../adapters/presenters/web-breakfast-question.presenter';
 import { WebSimulationResultsPresenter } from '../adapters/presenters/web-simulation-results.presenter';
-import { RestCarbonFootprintRepository } from '../adapters/repositories/rest-carbon-footprint.repository';
+import { CarbonFootprintGateway, CarbonFootprintGatewayToken } from '../domain/ports/gateways/carbon-footprint.gateway';
 import { BreakfastQuestionPresenterToken, QuestionPresenter } from '../domain/ports/presenters/question.presenter';
 import { SimulationResultsPresenter, SimulationResultsPresenterToken } from '../domain/ports/presenters/simulation-results.presenter';
-import { CarbonFootprintRepository, CarbonFootprintRepositoryToken } from '../domain/ports/repositories/carbon-footprint.repository';
 import { SimulationStore, SimulationStoreToken } from '../domain/ports/stores/simulation-store';
 import {
   CarbonFootprintSimulationUseCase,
@@ -18,7 +18,7 @@ const diContainer = new Container();
 
 diContainer.bind<QuestionPresenter<BreakfastTypes>>(BreakfastQuestionPresenterToken).to(WebBreakfastQuestionPresenter);
 diContainer.bind<SimulationResultsPresenter>(SimulationResultsPresenterToken).to(WebSimulationResultsPresenter);
-diContainer.bind<CarbonFootprintRepository>(CarbonFootprintRepositoryToken).to(RestCarbonFootprintRepository);
+diContainer.bind<CarbonFootprintGateway>(CarbonFootprintGatewayToken).to(RestCarbonFootprintGateway);
 diContainer.bind<CarbonFootprintSimulationUseCase>(CarbonFootprintSimulationUseCaseToken).to(CarbonFootprintSimulationUseCase);
 diContainer.bind<SimulationStore>(SimulationStoreToken).to(ReduxSimulationStore);
 

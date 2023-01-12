@@ -11,7 +11,7 @@ export class WebBreakfastQuestionPresenter implements QuestionPresenter<Breakfas
       { label: 'Céréales avec lait ou yaourt', value: BreakfastTypes.cowMilkCerealBreakfast, selected: false },
       { label: 'Salé (britannique)', value: BreakfastTypes.britishBreakfast, selected: false },
       { label: 'Fruits', value: BreakfastTypes.veganBreakfast, selected: false },
-      { label: 'Pas de petits déjeuner', value: BreakfastTypes.noBreakfast, selected: false },
+      { label: 'Pas de petit-déj. (hors boisson)', value: BreakfastTypes.noBreakfast, selected: false },
     ],
     selectedAnswer: null,
     canSubmit: false,

@@ -7,9 +7,5 @@ export interface SimulationState {
 const initialState: SimulationState = {};
 
 export const simulationReducer = createReducer(initialState, (builder) => {
-  builder
-    .addCase(setFootprint, (state, { payload }) => {
-      return { ...state, simulationResults: payload };
-    })
-    .addDefaultCase((state) => state);
+  builder.addCase(setFootprint, (state, { payload }) => ({ ...state, simulationResults: payload })).addDefaultCase((state) => state);
 });
