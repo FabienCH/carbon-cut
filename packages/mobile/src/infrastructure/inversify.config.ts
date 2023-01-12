@@ -12,6 +12,7 @@ import {
   CarbonFootprintSimulationUseCase,
   CarbonFootprintSimulationUseCaseToken,
 } from '../domain/usecases/carbon-footprint-simulation.usescase';
+import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../domain/usecases/save-simulation-answer.usecase';
 import { ReduxSimulationStore } from './store/simulation-store';
 
 const diContainer = new Container();
@@ -20,6 +21,7 @@ diContainer.bind<QuestionPresenter<BreakfastTypes>>(BreakfastQuestionPresenterTo
 diContainer.bind<SimulationResultsPresenter>(SimulationResultsPresenterToken).to(WebSimulationResultsPresenter);
 diContainer.bind<CarbonFootprintGateway>(CarbonFootprintGatewayToken).to(RestCarbonFootprintGateway);
 diContainer.bind<CarbonFootprintSimulationUseCase>(CarbonFootprintSimulationUseCaseToken).to(CarbonFootprintSimulationUseCase);
+diContainer.bind<SaveSimulationAnswerUseCase>(SaveSimulationAnswerUseCaseToken).to(SaveSimulationAnswerUseCase);
 diContainer.bind<SimulationStore>(SimulationStoreToken).to(ReduxSimulationStore);
 
 export { diContainer };

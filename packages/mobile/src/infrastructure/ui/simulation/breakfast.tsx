@@ -1,37 +1,32 @@
 import { Text } from '@rneui/base';
 import { Button, Chip } from '@rneui/themed';
-import { BreakfastTypes } from 'carbon-cut-commons';
+import { BreakfastTypes, SimulationDto } from 'carbon-cut-commons';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WebBreakfastQuestionPresenter } from '../../../adapters/presenters/web-breakfast-question.presenter';
-import { Answer, BreakfastQuestionPresenterToken, QuestionPresenter } from '../../../domain/ports/presenters/question.presenter';
-import {
-  CarbonFootprintSimulationUseCase,
-  CarbonFootprintSimulationUseCaseToken,
-} from '../../../domain/usecases/carbon-footprint-simulation.usescase';
+import { SelectableAnswer, BreakfastQuestionPresenterToken } from '../../../domain/ports/presenters/question.presenter';
+import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
 import { diContainer } from '../../inversify.config';
 
-type BreakfastAnswer = Answer<BreakfastTypes>;
+type BreakfastAnswer = SelectableAnswer<BreakfastTypes>;
 
 export default function Breakfast() {
   const [presenter] = useState<WebBreakfastQuestionPresenter>(
-    diContainer.get<QuestionPresenter<BreakfastTypes>>(BreakfastQuestionPresenterToken),
+    diContainer.get<WebBreakfastQuestionPresenter>(BreakfastQuestionPresenterToken),
   );
-  const [carbonFootprintSimulationUseCase] = useState<CarbonFootprintSimulationUseCase>(
-    diContainer.get<CarbonFootprintSimulationUseCase>(CarbonFootprintSimulationUseCaseToken),
+  const [saveSimulationAnswerUseCase] = useState<SaveSimulationAnswerUseCase>(
+    diContainer.get<SaveSimulationAnswerUseCase>(SaveSimulationAnswerUseCaseToken),
   );
   const [answers, updateAnswers] = useState<BreakfastAnswer[]>(presenter.viewModel.answers);
   const { viewModel } = presenter;
 
   const setSelectedBreakfast = (answer: BreakfastAnswer): void => {
-    presenter.setSelectedAnswer(answer.value);
+    presenter.setAnswer(answer.value);
     updateAnswers(viewModel.answers);
   };
 
-  const runCalculation = (): void => {
-    if (viewModel.selectedAnswer) {
-      carbonFootprintSimulationUseCase.execute({ breakfast: viewModel.selectedAnswer, beverages: { coffee: 0, tea: 0, hotChocolate: 0 } });
-    }
+  const saveAnswer = (): void => {
+    saveSimulationAnswerUseCase.execute<Partial<SimulationDto>>({ breakfast: viewModel.selectedAnswer });
   };
 
   return (
@@ -52,13 +47,8 @@ export default function Breakfast() {
           />
         );
       })}
-      <Button
-        accessibilityRole="button"
-        containerStyle={styles.button}
-        disabled={!viewModel.selectedAnswer}
-        onPress={() => runCalculation()}
-      >
-        Calculer mon empreinte
+      <Button accessibilityRole="button" containerStyle={styles.button} disabled={!viewModel.selectedAnswer} onPress={() => saveAnswer()}>
+        Suivant
       </Button>
     </View>
   );
