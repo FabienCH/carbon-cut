@@ -1,4 +1,4 @@
-export interface Beverages {
+export interface HotBeverages {
   coffee: number;
   tea: number;
   hotChocolate: number;

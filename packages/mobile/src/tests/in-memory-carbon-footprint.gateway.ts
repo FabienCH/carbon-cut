@@ -5,6 +5,6 @@ import { CarbonFootprintGateway } from '../domain/ports/gateways/carbon-footprin
 @injectable()
 export class InMemoryCarbonFootprintGateway implements CarbonFootprintGateway {
   async calculate(_: SimulationDto): Promise<CarbonFootprintDto> {
-    return { breakfast: 171.234, total: 171.234 };
+    return { breakfast: 171.234, beverages: { coffee: 124.14, tea: 32.4, hotChocolate: 80.57 }, total: 408.344 };
   }
 }

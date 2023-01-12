@@ -4,8 +4,10 @@ import Breakfast from './breakfast';
 
 import { Provider } from 'react-redux';
 import { appStore } from '../../store/app-store';
-import { selectSimulationAnswers, selectSimulationResults } from '../../store/selectors/simulation-selectors';
+import { selectSimulationAnswers } from '../../store/selectors/simulation-selectors';
 import { BreakfastTypes } from 'carbon-cut-commons';
+import { NavigationProp } from '@react-navigation/native';
+import { RootStackParamList, Routes } from '../../root-navigation';
 
 describe('Breakfast component', () => {
   const unselectedAnswerStyle = {
@@ -16,7 +18,7 @@ describe('Breakfast component', () => {
   beforeEach(() => {
     render(
       <Provider store={appStore}>
-        <Breakfast />
+        <Breakfast navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.Breakfast>} />
       </Provider>,
     );
   });

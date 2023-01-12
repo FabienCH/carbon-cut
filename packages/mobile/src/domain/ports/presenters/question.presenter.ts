@@ -1,18 +1,24 @@
 export const BreakfastQuestionPresenterToken = Symbol.for('BreakfastQuestionPresenter');
 export const HotBeveragesQuestionPresenterToken = Symbol.for('HotBeveragesQuestionPresenter');
 
-export interface Answer<T> {
+interface BaseAnswer<T> {
   label: string;
   value: T;
 }
 
-export interface SelectableAnswer<AnswerType> extends Answer<AnswerType> {
+export interface Answer<IdType extends string, AnswerType> extends BaseAnswer<AnswerType> {
+  id: IdType;
+  errorMessage?: string;
+  placeholder?: string;
+}
+
+export interface SelectableAnswer<AnswerType> extends BaseAnswer<AnswerType> {
   selected: boolean;
 }
 
-export interface QuestionViewModel<AnswerType, AnswersKeys extends string> {
+export interface QuestionViewModel<IdType extends string, AnswerType> {
   question: string;
-  answers: Record<AnswersKeys, Answer<AnswerType | null>>;
+  answers: Answer<IdType, AnswerType | null>[];
   canSubmit: boolean;
 }
 
@@ -24,6 +30,6 @@ export interface SelectableQuestionViewModel<AnswerType> {
 }
 
 export interface QuestionPresenter<AnswerType> {
-  viewModel: QuestionViewModel<AnswerType, string> | SelectableQuestionViewModel<AnswerType>;
-  setAnswer(answerValue: AnswerType | { key: string; value: AnswerType }): void;
+  viewModel: QuestionViewModel<string, AnswerType> | SelectableQuestionViewModel<AnswerType>;
+  setAnswer(answerValue: AnswerType | { id: string; value: AnswerType }): void;
 }

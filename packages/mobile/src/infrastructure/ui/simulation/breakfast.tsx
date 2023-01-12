@@ -1,3 +1,4 @@
+import { NavigationProp } from '@react-navigation/native';
 import { Text } from '@rneui/base';
 import { Button, Chip } from '@rneui/themed';
 import { BreakfastTypes, SimulationDto } from 'carbon-cut-commons';
@@ -7,10 +8,12 @@ import { WebBreakfastQuestionPresenter } from '../../../adapters/presenters/web-
 import { SelectableAnswer, BreakfastQuestionPresenterToken } from '../../../domain/ports/presenters/question.presenter';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
 import { diContainer } from '../../inversify.config';
+import { RootStackParamList, Routes } from '../../root-navigation';
 
+type BreakfastNavigationProp = NavigationProp<RootStackParamList, Routes.Breakfast>;
 type BreakfastAnswer = SelectableAnswer<BreakfastTypes>;
 
-export default function Breakfast() {
+export default function Breakfast({ navigation }: { navigation: BreakfastNavigationProp }) {
   const [presenter] = useState<WebBreakfastQuestionPresenter>(
     diContainer.get<WebBreakfastQuestionPresenter>(BreakfastQuestionPresenterToken),
   );
@@ -27,6 +30,7 @@ export default function Breakfast() {
 
   const saveAnswer = (): void => {
     saveSimulationAnswerUseCase.execute<Partial<SimulationDto>>({ breakfast: viewModel.selectedAnswer });
+    navigation.navigate(Routes.HotBeverages);
   };
 
   return (
@@ -47,7 +51,7 @@ export default function Breakfast() {
           />
         );
       })}
-      <Button accessibilityRole="button" containerStyle={styles.button} disabled={!viewModel.selectedAnswer} onPress={() => saveAnswer()}>
+      <Button accessibilityRole="button" containerStyle={styles.button} disabled={!viewModel.canSubmit} onPress={() => saveAnswer()}>
         Suivant
       </Button>
     </View>

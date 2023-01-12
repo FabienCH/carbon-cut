@@ -2373,7 +2373,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-env@npm:^7.12.9":
+"@babel/preset-env@npm:^7.12.9, @babel/preset-env@npm:^7.20.2":
   version: 7.20.2
   resolution: "@babel/preset-env@npm:7.20.2"
   dependencies:
@@ -6236,6 +6236,7 @@ __metadata:
     "@babel/plugin-proposal-class-properties": ^7.18.6
     "@babel/plugin-proposal-decorators": ^7.20.7
     "@babel/plugin-transform-flow-strip-types": ^7.19.0
+    "@babel/preset-env": ^7.20.2
     "@react-native-community/eslint-config": ^3.2.0
     "@react-navigation/native": ^6.1.1
     "@react-navigation/native-stack": ^6.9.7
