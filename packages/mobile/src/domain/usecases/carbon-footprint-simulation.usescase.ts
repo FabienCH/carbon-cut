@@ -1,4 +1,4 @@
-import { BreakfastTypes } from 'carbon-cut-commons';
+import { SimulationDto } from 'carbon-cut-commons';
 import { inject, injectable } from 'inversify';
 import { CarbonFootprintGateway, CarbonFootprintGatewayToken } from '../ports/gateways/carbon-footprint.gateway';
 import { SimulationStore, SimulationStoreToken } from '../ports/stores/simulation-store';
@@ -12,10 +12,8 @@ export class CarbonFootprintSimulationUseCase {
     @inject(SimulationStoreToken) private readonly simulationStore: SimulationStore,
   ) {}
 
-  async execute(breakfast: BreakfastTypes | null): Promise<void> {
-    if (breakfast) {
-      const footprint = await this.carbonFootprintGateway.calculate({ breakfast });
-      this.simulationStore.setFootprint(footprint);
-    }
+  async execute(simulationDto: SimulationDto): Promise<void> {
+    const carbonFootprint = await this.carbonFootprintGateway.calculate(simulationDto);
+    this.simulationStore.setCarbonFootprint(carbonFootprint);
   }
 }

@@ -29,7 +29,9 @@ export default function Breakfast() {
   };
 
   const runCalculation = (): void => {
-    carbonFootprintSimulationUseCase.execute(viewModel.selectedAnswer);
+    if (viewModel.selectedAnswer) {
+      carbonFootprintSimulationUseCase.execute({ breakfast: viewModel.selectedAnswer, beverages: { coffee: 0, tea: 0, hotChocolate: 0 } });
+    }
   };
 
   return (

@@ -2,12 +2,12 @@ import 'reflect-metadata';
 import { render, screen } from '@testing-library/react-native';
 import SimulationResults from './simulation-results';
 import { appStore } from '../../store/app-store';
-import { setFootprint } from '../../store/actions/simulation-actions';
+import { setCarbonFootprint } from '../../store/actions/simulation-actions';
 import MockTheme from '../../../tests/theme-mock';
 
 describe('SimulationResults component', () => {
   beforeEach(() => {
-    appStore.dispatch(setFootprint(5.354));
+    appStore.dispatch(setCarbonFootprint({ breakfast: 5.354, total: 5.354 }));
 
     render(
       <MockTheme>

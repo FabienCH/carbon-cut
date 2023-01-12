@@ -1,5 +1,7 @@
+import { CarbonFootprintDto } from 'carbon-cut-commons';
+
 export const SimulationStoreToken = Symbol.for('SimulationStore');
 
 export interface SimulationStore {
-  setFootprint: (footprint: number) => void;
+  setCarbonFootprint: (carbonFootprint: CarbonFootprintDto) => void;
 }

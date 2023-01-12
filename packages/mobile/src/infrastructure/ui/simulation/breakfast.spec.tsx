@@ -96,7 +96,7 @@ describe('Breakfast component', () => {
 
     await waitFor(() => {
       const results = selectSimulationResults();
-      expect(results).toEqual(171.234);
+      expect(results).toEqual({ breakfast: 171.234, total: 171.234 });
     });
   });
 });

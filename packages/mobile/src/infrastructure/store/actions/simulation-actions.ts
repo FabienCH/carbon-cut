@@ -1,5 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
+import { CarbonFootprintDto } from 'carbon-cut-commons';
 
-export const setFootprint = createAction<number>('[Simulation] Set Carbon Footprint');
+export const setCarbonFootprint = createAction<CarbonFootprintDto>('[Simulation] Set Carbon Footprint');
 
-export type SimulationActionTypes = typeof setFootprint;
+export type SimulationActionTypes = typeof setCarbonFootprint;

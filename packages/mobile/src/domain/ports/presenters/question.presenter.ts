@@ -9,7 +9,7 @@ export interface Answer<T> {
 export interface QuestionViewModel<T> {
   question: string;
   answers: Answer<T>[];
-  selectedAnswer: T | null;
+  selectedAnswer: T | undefined;
   canSubmit: boolean;
 }
 

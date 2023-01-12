@@ -5,9 +5,10 @@ import { selectSimulationResults } from '../../infrastructure/store/selectors/si
 @injectable()
 export class WebSimulationResultsPresenter implements SimulationResultsPresenter {
   get viewModel(): SimulationResultsViewModel {
-    const results = selectSimulationResults() ?? 0;
+    const results = selectSimulationResults();
+    const total = results?.total ?? 0;
     return {
-      results: `${results.toLocaleString('fr-FR', { maximumFractionDigits: 2 })} kgCO2e / an` ?? '',
+      carbonFootprint: `${total.toLocaleString('fr-FR', { maximumFractionDigits: 2 })} kgCO2e / an` ?? '',
       chartOption: {
         legend: {
           orient: 'horizontal',
@@ -29,7 +30,7 @@ export class WebSimulationResultsPresenter implements SimulationResultsPresenter
             startAngle: 180,
             radius: [20, '85%'],
             center: ['50%', '45%'],
-            data: [{ value: results, name: 'Alimentation', itemStyle: { color: '#57B349' } }],
+            data: [{ value: total, name: 'Alimentation', itemStyle: { color: '#57B349' } }],
             label: {
               normal: {
                 show: true,

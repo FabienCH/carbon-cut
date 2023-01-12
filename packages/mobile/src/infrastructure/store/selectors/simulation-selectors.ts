@@ -1,4 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
+import { CarbonFootprintDto } from 'carbon-cut-commons';
 import { appStore } from '../app-store';
 import { SimulationState } from '../reducers/simulation-reducer';
 
@@ -8,4 +9,4 @@ export const simulationResultsSelector = createSelector([selectSimulationState],
   return simulationState.simulationResults;
 });
 
-export const selectSimulationResults = (): number | undefined => simulationResultsSelector(appStore.getState());
+export const selectSimulationResults = (): CarbonFootprintDto | undefined => simulationResultsSelector(appStore.getState());
