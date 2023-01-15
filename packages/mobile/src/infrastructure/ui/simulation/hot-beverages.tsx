@@ -32,7 +32,7 @@ export default function HotBeverages() {
   };
 
   const runCalculation = (): void => {
-    saveSimulationAnswerUseCase.execute<Partial<SimulationDto>>({ beverages: presenter.simulationBeverages() });
+    saveSimulationAnswerUseCase.execute({ hotBeverages: presenter.simulationBeverages() });
     carbonFootprintSimulationUseCase.execute();
   };
 

@@ -34,10 +34,10 @@ export class WebHotBeveragesQuestionPresenter implements QuestionPresenter<numbe
   }
 
   #updateAnswer(answer: Answer<HotBeveragesKeys, number | null>, value: number, isPositiveNumber: boolean) {
-    if (isPositiveNumber) {
-      return { ...answer, value, errorMessage: undefined };
-    }
+    const updatedAnswer = isPositiveNumber
+      ? { value, errorMessage: undefined }
+      : { value: null, errorMessage: `Veuillez saisir un nombre${isNaN(value) ? '' : ' positif'}` };
 
-    return { ...answer, errorMessage: `Veuillez saisir un nombre${isNaN(value) ? '' : ' positif'}` };
+    return { ...answer, ...updatedAnswer };
   }
 }

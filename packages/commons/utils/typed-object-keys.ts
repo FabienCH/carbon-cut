@@ -3,6 +3,7 @@ export function getTypedObjectKeys<T extends object>(object: T): Array<keyof T> 
   if (keysMatchObject(keys, object)) {
     return keys;
   }
+  throw new Error(`Object with keys ${keys.join(', ')} does not match the expected type`);
 }
 
 function keysMatchObject<T extends object>(keys: Array<string | number | symbol>, object: T): keys is Array<keyof T> {

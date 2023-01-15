@@ -111,7 +111,7 @@ describe('HotBeverages component', () => {
 
     await waitFor(() => {
       const results = selectSimulationResults();
-      expect(results).toEqual({ breakfast: 171.234, beverages: { coffee: 124.14, tea: 32.4, hotChocolate: 80.57 }, total: 408.344 });
+      expect(results).toEqual({ breakfast: 171.234, hotBeverages: { coffee: 124.14, tea: 32.4, hotChocolate: 80.57 }, total: 408.344 });
     });
   });
 });

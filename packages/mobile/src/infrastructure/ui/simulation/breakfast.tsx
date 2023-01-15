@@ -29,7 +29,7 @@ export default function Breakfast({ navigation }: { navigation: BreakfastNavigat
   };
 
   const saveAnswer = (): void => {
-    saveSimulationAnswerUseCase.execute<Partial<SimulationDto>>({ breakfast: viewModel.selectedAnswer });
+    saveSimulationAnswerUseCase.execute({ breakfast: viewModel.selectedAnswer });
     navigation.navigate(Routes.HotBeverages);
   };
 

@@ -1,30 +1,31 @@
-import { Beverages, BreakfastTypes, CarbonFootprintDto, NumberFormatter, SimulationDto } from 'carbon-cut-commons';
+import { BreakfastTypes, CarbonFootprintDto, getTypedObjectKeys, HotBeverages, NumberFormatter, SimulationDto } from 'carbon-cut-commons';
 import { AlimentationData } from './simulation-data';
-import { getTypedObjectKeys } from './typed-object-keys';
 
 export class Simulation {
   readonly #breakfast: BreakfastTypes;
-  readonly #beverages: Beverages;
+  readonly #hotBeverages: HotBeverages;
 
   constructor(simulationDto: SimulationDto) {
-    const { breakfast, beverages } = simulationDto;
+    const { breakfast, hotBeverages } = simulationDto;
     this.#breakfast = breakfast;
-    this.#beverages = beverages;
+    this.#hotBeverages = hotBeverages;
   }
 
   calculate(alimentationData: AlimentationData): CarbonFootprintDto {
     const breakfast = this.#getYearlyFootprint(alimentationData.footprints[this.#breakfast]);
-    const beverages = this.#getYearlyBeveragesFootprint(alimentationData);
-    const total = breakfast + this.#getTotalFromObject(beverages);
-    return { ...this.#removeNullOrZeroValues({ breakfast, beverages }), total };
+    const hotBeveragesFootprint = this.#getYearlyBeveragesFootprint(alimentationData);
+    const totalHotBeverages = this.#getTotalFromObject(hotBeveragesFootprint);
+    const hotBeverages = this.#removeNullOrZeroValues({ ...hotBeveragesFootprint, total: totalHotBeverages });
+    const total = breakfast + totalHotBeverages;
+    return { ...this.#removeNullOrZeroValues({ breakfast, hotBeverages }), total };
   }
 
-  #getYearlyBeveragesFootprint(alimentationData: AlimentationData): Partial<Beverages> {
+  #getYearlyBeveragesFootprint(alimentationData: AlimentationData): Partial<HotBeverages> {
     const weeklyCoffeeFootprint =
-      this.#beverages.coffee * alimentationData.footprints.groundedCoffee * alimentationData.quantities.coffeePerCup;
-    const weeklyTeaFootprint = this.#beverages.tea * alimentationData.footprints.infusedTea * alimentationData.quantities.teaPerCup;
+      this.#hotBeverages.coffee * alimentationData.footprints.groundedCoffee * alimentationData.quantities.coffeePerCup;
+    const weeklyTeaFootprint = this.#hotBeverages.tea * alimentationData.footprints.infusedTea * alimentationData.quantities.teaPerCup;
     const weeklyHotChocolateFootprint =
-      this.#beverages.hotChocolate *
+      this.#hotBeverages.hotChocolate *
       (alimentationData.footprints.cacaoPowder * alimentationData.quantities.cacaoPerCup +
         alimentationData.footprints.cowMilk * alimentationData.quantities.milkPerCup);
     const beverages = {
@@ -50,7 +51,10 @@ export class Simulation {
     if (!object) {
       return 0;
     }
-    return Object.values(object).reduce((acc, val) => acc + val, 0);
+    return NumberFormatter.roundNumber(
+      Object.values(object).reduce((acc, val) => acc + val, 0),
+      3,
+    );
   }
 
   #getYearlyFootprint(dailyFootprint: number): number {

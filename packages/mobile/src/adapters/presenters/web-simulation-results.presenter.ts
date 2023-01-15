@@ -1,12 +1,15 @@
+import { CarbonFootprintDto, getTypedObjectKeys, NumberFormatter } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
 import { SimulationResultsPresenter, SimulationResultsViewModel } from '../../domain/ports/presenters/simulation-results.presenter';
 import { selectSimulationResults } from '../../infrastructure/store/selectors/simulation-selectors';
+
+type KeyLabelMapperKeys = keyof Omit<CarbonFootprintDto, 'total'>;
 
 @injectable()
 export class WebSimulationResultsPresenter implements SimulationResultsPresenter {
   get viewModel(): SimulationResultsViewModel {
     const results = selectSimulationResults();
-    const total = results?.total ?? 0;
+    const total = NumberFormatter.roundNumber(results?.total ?? 0, 2);
     return {
       carbonFootprint: `${total.toLocaleString('fr-FR', { maximumFractionDigits: 2 })} kgCO2e / an` ?? '',
       chartOption: {
@@ -19,7 +22,7 @@ export class WebSimulationResultsPresenter implements SimulationResultsPresenter
         },
         tooltip: {
           trigger: 'item',
-          formatter: 'Petit déj. : {c}kg ({d}%)',
+          formatter: this.#tooltipFormatter(results),
         },
         series: [
           {
@@ -46,5 +49,29 @@ export class WebSimulationResultsPresenter implements SimulationResultsPresenter
         ],
       },
     };
+  }
+
+  #tooltipFormatter(carbonFootprintDto: CarbonFootprintDto | undefined): string {
+    if (!carbonFootprintDto) {
+      return '';
+    }
+    const keyLabelMapper: Record<KeyLabelMapperKeys, string> = {
+      breakfast: 'Petit déj.',
+      hotBeverages: 'Boissons chaudes',
+    };
+    const { total, breakfast, hotBeverages } = carbonFootprintDto;
+
+    const categories = getTypedObjectKeys({ breakfast, hotBeverages }).map((carbonFootprintKey) => {
+      const footprintItem = carbonFootprintDto[carbonFootprintKey];
+      if (footprintItem) {
+        const footprint = typeof footprintItem === 'number' ? footprintItem : footprintItem.total;
+        if (footprint) {
+          const percentage = NumberFormatter.roundNumber((footprint / total) * 100, 2);
+          return `<div>${keyLabelMapper[carbonFootprintKey]} : ${footprint} (${percentage} %)</div>`;
+        }
+      }
+    });
+
+    return categories.join('');
   }
 }

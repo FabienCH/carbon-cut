@@ -1,8 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BreakfastTypes, SimulationDto } from 'carbon-cut-commons';
-import { Beverages } from 'carbon-cut-commons/dist/types/beverages';
+import { BreakfastTypes, HotBeverages, SimulationDto } from 'carbon-cut-commons';
 
-class NestBeverages implements Beverages {
+class NestHotBeverages implements HotBeverages {
   coffee: number;
   tea: number;
   hotChocolate: number;
@@ -12,6 +11,6 @@ export class NestSimulationDto implements SimulationDto {
   @ApiProperty({ enum: BreakfastTypes })
   breakfast: BreakfastTypes;
 
-  @ApiProperty({ type: NestBeverages })
-  beverages: Beverages;
+  @ApiProperty({ type: NestHotBeverages })
+  hotBeverages: HotBeverages;
 }
