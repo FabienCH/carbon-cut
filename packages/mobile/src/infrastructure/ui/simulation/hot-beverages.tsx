@@ -8,7 +8,6 @@ import {
   CarbonFootprintSimulationUseCaseToken,
 } from '../../../domain/usecases/carbon-footprint-simulation.usescase';
 import { diContainer } from '../../inversify.config';
-import { SimulationDto } from 'carbon-cut-commons';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
 
 type HotBeveragesAnswer = Answer<HotBeveragesKeys, number | null>;

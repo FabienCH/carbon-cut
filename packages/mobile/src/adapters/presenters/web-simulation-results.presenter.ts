@@ -9,9 +9,10 @@ type KeyLabelMapperKeys = keyof Omit<CarbonFootprintDto, 'total'>;
 export class WebSimulationResultsPresenter implements SimulationResultsPresenter {
   get viewModel(): SimulationResultsViewModel {
     const results = selectSimulationResults();
-    const total = NumberFormatter.roundNumber(results?.total ?? 0, 2);
+    const total = this.#formatFootprintValue(results?.total);
+    const weightUnit = this.#getWeightUnit(results?.total);
     return {
-      carbonFootprint: `${total.toLocaleString('fr-FR', { maximumFractionDigits: 2 })} kgCO2e / an` ?? '',
+      carbonFootprint: `${total.toLocaleString('fr-FR')} ${weightUnit}CO2e / an` ?? '',
       chartOption: {
         legend: {
           orient: 'horizontal',
@@ -38,7 +39,7 @@ export class WebSimulationResultsPresenter implements SimulationResultsPresenter
               normal: {
                 show: true,
                 position: 'inside',
-                formatter: '{c}kg\n({d}%)',
+                formatter: `{c}${weightUnit}\n({d}%)`,
                 textStyle: {
                   fontSize: 14,
                   color: '#000000',
@@ -64,14 +65,41 @@ export class WebSimulationResultsPresenter implements SimulationResultsPresenter
     const categories = getTypedObjectKeys({ breakfast, hotBeverages }).map((carbonFootprintKey) => {
       const footprintItem = carbonFootprintDto[carbonFootprintKey];
       if (footprintItem) {
-        const footprint = typeof footprintItem === 'number' ? footprintItem : footprintItem.total;
-        if (footprint) {
-          const percentage = NumberFormatter.roundNumber((footprint / total) * 100, 2);
-          return `<div>${keyLabelMapper[carbonFootprintKey]} : ${footprint} (${percentage} %)</div>`;
+        const footprintValue = typeof footprintItem === 'number' ? footprintItem : footprintItem.total;
+        if (footprintValue) {
+          const percentage = this.#formatPercentage(footprintValue / total);
+          const footprint = this.#formatFootprintValue(footprintValue);
+          const weightUnit = this.#getWeightUnit(footprintValue);
+
+          return `<div>${keyLabelMapper[carbonFootprintKey]} : ${footprint}${weightUnit} (${percentage} %)</div>`;
         }
       }
     });
 
     return categories.join('');
+  }
+
+  #getWeightUnit(weight: number | undefined) {
+    return weight && weight < 1000 ? 'kg' : 't';
+  }
+
+  #formatFootprintValue(value: number | undefined): number {
+    if (!value) {
+      return 0;
+    }
+
+    if (value < 1000) {
+      return NumberFormatter.roundNumber(value, 0);
+    }
+
+    return NumberFormatter.roundNumber(value / 1000, 2);
+  }
+
+  #formatPercentage(value: number | undefined): number {
+    if (!value) {
+      return 0;
+    }
+
+    return NumberFormatter.roundNumber(value * 100, 1);
   }
 }
