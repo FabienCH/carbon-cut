@@ -1,11 +1,16 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setFootprint } from '../actions/simulation-actions';
+import { CarbonFootprintDto, SimulationDto } from 'carbon-cut-commons';
+import { saveAnswer, setCarbonFootprint } from '../actions/simulation-actions';
 export interface SimulationState {
-  simulationResults?: number;
+  answers: Partial<SimulationDto>;
+  simulationResults?: CarbonFootprintDto;
 }
 
-const initialState: SimulationState = {};
+const initialState: SimulationState = { answers: {} };
 
 export const simulationReducer = createReducer(initialState, (builder) => {
-  builder.addCase(setFootprint, (state, { payload }) => ({ ...state, simulationResults: payload })).addDefaultCase((state) => state);
+  builder
+    .addCase(setCarbonFootprint, (state, { payload }) => ({ ...state, simulationResults: payload }))
+    .addCase(saveAnswer, (state, { payload }) => ({ ...state, answers: { ...state.answers, ...payload } }))
+    .addDefaultCase((state) => state);
 });

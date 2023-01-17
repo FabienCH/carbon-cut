@@ -20,7 +20,7 @@ export default function SimulationResults() {
       <Text accessibilityRole="header" style={styles.title}>
         Votre empreinte carbone actuelle :
       </Text>
-      <Text style={footprintStyles(theme).title}>{presenter.viewModel.results} </Text>
+      <Text style={footprintStyles(theme).title}>{presenter.viewModel.carbonFootprint} </Text>
       <RNEChartsPro height={chartHeight} option={presenter.viewModel.chartOption} />
     </View>
   );

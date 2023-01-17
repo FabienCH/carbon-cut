@@ -1,7 +1,7 @@
 export const SimulationResultsPresenterToken = Symbol.for('SimulationResultsPresenter');
 
 export interface SimulationResultsViewModel {
-  results: string;
+  carbonFootprint: string;
   chartOption: object;
 }
 

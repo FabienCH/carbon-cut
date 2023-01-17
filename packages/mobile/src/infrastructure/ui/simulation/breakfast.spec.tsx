@@ -1,12 +1,13 @@
 import 'reflect-metadata';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import Breakfast from './breakfast';
-import { selectSimulationResults } from '../../store/selectors/simulation-selectors';
-import { diContainer } from '../../inversify.config';
-import { CarbonFootprintGatewayToken } from '../../../domain/ports/gateways/carbon-footprint.gateway';
-import { InMemoryCarbonFootprintGateway } from '../../../tests/in-memory-carbon-footprint.gateway';
+
 import { Provider } from 'react-redux';
 import { appStore } from '../../store/app-store';
+import { selectSimulationAnswers } from '../../store/selectors/simulation-selectors';
+import { BreakfastTypes } from 'carbon-cut-commons';
+import { NavigationProp } from '@react-navigation/native';
+import { RootStackParamList, Routes } from '../../root-navigation';
 
 describe('Breakfast component', () => {
   const unselectedAnswerStyle = {
@@ -14,15 +15,10 @@ describe('Breakfast component', () => {
     borderColor: '#2089dc',
   };
 
-  beforeAll(() => {
-    diContainer.unbind(CarbonFootprintGatewayToken);
-    diContainer.bind(CarbonFootprintGatewayToken).to(InMemoryCarbonFootprintGateway);
-  });
-
   beforeEach(() => {
     render(
       <Provider store={appStore}>
-        <Breakfast />
+        <Breakfast navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.Breakfast>} />
       </Provider>,
     );
   });
@@ -46,7 +42,7 @@ describe('Breakfast component', () => {
     });
   });
 
-  it('should display a disable submit answer button', () => {
+  it('should display a disable next question button', () => {
     const submitButton = screen.getByRole('button');
 
     expect(submitButton.props.accessibilityState.disabled).toBeTruthy();
@@ -76,7 +72,7 @@ describe('Breakfast component', () => {
     });
   });
 
-  it('should enable the submit answer button when user click on a Chip', () => {
+  it('should enable the next answer button when user click on a Chip', () => {
     const submitButton = screen.getByRole('button');
     const answers = screen.getAllByRole('radio');
     const milkCerealAnswer = answers[1];
@@ -86,7 +82,7 @@ describe('Breakfast component', () => {
     expect(submitButton.props.accessibilityState.disabled).toBeFalsy();
   });
 
-  it('should save the simulation results to store', async () => {
+  it('should save the answer to store', async () => {
     const submitButton = screen.getByRole('button');
     const answers = screen.getAllByRole('radio');
     const milkCerealAnswer = answers[1];
@@ -95,8 +91,8 @@ describe('Breakfast component', () => {
     fireEvent.press(submitButton);
 
     await waitFor(() => {
-      const results = selectSimulationResults();
-      expect(results).toEqual(171.234);
+      const simulationAnswers = selectSimulationAnswers();
+      expect(simulationAnswers?.breakfast).toEqual(BreakfastTypes.cowMilkCerealBreakfast);
     });
   });
 });

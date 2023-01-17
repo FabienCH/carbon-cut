@@ -1,19 +1,35 @@
 export const BreakfastQuestionPresenterToken = Symbol.for('BreakfastQuestionPresenter');
+export const HotBeveragesQuestionPresenterToken = Symbol.for('HotBeveragesQuestionPresenter');
 
-export interface Answer<T> {
+interface BaseAnswer<T> {
   label: string;
   value: T;
+}
+
+export interface Answer<IdType extends string, AnswerType> extends BaseAnswer<AnswerType> {
+  id: IdType;
+  errorMessage?: string;
+  placeholder?: string;
+}
+
+export interface SelectableAnswer<AnswerType> extends BaseAnswer<AnswerType> {
   selected: boolean;
 }
 
-export interface QuestionViewModel<T> {
+export interface QuestionViewModel<IdType extends string, AnswerType> {
   question: string;
-  answers: Answer<T>[];
-  selectedAnswer: T | null;
+  answers: Answer<IdType, AnswerType | null>[];
   canSubmit: boolean;
 }
 
-export interface QuestionPresenter<T> {
-  viewModel: QuestionViewModel<T>;
-  setSelectedAnswer(answerValue: T): void;
+export interface SelectableQuestionViewModel<AnswerType> {
+  question: string;
+  answers: SelectableAnswer<AnswerType>[];
+  selectedAnswer: AnswerType | undefined;
+  canSubmit: boolean;
+}
+
+export interface QuestionPresenter<AnswerType> {
+  viewModel: QuestionViewModel<string, AnswerType> | SelectableQuestionViewModel<AnswerType>;
+  setAnswer(answerValue: AnswerType | { id: string; value: AnswerType }): void;
 }
