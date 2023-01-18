@@ -10,6 +10,7 @@ import SimulationResults from './simulation-results/simulation-results';
 import { Provider } from 'react-redux';
 import { appStore } from '../store/app-store';
 import { navigationRef, Routes } from '../root-navigation';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,18 +19,20 @@ export default function App() {
     <React.StrictMode>
       <Provider store={appStore}>
         <ThemeProvider theme={theme}>
-          <NavigationContainer ref={navigationRef}>
-            <Stack.Navigator
-              screenOptions={{
-                headerShown: false,
-              }}
-            >
-              <Stack.Screen name={Routes.Home} component={Home} />
-              <Stack.Screen name={Routes.Breakfast} component={Breakfast} />
-              <Stack.Screen name={Routes.HotBeverages} component={HotBeverages} />
-              <Stack.Screen name={Routes.SimulationResults} component={SimulationResults} />
-            </Stack.Navigator>
-          </NavigationContainer>
+          <RootSiblingParent>
+            <NavigationContainer ref={navigationRef}>
+              <Stack.Navigator
+                screenOptions={{
+                  headerShown: false,
+                }}
+              >
+                <Stack.Screen name={Routes.Home} component={Home} />
+                <Stack.Screen name={Routes.Breakfast} component={Breakfast} />
+                <Stack.Screen name={Routes.HotBeverages} component={HotBeverages} />
+                <Stack.Screen name={Routes.SimulationResults} component={SimulationResults} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </RootSiblingParent>
         </ThemeProvider>
       </Provider>
     </React.StrictMode>
