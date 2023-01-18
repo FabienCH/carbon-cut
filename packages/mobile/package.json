@@ -27,6 +27,7 @@
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
     "react-native-echarts-pro": "^1.8.9",
+    "react-native-root-toast": "^3.3.1",
     "react-native-safe-area-context": "^4.4.1",
     "react-native-screens": "^3.18.2",
     "react-native-web": "~0.18.7",
