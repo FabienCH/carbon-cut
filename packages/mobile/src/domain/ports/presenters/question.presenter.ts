@@ -16,17 +16,17 @@ export interface SelectableAnswer<AnswerType> extends BaseAnswer<AnswerType> {
   selected: boolean;
 }
 
-export interface QuestionViewModel<IdType extends string, AnswerType> {
+interface BaseQuestionViewModel {
   question: string;
-  answers: Answer<IdType, AnswerType | null>[];
   canSubmit: boolean;
 }
+export interface QuestionViewModel<IdType extends string, AnswerType> extends BaseQuestionViewModel {
+  answers: Answer<IdType, AnswerType | null>[];
+}
 
-export interface SelectableQuestionViewModel<AnswerType> {
-  question: string;
+export interface SelectableQuestionViewModel<AnswerType> extends BaseQuestionViewModel {
   answers: SelectableAnswer<AnswerType>[];
   selectedAnswer: AnswerType | undefined;
-  canSubmit: boolean;
 }
 
 export interface QuestionPresenter<AnswerType> {

@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { appStore } from '../../store/app-store';
 import HotBeverages from './hot-beverages';
 import { selectSimulationResults } from '../../store/selectors/simulation-selectors';
+import { selectIsLoading } from '../../store/selectors/loading-selectors';
 
 describe('HotBeverages component', () => {
   beforeAll(() => {
@@ -109,8 +110,11 @@ describe('HotBeverages component', () => {
     });
     fireEvent.press(submitButton);
 
+    expect(selectIsLoading()).toBeTruthy();
+
     await waitFor(() => {
       const results = selectSimulationResults();
+      expect(selectIsLoading()).toBeFalsy();
       expect(results).toEqual({ breakfast: 171.234, hotBeverages: { coffee: 124.14, tea: 32.4, hotChocolate: 80.57 }, total: 408.344 });
     });
   });

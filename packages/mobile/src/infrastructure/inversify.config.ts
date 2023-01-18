@@ -12,12 +12,14 @@ import {
   QuestionPresenter,
 } from '../domain/ports/presenters/question.presenter';
 import { SimulationResultsPresenter, SimulationResultsPresenterToken } from '../domain/ports/presenters/simulation-results.presenter';
+import { LoadingStore, LoadingStoreToken } from '../domain/ports/stores/loading-store';
 import { SimulationStore, SimulationStoreToken } from '../domain/ports/stores/simulation-store';
 import {
   CarbonFootprintSimulationUseCase,
   CarbonFootprintSimulationUseCaseToken,
 } from '../domain/usecases/carbon-footprint-simulation.usescase';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../domain/usecases/save-simulation-answer.usecase';
+import { ReduxLoadingStore } from './store/loading-store';
 import { ReduxSimulationStore } from './store/simulation-store';
 
 const diContainer = new Container();
@@ -29,5 +31,6 @@ diContainer.bind<CarbonFootprintGateway>(CarbonFootprintGatewayToken).to(RestCar
 diContainer.bind<CarbonFootprintSimulationUseCase>(CarbonFootprintSimulationUseCaseToken).to(CarbonFootprintSimulationUseCase);
 diContainer.bind<SaveSimulationAnswerUseCase>(SaveSimulationAnswerUseCaseToken).to(SaveSimulationAnswerUseCase);
 diContainer.bind<SimulationStore>(SimulationStoreToken).to(ReduxSimulationStore);
+diContainer.bind<LoadingStore>(LoadingStoreToken).to(ReduxLoadingStore);
 
 export { diContainer };

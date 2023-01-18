@@ -9,6 +9,8 @@ import {
 } from '../../../domain/usecases/carbon-footprint-simulation.usescase';
 import { diContainer } from '../../inversify.config';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
+import { useSelector } from 'react-redux';
+import { selectIsLoading } from '../../store/selectors/loading-selectors';
 
 type HotBeveragesAnswer = Answer<HotBeveragesKeys, number | null>;
 
@@ -24,6 +26,7 @@ export default function HotBeverages() {
   );
   const [answers, updateAnswers] = useState<HotBeveragesAnswer[]>(presenter.viewModel.answers);
   const { viewModel } = presenter;
+  const isLoading = useSelector(selectIsLoading);
 
   const setAnswer = (id: HotBeveragesKeys, value: string): void => {
     presenter.setAnswer({ id, value });
@@ -31,7 +34,7 @@ export default function HotBeverages() {
   };
 
   const runCalculation = (): void => {
-    saveSimulationAnswerUseCase.execute({ hotBeverages: presenter.simulationBeverages() });
+    saveSimulationAnswerUseCase.execute({ answerKey: 'hotBeverages', answer: presenter.simulationBeverages() });
     carbonFootprintSimulationUseCase.execute();
   };
 
@@ -57,7 +60,13 @@ export default function HotBeverages() {
           />
         );
       })}
-      <Button accessibilityRole="button" containerStyle={styles.button} disabled={!viewModel.canSubmit} onPress={() => runCalculation()}>
+      <Button
+        accessibilityRole="button"
+        containerStyle={styles.button}
+        disabled={!viewModel.canSubmit}
+        loading={isLoading}
+        onPress={() => runCalculation()}
+      >
         Calculer mon empreinte
       </Button>
     </View>
