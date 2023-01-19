@@ -1,8 +1,6 @@
 export enum BreakfastTypes {
   continentalBreakfast = 'continentalBreakfast',
-  cowMilkCerealBreakfast = 'cowMilkCerealBreakfast',
-  sojaMilkCerealBreakfast = 'sojaMilkCerealBreakfast',
-  oatsMilkCerealBreakfast = 'oatsMilkCerealBreakfast',
+  milkCerealBreakfast = 'milkCerealBreakfast',
   britishBreakfast = 'britishBreakfast',
   veganBreakfast = 'veganBreakfast',
   noBreakfast = 'noBreakfast',

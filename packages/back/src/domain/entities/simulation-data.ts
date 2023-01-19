@@ -11,16 +11,20 @@ export type AlimentationQuantities = {
   [quantityKey in keyof typeof QuantitiesMapping]: number;
 };
 
+export type BreakfastMilkTypes = 'cowMilkCerealBreakfast' | 'sojaMilkCerealBreakfast' | 'oatsMilkCerealBreakfast';
+
+export type BreakfastWithMilkTypes = Exclude<BreakfastTypes, BreakfastTypes.milkCerealBreakfast> | BreakfastMilkTypes;
+
 export type AlimentationFootprintsMappingType = Record<
-  Exclude<BreakfastTypes, BreakfastTypes.noBreakfast> | FoodTypes | BeverageTypes,
+  Exclude<BreakfastWithMilkTypes, BreakfastTypes.noBreakfast> | FoodTypes | BeverageTypes,
   string
 >;
 
 export const AlimentationFootprintsMapping: AlimentationFootprintsMappingType = {
+  cowMilkCerealBreakfast: 'alimentation . petit déjeuner . lait vache céréales',
+  sojaMilkCerealBreakfast: 'alimentation . petit déjeuner . lait soja céréales',
+  oatsMilkCerealBreakfast: 'alimentation . petit déjeuner . lait avoine céréales',
   [BreakfastTypes.continentalBreakfast]: 'alimentation . petit déjeuner . continental',
-  [BreakfastTypes.cowMilkCerealBreakfast]: 'alimentation . petit déjeuner . lait vache céréales',
-  [BreakfastTypes.sojaMilkCerealBreakfast]: 'alimentation . petit déjeuner . lait soja céréales',
-  [BreakfastTypes.oatsMilkCerealBreakfast]: 'alimentation . petit déjeuner . lait avoine céréales',
   [BreakfastTypes.britishBreakfast]: 'alimentation . petit déjeuner . britannique',
   [BreakfastTypes.veganBreakfast]: 'alimentation . petit déjeuner . végétalien',
   [FoodTypes.veganMeal]: 'alimentation . plats . végétalien . empreinte',

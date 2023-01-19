@@ -1,4 +1,4 @@
-import { BreakfastTypes } from 'carbon-cut-commons';
+import { BreakfastTypes, getTypedObjectKeys } from 'carbon-cut-commons';
 import { DataRecord } from './data-record';
 import { Formula } from './formula';
 import {
@@ -28,8 +28,8 @@ export class SimulationDataSourceMapper {
     mappingObject: AlimentationFootprintsMappingType | typeof QuantitiesMapping | typeof MultipliersMapping,
     initialValue: Partial<T> = {},
   ): T {
-    return Object.keys(mappingObject).reduce((acc, key): T => {
-      const alimentationKey = mappingObject[key as keyof typeof mappingObject];
+    return getTypedObjectKeys(mappingObject).reduce((acc, key): T => {
+      const alimentationKey = mappingObject[key];
       if (alimentation[alimentationKey]?.formule) {
         const formula = new Formula(alimentation[alimentationKey].formule);
         const value = formula.getMappedValue(key);
