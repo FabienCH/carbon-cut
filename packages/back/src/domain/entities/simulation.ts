@@ -1,13 +1,12 @@
 import {
-  BeverageTypes,
   BreakfastTypes,
   CarbonFootprintDto,
   getTypedObjectKeys,
   HotBeverages,
+  MilkTypes,
   NumberFormatter,
   SimulationDto,
 } from 'carbon-cut-commons';
-import { MilkTypes } from 'carbon-cut-commons/dist/types/milk-type';
 import { AlimentationData, BreakfastMilkTypes, BreakfastWithMilkTypes } from './simulation-data';
 
 export class Simulation {
@@ -15,9 +14,9 @@ export class Simulation {
   readonly #hotBeverages: HotBeverages;
   readonly #milkType?: MilkTypes;
   readonly #breakfastsWithMilkMapping: Record<MilkTypes, BreakfastMilkTypes> = {
-    [BeverageTypes.cowMilk]: 'cowMilkCerealBreakfast',
-    [BeverageTypes.sojaMilk]: 'sojaMilkCerealBreakfast',
-    [BeverageTypes.oatsMilk]: 'oatsMilkCerealBreakfast',
+    [MilkTypes.cowMilk]: 'cowMilkCerealBreakfast',
+    [MilkTypes.sojaMilk]: 'sojaMilkCerealBreakfast',
+    [MilkTypes.oatsMilk]: 'oatsMilkCerealBreakfast',
   };
   error: string;
 

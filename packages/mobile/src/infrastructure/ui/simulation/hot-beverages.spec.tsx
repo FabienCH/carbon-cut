@@ -1,25 +1,17 @@
 import 'reflect-metadata';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
-import { diContainer } from '../../inversify.config';
-import { CarbonFootprintGatewayToken } from '../../../domain/ports/gateways/carbon-footprint.gateway';
-import { InMemoryCarbonFootprintGateway } from '../../../tests/in-memory-carbon-footprint.gateway';
 import { Provider } from 'react-redux';
 import { appStore } from '../../store/app-store';
 import HotBeverages from './hot-beverages';
-import { selectSimulationResults } from '../../store/selectors/simulation-selectors';
-import { selectIsLoading } from '../../store/selectors/loading-selectors';
-import { RootSiblingParent } from 'react-native-root-siblings';
+import { selectSimulationAnswers } from '../../store/selectors/simulation-selectors';
+import { RootStackParamList, Routes } from '../../root-navigation';
+import { NavigationProp } from '@react-navigation/native';
 
 describe('HotBeverages component', () => {
-  beforeAll(() => {
-    diContainer.unbind(CarbonFootprintGatewayToken);
-    diContainer.bind(CarbonFootprintGatewayToken).to(InMemoryCarbonFootprintGateway);
-  });
-
   beforeEach(() => {
     render(
       <Provider store={appStore}>
-        <HotBeverages />
+        <HotBeverages navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.HotBeverages>} />
       </Provider>,
     );
   });
@@ -102,7 +94,7 @@ describe('HotBeverages component', () => {
     expect(submitButton.props.accessibilityState.disabled).toBeTruthy();
   });
 
-  it('should run calculation and save the simulation results to store', async () => {
+  it('should save the answer to store', async () => {
     const submitButton = screen.getByRole('button');
     const placeholderElements = screen.getAllByPlaceholderText(/\/ semaine/);
 
@@ -111,48 +103,12 @@ describe('HotBeverages component', () => {
     });
     fireEvent.press(submitButton);
 
-    expect(selectIsLoading()).toBeTruthy();
-
     await waitFor(() => {
-      const results = selectSimulationResults();
-      expect(selectIsLoading()).toBeFalsy();
-      expect(results).toEqual({ breakfast: 171.234, hotBeverages: { coffee: 124.14, tea: 32.4, hotChocolate: 80.57 }, total: 408.344 });
-    });
-  });
-
-  describe('If carbon footprint calculation fails', () => {
-    beforeEach(() => {
-      diContainer.unbind(CarbonFootprintGatewayToken);
-      diContainer.bind(CarbonFootprintGatewayToken).toConstantValue({
-        calculate: () => {
-          throw new Error();
-        },
-      });
-
-      render(
-        <Provider store={appStore}>
-          <RootSiblingParent>
-            <HotBeverages />
-          </RootSiblingParent>
-        </Provider>,
-      );
-    });
-
-    it('should display an error message', async () => {
-      const submitButton = screen.getByRole('button');
-      const placeholderElements = screen.getAllByPlaceholderText(/\/ semaine/);
-
-      placeholderElements.forEach((placeholderElem) => {
-        fireEvent.changeText(placeholderElem, '7');
-      });
-
-      fireEvent.press(submitButton);
-
-      await waitFor(() => {
-        const expectedErrorMessage = screen.getByText("Une erreur s'est produite, vérifiez votre connexion");
-
-        expect(selectIsLoading()).toBeFalsy();
-        expect(expectedErrorMessage).toBeTruthy();
+      const simulationAnswers = selectSimulationAnswers();
+      expect(simulationAnswers?.hotBeverages).toEqual({
+        coffee: 7,
+        tea: 7,
+        hotChocolate: 7,
       });
     });
   });

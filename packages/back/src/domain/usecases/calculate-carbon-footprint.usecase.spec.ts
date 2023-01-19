@@ -1,4 +1,4 @@
-import { BeverageTypes, BreakfastTypes } from 'carbon-cut-commons';
+import { BreakfastTypes, MilkTypes } from 'carbon-cut-commons';
 import { InMemorySimulationDataRepository } from '../../tests/repositories/in-memory-simulation-data.repository';
 import { CalculateCarbonFootprintUseCase } from './calculate-carbon-footprint.usecase';
 
@@ -22,7 +22,7 @@ describe('Carbon footprint calculation use case', () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         breakfast: BreakfastTypes.milkCerealBreakfast,
         hotBeverages: { coffee: 0, tea: 0, hotChocolate: 0 },
-        milkType: BeverageTypes.cowMilk,
+        milkType: MilkTypes.cowMilk,
       });
 
       expect(footprint).toEqual({ breakfast: 170.82, total: 170.82 });
@@ -32,7 +32,7 @@ describe('Carbon footprint calculation use case', () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         breakfast: BreakfastTypes.milkCerealBreakfast,
         hotBeverages: { coffee: 0, tea: 0, hotChocolate: 0 },
-        milkType: BeverageTypes.sojaMilk,
+        milkType: MilkTypes.sojaMilk,
       });
 
       expect(footprint).toEqual({ breakfast: 106.58, total: 106.58 });
@@ -51,7 +51,7 @@ describe('Carbon footprint calculation use case', () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         breakfast: BreakfastTypes.noBreakfast,
         hotBeverages: { coffee: 7, tea: 2, hotChocolate: 4 },
-        milkType: BeverageTypes.cowMilk,
+        milkType: MilkTypes.cowMilk,
       });
 
       expect(footprint).toEqual({ hotBeverages: { coffee: 44.194, tea: 1.043, hotChocolate: 167.942, total: 213.179 }, total: 213.179 });
@@ -61,7 +61,7 @@ describe('Carbon footprint calculation use case', () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         breakfast: BreakfastTypes.noBreakfast,
         hotBeverages: { coffee: 7, tea: 2, hotChocolate: 4 },
-        milkType: BeverageTypes.oatsMilk,
+        milkType: MilkTypes.oatsMilk,
       });
 
       expect(footprint).toEqual({ hotBeverages: { coffee: 44.194, tea: 1.043, hotChocolate: 135.405, total: 180.642 }, total: 180.642 });

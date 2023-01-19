@@ -1,6 +1,5 @@
-import { BreakfastTypes } from '../alimentation';
+import { BreakfastTypes, MilkTypes } from '../alimentation';
 import { HotBeverages } from '../beverages';
-import { MilkTypes } from '../milk-type';
 
 export interface SimulationDto {
   breakfast: BreakfastTypes;

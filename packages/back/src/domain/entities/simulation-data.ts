@@ -1,4 +1,4 @@
-import { BeverageTypes, BreakfastTypes, FoodTypes } from 'carbon-cut-commons';
+import { BeverageTypes, BreakfastTypes, FoodTypes, MilkTypes } from 'carbon-cut-commons';
 
 export enum QuantitiesMapping {
   coffeePerCup = 'alimentation . boisson . tasse de café . quantité café par tasse',
@@ -16,7 +16,7 @@ export type BreakfastMilkTypes = 'cowMilkCerealBreakfast' | 'sojaMilkCerealBreak
 export type BreakfastWithMilkTypes = Exclude<BreakfastTypes, BreakfastTypes.milkCerealBreakfast> | BreakfastMilkTypes;
 
 export type AlimentationFootprintsMappingType = Record<
-  Exclude<BreakfastWithMilkTypes, BreakfastTypes.noBreakfast> | FoodTypes | BeverageTypes,
+  Exclude<BreakfastWithMilkTypes, BreakfastTypes.noBreakfast> | MilkTypes | FoodTypes | BeverageTypes,
   string
 >;
 
@@ -36,15 +36,15 @@ export const AlimentationFootprintsMapping: AlimentationFootprintsMappingType = 
   [BeverageTypes.groundedCoffee]: 'alimentation . boisson . tasse de café . empreinte café moulu',
   [BeverageTypes.infusedTea]: 'alimentation . boisson . tasse de thé . empreinte thé infusé',
   [BeverageTypes.cacaoPowder]: 'alimentation . boisson . tasse de chocolat chaud . empreinte cacao en poudre',
-  [BeverageTypes.cowMilk]: 'alimentation . empreinte lait de vache',
-  [BeverageTypes.sojaMilk]: 'alimentation . empreinte lait de soja',
-  [BeverageTypes.oatsMilk]: "alimentation . empreinte lait d'avoine",
   [BeverageTypes.waterBottle]: 'alimentation . boisson . eau en bouteille . empreinte',
   [BeverageTypes.sodas]: 'alimentation . boisson . sucrées . facteur sodas',
   [BeverageTypes.fruitsJuice]: 'alimentation . boisson . sucrées . facteur jus de fruits',
   [BeverageTypes.sirops]: 'alimentation . boisson . sucrées . facteur sirops',
   [BeverageTypes.beer]: 'alimentation . boisson . alcool . facteur bière',
   [BeverageTypes.cocktail]: 'alimentation . boisson . alcool . facteur coktail',
+  [MilkTypes.cowMilk]: 'alimentation . empreinte lait de vache',
+  [MilkTypes.sojaMilk]: 'alimentation . empreinte lait de soja',
+  [MilkTypes.oatsMilk]: "alimentation . empreinte lait d'avoine",
 };
 
 export type AlimentationFootprints = {

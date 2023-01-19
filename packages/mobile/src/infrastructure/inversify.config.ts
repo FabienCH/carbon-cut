@@ -1,15 +1,17 @@
-import { BreakfastTypes } from 'carbon-cut-commons';
+import { BreakfastTypes, MilkTypes } from 'carbon-cut-commons';
 import { Container } from 'inversify';
 import 'reflect-metadata';
 import { RestCarbonFootprintGateway } from '../adapters/gateways/rest-carbon-footprint.gateway';
 import { ReactToastUserNotifyPresenter } from '../adapters/presenters/react-toast-user-notify.presenter';
 import { WebBreakfastQuestionPresenter } from '../adapters/presenters/web-breakfast-question.presenter';
 import { WebHotBeveragesQuestionPresenter } from '../adapters/presenters/web-hot-beverages-question.presenter';
+import { WebMilkTypeQuestionPresenter } from '../adapters/presenters/web-milk-type-question.presenter';
 import { WebSimulationResultsPresenter } from '../adapters/presenters/web-simulation-results.presenter';
 import { CarbonFootprintGateway, CarbonFootprintGatewayToken } from '../domain/ports/gateways/carbon-footprint.gateway';
 import {
   BreakfastQuestionPresenterToken,
   HotBeveragesQuestionPresenterToken,
+  MilkTypeQuestionPresenterToken,
   QuestionPresenter,
 } from '../domain/ports/presenters/question.presenter';
 import { SimulationResultsPresenter, SimulationResultsPresenterToken } from '../domain/ports/presenters/simulation-results.presenter';
@@ -28,6 +30,7 @@ const diContainer = new Container();
 
 diContainer.bind<QuestionPresenter<BreakfastTypes>>(BreakfastQuestionPresenterToken).to(WebBreakfastQuestionPresenter);
 diContainer.bind<QuestionPresenter<number | string>>(HotBeveragesQuestionPresenterToken).to(WebHotBeveragesQuestionPresenter);
+diContainer.bind<QuestionPresenter<MilkTypes>>(MilkTypeQuestionPresenterToken).to(WebMilkTypeQuestionPresenter);
 diContainer.bind<SimulationResultsPresenter>(SimulationResultsPresenterToken).to(WebSimulationResultsPresenter);
 diContainer.bind<UserNotifyPresenter>(UserNotifyPresenterToken).to(ReactToastUserNotifyPresenter);
 
