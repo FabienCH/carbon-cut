@@ -1,13 +1,13 @@
 import {
   BreakfastTypes,
   CarbonFootprintDto,
+  ColdBeverages,
   getTypedObjectKeys,
   HotBeverages,
   MilkTypes,
   NumberFormatter,
   SimulationDto,
 } from 'carbon-cut-commons';
-import { ColdBeverages } from 'carbon-cut-commons/dist/types/beverages';
 import { AlimentationData, BreakfastMilkTypes, BreakfastWithMilkTypes } from './simulation-data';
 
 export class Simulation {
