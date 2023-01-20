@@ -1,23 +1,55 @@
-import { BreakfastTypes, CarbonFootprintDto, getTypedObjectKeys, HotBeverages, NumberFormatter, SimulationDto } from 'carbon-cut-commons';
-import { AlimentationData } from './simulation-data';
+import {
+  BreakfastTypes,
+  CarbonFootprintDto,
+  getTypedObjectKeys,
+  HotBeverages,
+  MilkTypes,
+  NumberFormatter,
+  SimulationDto,
+} from 'carbon-cut-commons';
+import { AlimentationData, BreakfastMilkTypes, BreakfastWithMilkTypes } from './simulation-data';
 
 export class Simulation {
   readonly #breakfast: BreakfastTypes;
   readonly #hotBeverages: HotBeverages;
+  readonly #milkType?: MilkTypes;
+  readonly #breakfastsWithMilkMapping: Record<MilkTypes, BreakfastMilkTypes> = {
+    [MilkTypes.cowMilk]: 'cowMilkCerealBreakfast',
+    [MilkTypes.sojaMilk]: 'sojaMilkCerealBreakfast',
+    [MilkTypes.oatsMilk]: 'oatsMilkCerealBreakfast',
+  };
+  error: string;
 
   constructor(simulationDto: SimulationDto) {
-    const { breakfast, hotBeverages } = simulationDto;
+    const { breakfast, hotBeverages, milkType } = simulationDto;
     this.#breakfast = breakfast;
     this.#hotBeverages = hotBeverages;
+    this.#milkType = milkType;
   }
 
   calculate(alimentationData: AlimentationData): CarbonFootprintDto {
-    const breakfast = this.#getYearlyFootprint(alimentationData.footprints[this.#breakfast]);
+    const breakfast = this.#getYearlyFootprint(alimentationData.footprints[this.#getBreakfastType()]);
     const hotBeveragesFootprint = this.#getYearlyBeveragesFootprint(alimentationData);
     const totalHotBeverages = this.#getTotalFromObject(hotBeveragesFootprint);
     const hotBeverages = this.#removeNullOrZeroValues({ ...hotBeveragesFootprint, total: totalHotBeverages });
     const total = breakfast + totalHotBeverages;
     return { ...this.#removeNullOrZeroValues({ breakfast, hotBeverages }), total };
+  }
+
+  isValid(): boolean {
+    const mustHaveMilkType = this.#breakfast === BreakfastTypes.milkCerealBreakfast || this.#hotBeverages.hotChocolate > 0;
+    if (mustHaveMilkType && !this.#milkType) {
+      this.error = 'Milk type is mandatory with cereal milk breakfast and hot chocolate beverage';
+      return false;
+    }
+    return true;
+  }
+
+  #getBreakfastType(): BreakfastWithMilkTypes {
+    if (this.#breakfast !== BreakfastTypes.milkCerealBreakfast) {
+      return this.#breakfast;
+    }
+    return this.#breakfastsWithMilkMapping[this.#milkType];
   }
 
   #getYearlyBeveragesFootprint(alimentationData: AlimentationData): Partial<HotBeverages> {
@@ -27,13 +59,12 @@ export class Simulation {
     const weeklyHotChocolateFootprint =
       this.#hotBeverages.hotChocolate *
       (alimentationData.footprints.cacaoPowder * alimentationData.quantities.cacaoPerCup +
-        alimentationData.footprints.cowMilk * alimentationData.quantities.milkPerCup);
+        alimentationData.footprints[this.#milkType] * alimentationData.quantities.milkPerCup);
     const beverages = {
       coffee: this.#getYearlyFootprint(weeklyCoffeeFootprint / 7),
       tea: this.#getYearlyFootprint(weeklyTeaFootprint / 7),
       hotChocolate: this.#getYearlyFootprint(weeklyHotChocolateFootprint / 7),
     };
-
     return this.#removeNullOrZeroValues(beverages);
   }
 

@@ -1,4 +1,4 @@
-export { BeverageTypes, BreakfastTypes, FoodTypes } from './types/alimentation';
+export { BeverageTypes, BreakfastTypes, FoodTypes, MilkTypes } from './types/alimentation';
 export { HotBeverages } from './types/beverages';
 export { CarbonFootprintDto } from './types/dtos/carbon-footprint-dto';
 export { SimulationDto } from './types/dtos/simulation-dto';

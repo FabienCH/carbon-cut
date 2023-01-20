@@ -1,5 +1,6 @@
 export const BreakfastQuestionPresenterToken = Symbol.for('BreakfastQuestionPresenter');
 export const HotBeveragesQuestionPresenterToken = Symbol.for('HotBeveragesQuestionPresenter');
+export const MilkTypeQuestionPresenterToken = Symbol.for('MilkTypeQuestionPresenter');
 
 interface BaseAnswer<T> {
   label: string;
@@ -31,5 +32,5 @@ export interface SelectableQuestionViewModel<AnswerType> extends BaseQuestionVie
 
 export interface QuestionPresenter<AnswerType> {
   viewModel: QuestionViewModel<string, AnswerType> | SelectableQuestionViewModel<AnswerType>;
-  setAnswer(answerValue: AnswerType | { id: string; value: AnswerType }): void;
+  setAnswer(answerValue: AnswerType | { key: string; value: AnswerType }): void;
 }

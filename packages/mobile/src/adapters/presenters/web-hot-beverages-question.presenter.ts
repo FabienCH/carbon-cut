@@ -1,6 +1,7 @@
-import { HotBeverages } from 'carbon-cut-commons';
+import { BreakfastTypes, HotBeverages } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
 import { Answer, QuestionPresenter, QuestionViewModel } from '../../domain/ports/presenters/question.presenter';
+import { selectSimulationAnswers } from '../../infrastructure/store/selectors/simulation-selectors';
 
 export type HotBeveragesKeys = keyof HotBeverages;
 
@@ -16,12 +17,12 @@ export class WebHotBeveragesQuestionPresenter implements QuestionPresenter<numbe
     canSubmit: false,
   };
 
-  setAnswer({ id, value }: { id: HotBeveragesKeys; value: string }): void {
+  setAnswer({ key, value }: { key: HotBeveragesKeys; value: string }): void {
     const isPositiveNumber = value?.match(/^[0-9]+$/);
     const intValue = parseInt(value, 10);
 
     this.viewModel.answers = this.viewModel.answers.map((answer) =>
-      answer.id === id ? this.#updateAnswer(answer, intValue, !!isPositiveNumber) : answer,
+      answer.id === key ? this.#updateAnswer(answer, intValue, !!isPositiveNumber) : answer,
     );
     this.viewModel.canSubmit = this.viewModel.answers.every((answer) => answer.value !== null);
   }
@@ -31,6 +32,15 @@ export class WebHotBeveragesQuestionPresenter implements QuestionPresenter<numbe
       hotBeverages = { ...hotBeverages, [answer.id]: answer.value };
       return hotBeverages;
     }, {} as HotBeverages);
+  }
+
+  isBreakfastWithoutMilk(): boolean {
+    return selectSimulationAnswers()?.breakfast !== BreakfastTypes.milkCerealBreakfast;
+  }
+
+  noHotChocolate(): boolean {
+    const hotChocolateValue = this.viewModel.answers.find((answer) => answer.id === 'hotChocolate')?.value;
+    return !hotChocolateValue || hotChocolateValue === 0;
   }
 
   #updateAnswer(answer: Answer<HotBeveragesKeys, number | null>, value: number, isPositiveNumber: boolean) {
