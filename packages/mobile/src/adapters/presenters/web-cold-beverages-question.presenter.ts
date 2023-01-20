@@ -13,9 +13,8 @@ export class WebColdBeveragesQuestionPresenter implements QuestionPresenter<numb
   };
 
   setAnswer({ key, value }: { key: ColdBeveragesKeys; value: string }): void {
-    const isPositiveNumber = value?.match(/^[0-9]+$/);
-    const intValue = parseInt(value, 10);
-
+    const isPositiveNumber = value?.match(/^[0-9]+.?[0-9]*$/);
+    const intValue = parseFloat(value);
     this.viewModel.answers = this.viewModel.answers.map((answer) =>
       answer.id === key ? this.#updateAnswer(answer, intValue, !!isPositiveNumber) : answer,
     );

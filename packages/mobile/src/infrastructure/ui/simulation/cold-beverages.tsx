@@ -51,6 +51,7 @@ export default function ColdBeverages() {
             key={answer.id}
             accessibilityLabel={accessibilityLabel}
             label={answer.label}
+            value={answer.value?.toString()}
             placeholder={answer.placeholder}
             keyboardType="numeric"
             containerStyle={styles.answer}

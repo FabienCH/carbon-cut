@@ -34,6 +34,16 @@ describe('ColdBeverages component', () => {
     });
   });
 
+  it('should allow floating point number', () => {
+    const placeholderElements = screen.getAllByPlaceholderText(/\/ semaine/);
+
+    fireEvent.changeText(placeholderElements[0], '1.3');
+
+    const errorMessage = screen.queryByText('Veuillez saisir un nombre positif');
+    expect(errorMessage).toBeNull();
+    expect(placeholderElements[0].props.value).toEqual('1.3');
+  });
+
   it('should display a disable submit answer button', () => {
     const submitButton = screen.getByRole('button');
 
