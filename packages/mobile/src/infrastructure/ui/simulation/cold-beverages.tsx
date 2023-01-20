@@ -1,40 +1,42 @@
 import { Button, Text, Input } from '@rneui/themed';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { HotBeveragesKeys, WebHotBeveragesQuestionPresenter } from '../../../adapters/presenters/web-hot-beverages-question.presenter';
-import { Answer, HotBeveragesQuestionPresenterToken } from '../../../domain/ports/presenters/question.presenter';
+import { ColdBeveragesKeys, WebColdBeveragesQuestionPresenter } from '../../../adapters/presenters/web-cold-beverages-question.presenter';
+import { Answer, ColdBeveragesQuestionPresenterToken } from '../../../domain/ports/presenters/question.presenter';
 import { diContainer } from '../../inversify.config';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
-import { RootStackParamList, Routes } from '../../root-navigation';
-import { NavigationProp } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import {
+  CarbonFootprintSimulationUseCase,
+  CarbonFootprintSimulationUseCaseToken,
+} from '../../../domain/usecases/carbon-footprint-simulation.usescase';
 import { selectIsLoading } from '../../store/selectors/loading-selectors';
 
-type HotBeveragesAnswer = Answer<HotBeveragesKeys, number | null>;
-type HotBeveragesNavigationProp = NavigationProp<RootStackParamList, Routes.HotBeverages>;
+type ColdBeveragesAnswer = Answer<ColdBeveragesKeys, number | null>;
 
-export default function HotBeverages({ navigation }: { navigation: HotBeveragesNavigationProp }) {
-  const [presenter] = useState<WebHotBeveragesQuestionPresenter>(
-    diContainer.get<WebHotBeveragesQuestionPresenter>(HotBeveragesQuestionPresenterToken),
+export default function ColdBeverages() {
+  const [presenter] = useState<WebColdBeveragesQuestionPresenter>(
+    diContainer.get<WebColdBeveragesQuestionPresenter>(ColdBeveragesQuestionPresenterToken),
   );
   const [saveSimulationAnswerUseCase] = useState<SaveSimulationAnswerUseCase>(
     diContainer.get<SaveSimulationAnswerUseCase>(SaveSimulationAnswerUseCaseToken),
   );
+  const [carbonFootprintSimulationUseCase] = useState<CarbonFootprintSimulationUseCase>(
+    diContainer.get<CarbonFootprintSimulationUseCase>(CarbonFootprintSimulationUseCaseToken),
+  );
   const isLoading = useSelector(selectIsLoading);
 
-  const [answers, updateAnswers] = useState<HotBeveragesAnswer[]>(presenter.viewModel.answers);
-  const [nextNavigateRoute, setNextNavigateRoute] = useState<Routes>(presenter.nextNavigateRoute());
+  const [answers, updateAnswers] = useState<ColdBeveragesAnswer[]>(presenter.viewModel.answers);
   const { viewModel } = presenter;
 
-  const setAnswer = (key: HotBeveragesKeys, value: string): void => {
+  const setAnswer = (key: ColdBeveragesKeys, value: string): void => {
     presenter.setAnswer({ key, value });
-    setNextNavigateRoute(presenter.nextNavigateRoute());
     updateAnswers(viewModel.answers);
   };
 
-  const submitButtonPressed = (): void => {
-    saveSimulationAnswerUseCase.execute({ answerKey: 'hotBeverages', answer: presenter.simulationBeverages() });
-    navigation.navigate(nextNavigateRoute);
+  const runCalculation = (): void => {
+    saveSimulationAnswerUseCase.execute({ answerKey: 'coldBeverages', answer: presenter.simulationBeverages() });
+    carbonFootprintSimulationUseCase.execute();
   };
 
   return (
@@ -64,9 +66,9 @@ export default function HotBeverages({ navigation }: { navigation: HotBeveragesN
         containerStyle={styles.button}
         disabled={!viewModel.canSubmit}
         loading={isLoading}
-        onPress={() => submitButtonPressed()}
+        onPress={() => runCalculation()}
       >
-        Suivant
+        Calculer mon empreinte
       </Button>
     </View>
   );

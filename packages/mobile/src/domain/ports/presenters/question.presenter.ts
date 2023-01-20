@@ -1,6 +1,7 @@
 export const BreakfastQuestionPresenterToken = Symbol.for('BreakfastQuestionPresenter');
 export const HotBeveragesQuestionPresenterToken = Symbol.for('HotBeveragesQuestionPresenter');
 export const MilkTypeQuestionPresenterToken = Symbol.for('MilkTypeQuestionPresenter');
+export const ColdBeveragesQuestionPresenterToken = Symbol.for('ColdBeveragesQuestionPresenter');
 
 interface BaseAnswer<T> {
   label: string;

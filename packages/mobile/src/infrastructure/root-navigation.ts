@@ -5,6 +5,7 @@ export enum Routes {
   Home = 'Home',
   Breakfast = 'Breakfast',
   HotBeverages = 'HotBeverages',
+  ColdBeverages = 'ColdBeverages',
   MilkType = 'MilkType',
   SimulationResults = 'SimulationResults',
 }

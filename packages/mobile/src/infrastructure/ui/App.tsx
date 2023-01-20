@@ -12,6 +12,7 @@ import { appStore } from '../store/app-store';
 import { navigationRef, Routes } from '../root-navigation';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import MilkType from './simulation/milk-type';
+import ColdBeverages from './simulation/cold-beverages';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,7 @@ export default function App() {
                 <Stack.Screen name={Routes.Breakfast} component={Breakfast} />
                 <Stack.Screen name={Routes.HotBeverages} component={HotBeverages} />
                 <Stack.Screen name={Routes.MilkType} component={MilkType} />
+                <Stack.Screen name={Routes.ColdBeverages} component={ColdBeverages} />
                 <Stack.Screen name={Routes.SimulationResults} component={SimulationResults} />
               </Stack.Navigator>
             </NavigationContainer>

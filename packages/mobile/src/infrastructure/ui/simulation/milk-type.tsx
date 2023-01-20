@@ -1,3 +1,4 @@
+import { NavigationProp } from '@react-navigation/native';
 import { Text } from '@rneui/base';
 import { Button, Chip } from '@rneui/themed';
 import { MilkTypes } from 'carbon-cut-commons';
@@ -6,24 +7,20 @@ import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { WebMilkTypeQuestionPresenter } from '../../../adapters/presenters/web-milk-type-question.presenter';
 import { MilkTypeQuestionPresenterToken, SelectableAnswer } from '../../../domain/ports/presenters/question.presenter';
-import {
-  CarbonFootprintSimulationUseCase,
-  CarbonFootprintSimulationUseCaseToken,
-} from '../../../domain/usecases/carbon-footprint-simulation.usescase';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
 import { diContainer } from '../../inversify.config';
+import { RootStackParamList, Routes } from '../../root-navigation';
 import { selectIsLoading } from '../../store/selectors/loading-selectors';
 
 type MilkTypeAnswer = SelectableAnswer<MilkTypes>;
+type MilkTypeNavigationProp = NavigationProp<RootStackParamList, Routes.MilkType>;
 
-export default function MilkType() {
+export default function MilkType({ navigation }: { navigation: MilkTypeNavigationProp }) {
   const [presenter] = useState<WebMilkTypeQuestionPresenter>(diContainer.get<WebMilkTypeQuestionPresenter>(MilkTypeQuestionPresenterToken));
   const [saveSimulationAnswerUseCase] = useState<SaveSimulationAnswerUseCase>(
     diContainer.get<SaveSimulationAnswerUseCase>(SaveSimulationAnswerUseCaseToken),
   );
-  const [carbonFootprintSimulationUseCase] = useState<CarbonFootprintSimulationUseCase>(
-    diContainer.get<CarbonFootprintSimulationUseCase>(CarbonFootprintSimulationUseCaseToken),
-  );
+
   const [answers, updateAnswers] = useState<MilkTypeAnswer[]>(presenter.viewModel.answers);
   const { viewModel } = presenter;
   const isLoading = useSelector(selectIsLoading);
@@ -35,7 +32,7 @@ export default function MilkType() {
 
   const saveAnswer = (): void => {
     saveSimulationAnswerUseCase.execute({ answerKey: 'milkType', answer: viewModel.selectedAnswer });
-    carbonFootprintSimulationUseCase.execute();
+    navigation.navigate(Routes.ColdBeverages);
   };
 
   return (
@@ -63,7 +60,7 @@ export default function MilkType() {
         loading={isLoading}
         onPress={() => saveAnswer()}
       >
-        Calculer mon empreinte
+        Suivant
       </Button>
     </View>
   );

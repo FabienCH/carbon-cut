@@ -1,6 +1,7 @@
 import { BreakfastTypes, HotBeverages } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
 import { Answer, QuestionPresenter, QuestionViewModel } from '../../domain/ports/presenters/question.presenter';
+import { Routes } from '../../infrastructure/root-navigation';
 import { selectSimulationAnswers } from '../../infrastructure/store/selectors/simulation-selectors';
 
 export type HotBeveragesKeys = keyof HotBeverages;
@@ -34,11 +35,13 @@ export class WebHotBeveragesQuestionPresenter implements QuestionPresenter<numbe
     }, {} as HotBeverages);
   }
 
-  isBreakfastWithoutMilk(): boolean {
-    return selectSimulationAnswers()?.breakfast !== BreakfastTypes.milkCerealBreakfast;
+  nextNavigateRoute(): Routes {
+    const isBreakFastWithoutMilk = selectSimulationAnswers()?.breakfast !== BreakfastTypes.milkCerealBreakfast;
+    const noHotChocolate = this.#noHotChocolate();
+    return isBreakFastWithoutMilk && noHotChocolate ? Routes.ColdBeverages : Routes.MilkType;
   }
 
-  noHotChocolate(): boolean {
+  #noHotChocolate(): boolean {
     const hotChocolateValue = this.viewModel.answers.find((answer) => answer.id === 'hotChocolate')?.value;
     return !hotChocolateValue || hotChocolateValue === 0;
   }

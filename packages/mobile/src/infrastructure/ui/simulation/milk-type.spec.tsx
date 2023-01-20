@@ -2,14 +2,11 @@ import 'reflect-metadata';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { appStore } from '../../store/app-store';
-import { selectSimulationAnswers, selectSimulationResults } from '../../store/selectors/simulation-selectors';
+import { selectSimulationAnswers } from '../../store/selectors/simulation-selectors';
 import { MilkTypes } from 'carbon-cut-commons';
 import MilkType from './milk-type';
-import { selectIsLoading } from '../../store/selectors/loading-selectors';
-import { CarbonFootprintGatewayToken } from '../../../domain/ports/gateways/carbon-footprint.gateway';
-import { diContainer } from '../../inversify.config';
-import { RootSiblingParent } from 'react-native-root-siblings';
-import { InMemoryCarbonFootprintGateway } from '../../../tests/in-memory-carbon-footprint.gateway';
+import { RootStackParamList, Routes } from '../../root-navigation';
+import { NavigationProp } from '@react-navigation/native';
 
 describe('MilkType component', () => {
   const unselectedAnswerStyle = {
@@ -17,15 +14,10 @@ describe('MilkType component', () => {
     borderColor: '#2089dc',
   };
 
-  beforeAll(() => {
-    diContainer.unbind(CarbonFootprintGatewayToken);
-    diContainer.bind(CarbonFootprintGatewayToken).to(InMemoryCarbonFootprintGateway);
-  });
-
   beforeEach(() => {
     render(
       <Provider store={appStore}>
-        <MilkType />
+        <MilkType navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.MilkType>} />
       </Provider>,
     );
   });
@@ -77,7 +69,7 @@ describe('MilkType component', () => {
     expect(submitButton.props.accessibilityState.disabled).toBeFalsy();
   });
 
-  it('should run calculation and save the simulation results to store', async () => {
+  it('should save the answer to store', async () => {
     const submitButton = screen.getByRole('button');
     const answers = screen.getAllByRole('radio');
     const oatsMilkAnswer = answers[2];
@@ -85,53 +77,9 @@ describe('MilkType component', () => {
     fireEvent.press(oatsMilkAnswer);
     fireEvent.press(submitButton);
 
-    expect(selectIsLoading()).toBeTruthy();
-
     await waitFor(() => {
       const simulationAnswers = selectSimulationAnswers();
       expect(simulationAnswers?.milkType).toEqual(MilkTypes.oatsMilk);
-      const results = selectSimulationResults();
-      expect(selectIsLoading()).toBeFalsy();
-      expect(results).toEqual({
-        breakfast: 171.234,
-        hotBeverages: { coffee: 124.14, tea: 32.4, hotChocolate: 80.57 },
-        total: 408.344,
-      });
-    });
-  });
-
-  describe('If carbon footprint calculation fails', () => {
-    beforeEach(() => {
-      diContainer.unbind(CarbonFootprintGatewayToken);
-      diContainer.bind(CarbonFootprintGatewayToken).toConstantValue({
-        calculate: () => {
-          throw new Error();
-        },
-      });
-
-      render(
-        <Provider store={appStore}>
-          <RootSiblingParent>
-            <MilkType />
-          </RootSiblingParent>
-        </Provider>,
-      );
-    });
-
-    it('should display an error message', async () => {
-      const submitButton = screen.getByRole('button');
-      const answers = screen.getAllByRole('radio');
-      const oatsMilkAnswer = answers[2];
-
-      fireEvent.press(oatsMilkAnswer);
-      fireEvent.press(submitButton);
-
-      await waitFor(() => {
-        const expectedErrorMessage = screen.getByText("Une erreur s'est produite, vérifiez votre connexion");
-
-        expect(selectIsLoading()).toBeFalsy();
-        expect(expectedErrorMessage).toBeTruthy();
-      });
     });
   });
 });
