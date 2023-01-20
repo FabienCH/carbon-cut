@@ -7,11 +7,13 @@ import {
   NumberFormatter,
   SimulationDto,
 } from 'carbon-cut-commons';
+import { ColdBeverages } from 'carbon-cut-commons/dist/types/beverages';
 import { AlimentationData, BreakfastMilkTypes, BreakfastWithMilkTypes } from './simulation-data';
 
 export class Simulation {
   readonly #breakfast: BreakfastTypes;
   readonly #hotBeverages: HotBeverages;
+  readonly #coldBeverages: ColdBeverages;
   readonly #milkType?: MilkTypes;
   readonly #breakfastsWithMilkMapping: Record<MilkTypes, BreakfastMilkTypes> = {
     [MilkTypes.cowMilk]: 'cowMilkCerealBreakfast',
@@ -21,19 +23,25 @@ export class Simulation {
   error: string;
 
   constructor(simulationDto: SimulationDto) {
-    const { breakfast, hotBeverages, milkType } = simulationDto;
+    const { breakfast, hotBeverages, coldBeverages, milkType } = simulationDto;
     this.#breakfast = breakfast;
     this.#hotBeverages = hotBeverages;
+    this.#coldBeverages = coldBeverages;
     this.#milkType = milkType;
   }
 
   calculate(alimentationData: AlimentationData): CarbonFootprintDto {
     const breakfast = this.#getYearlyFootprint(alimentationData.footprints[this.#getBreakfastType()]);
-    const hotBeveragesFootprint = this.#getYearlyBeveragesFootprint(alimentationData);
+    const hotBeveragesFootprint = this.#getYearlyHotBeveragesFootprint(alimentationData);
     const totalHotBeverages = this.#getTotalFromObject(hotBeveragesFootprint);
     const hotBeverages = this.#removeNullOrZeroValues({ ...hotBeveragesFootprint, total: totalHotBeverages });
-    const total = breakfast + totalHotBeverages;
-    return { ...this.#removeNullOrZeroValues({ breakfast, hotBeverages }), total };
+
+    const coldBeveragesFootprint = this.#getYearlyColdBeveragesFootprint(alimentationData);
+    const totalColdBeverages = this.#getTotalFromObject(coldBeveragesFootprint);
+    const coldBeverages = this.#removeNullOrZeroValues({ ...coldBeveragesFootprint, total: totalColdBeverages });
+    const total = breakfast + totalHotBeverages + totalColdBeverages;
+
+    return { ...this.#removeNullOrZeroValues({ breakfast, hotBeverages, coldBeverages }), total };
   }
 
   isValid(): boolean {
@@ -52,7 +60,7 @@ export class Simulation {
     return this.#breakfastsWithMilkMapping[this.#milkType];
   }
 
-  #getYearlyBeveragesFootprint(alimentationData: AlimentationData): Partial<HotBeverages> {
+  #getYearlyHotBeveragesFootprint(alimentationData: AlimentationData): Partial<HotBeverages> {
     const weeklyCoffeeFootprint =
       this.#hotBeverages.coffee * alimentationData.footprints.groundedCoffee * alimentationData.quantities.coffeePerCup;
     const weeklyTeaFootprint = this.#hotBeverages.tea * alimentationData.footprints.infusedTea * alimentationData.quantities.teaPerCup;
@@ -64,6 +72,18 @@ export class Simulation {
       coffee: this.#getYearlyFootprint(weeklyCoffeeFootprint / 7),
       tea: this.#getYearlyFootprint(weeklyTeaFootprint / 7),
       hotChocolate: this.#getYearlyFootprint(weeklyHotChocolateFootprint / 7),
+    };
+    return this.#removeNullOrZeroValues(beverages);
+  }
+
+  #getYearlyColdBeveragesFootprint(alimentationData: AlimentationData): Partial<ColdBeverages> {
+    const weeklySweetBeveragesFootprint =
+      (this.#coldBeverages.sweet *
+        (alimentationData.footprints.fruitsJuice + alimentationData.footprints.sodas + alimentationData.footprints.sirops)) /
+      3;
+
+    const beverages = {
+      sweet: this.#getYearlyFootprint(weeklySweetBeveragesFootprint / 7),
     };
     return this.#removeNullOrZeroValues(beverages);
   }

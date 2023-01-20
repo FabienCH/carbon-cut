@@ -3,3 +3,7 @@ export interface HotBeverages {
   tea: number;
   hotChocolate: number;
 }
+
+export interface ColdBeverages {
+  sweet: number;
+}

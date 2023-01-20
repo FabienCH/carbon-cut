@@ -14,6 +14,7 @@ describe('Carbon footprint calculation use case', () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         breakfast: BreakfastTypes.continentalBreakfast,
         hotBeverages: { coffee: 5, tea: 0, hotChocolate: 0 },
+        coldBeverages: { sweet: 0 },
       });
       expect(footprint).toEqual({ breakfast: 105.485, hotBeverages: { coffee: 31.567, total: 31.567 }, total: 137.052 });
     });
@@ -22,6 +23,8 @@ describe('Carbon footprint calculation use case', () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         breakfast: BreakfastTypes.milkCerealBreakfast,
         hotBeverages: { coffee: 0, tea: 0, hotChocolate: 0 },
+        coldBeverages: { sweet: 0 },
+
         milkType: MilkTypes.cowMilk,
       });
 
@@ -32,6 +35,8 @@ describe('Carbon footprint calculation use case', () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         breakfast: BreakfastTypes.milkCerealBreakfast,
         hotBeverages: { coffee: 0, tea: 0, hotChocolate: 0 },
+        coldBeverages: { sweet: 0 },
+
         milkType: MilkTypes.sojaMilk,
       });
 
@@ -42,6 +47,7 @@ describe('Carbon footprint calculation use case', () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         breakfast: BreakfastTypes.veganBreakfast,
         hotBeverages: { coffee: 0, tea: 0, hotChocolate: 0 },
+        coldBeverages: { sweet: 0 },
       });
 
       expect(footprint).toEqual({ breakfast: 152.935, total: 152.935 });
@@ -51,6 +57,7 @@ describe('Carbon footprint calculation use case', () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         breakfast: BreakfastTypes.noBreakfast,
         hotBeverages: { coffee: 7, tea: 2, hotChocolate: 4 },
+        coldBeverages: { sweet: 0 },
         milkType: MilkTypes.cowMilk,
       });
 
@@ -61,10 +68,21 @@ describe('Carbon footprint calculation use case', () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         breakfast: BreakfastTypes.noBreakfast,
         hotBeverages: { coffee: 7, tea: 2, hotChocolate: 4 },
+        coldBeverages: { sweet: 0 },
         milkType: MilkTypes.oatsMilk,
       });
 
       expect(footprint).toEqual({ hotBeverages: { coffee: 44.194, tea: 1.043, hotChocolate: 135.405, total: 180.642 }, total: 180.642 });
+    });
+
+    it('for 2 liters of sweet beverages (soda, fruit juice, sirop...)', async () => {
+      const footprint = await calculateCarbonFootprintUseCase.execute({
+        breakfast: BreakfastTypes.noBreakfast,
+        hotBeverages: { coffee: 0, tea: 0, hotChocolate: 0 },
+        coldBeverages: { sweet: 2 },
+      });
+
+      expect(footprint).toEqual({ coldBeverages: { sweet: 52.838, total: 52.838 }, total: 52.838 });
     });
   });
 
@@ -74,6 +92,7 @@ describe('Carbon footprint calculation use case', () => {
         calculateCarbonFootprintUseCase.execute({
           breakfast: BreakfastTypes.milkCerealBreakfast,
           hotBeverages: { coffee: 0, tea: 0, hotChocolate: 0 },
+          coldBeverages: { sweet: 0 },
         }),
       ).rejects.toThrowError('Milk type is mandatory with cereal milk breakfast and hot chocolate beverage');
     });
@@ -83,6 +102,7 @@ describe('Carbon footprint calculation use case', () => {
         calculateCarbonFootprintUseCase.execute({
           breakfast: BreakfastTypes.britishBreakfast,
           hotBeverages: { coffee: 0, tea: 0, hotChocolate: 2 },
+          coldBeverages: { sweet: 0 },
         }),
       ).rejects.toThrowError('Milk type is mandatory with cereal milk breakfast and hot chocolate beverage');
     });
