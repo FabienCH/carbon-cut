@@ -4,8 +4,8 @@ import 'reflect-metadata';
 export enum Routes {
   Home = 'Home',
   Breakfast = 'Breakfast',
-  HotBeverages = 'HotBeverages',
-  ColdBeverages = 'ColdBeverages',
+  HotBeveragesAnswer = 'HotBeveragesAnswer',
+  ColdBeveragesAnswer = 'ColdBeveragesAnswer',
   MilkType = 'MilkType',
   SimulationResults = 'SimulationResults',
 }

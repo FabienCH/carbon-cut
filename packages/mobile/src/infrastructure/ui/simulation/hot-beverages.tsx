@@ -11,9 +11,9 @@ import { useSelector } from 'react-redux';
 import { selectIsLoading } from '../../store/selectors/loading-selectors';
 
 type HotBeveragesAnswer = Answer<HotBeveragesKeys, number | null>;
-type HotBeveragesNavigationProp = NavigationProp<RootStackParamList, Routes.HotBeverages>;
+type HotBeveragesNavigationProp = NavigationProp<RootStackParamList, Routes.HotBeveragesAnswer>;
 
-export default function HotBeverages({ navigation }: { navigation: HotBeveragesNavigationProp }) {
+export default function HotBeveragesAnswer({ navigation }: { navigation: HotBeveragesNavigationProp }) {
   const [presenter] = useState<WebHotBeveragesQuestionPresenter>(
     diContainer.get<WebHotBeveragesQuestionPresenter>(HotBeveragesQuestionPresenterToken),
   );

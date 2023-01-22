@@ -32,7 +32,7 @@ export default function MilkType({ navigation }: { navigation: MilkTypeNavigatio
 
   const saveAnswer = (): void => {
     saveSimulationAnswerUseCase.execute({ answerKey: 'milkType', answer: viewModel.selectedAnswer });
-    navigation.navigate(Routes.ColdBeverages);
+    navigation.navigate(Routes.ColdBeveragesAnswer);
   };
 
   return (

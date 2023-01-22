@@ -1,8 +1,8 @@
-import { ColdBeverages } from 'carbon-cut-commons';
+import { ColdBeveragesAnswer } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
 import { Answer, QuestionPresenter, QuestionViewModel } from '../../domain/ports/presenters/question.presenter';
 
-export type ColdBeveragesKeys = keyof ColdBeverages;
+export type ColdBeveragesKeys = keyof ColdBeveragesAnswer;
 
 @injectable()
 export class WebColdBeveragesQuestionPresenter implements QuestionPresenter<number | string> {
@@ -21,11 +21,11 @@ export class WebColdBeveragesQuestionPresenter implements QuestionPresenter<numb
     this.viewModel.canSubmit = this.viewModel.answers.every((answer) => answer.value !== null);
   }
 
-  simulationBeverages(): ColdBeverages {
+  simulationBeverages(): ColdBeveragesAnswer {
     return this.viewModel.answers.reduce((coldBeverages, answer) => {
       coldBeverages = { ...coldBeverages, [answer.id]: answer.value as number };
       return coldBeverages;
-    }, {} as ColdBeverages);
+    }, {} as ColdBeveragesAnswer);
   }
 
   #updateAnswer(answer: Answer<ColdBeveragesKeys, number | null>, value: number, isPositiveNumber: boolean) {

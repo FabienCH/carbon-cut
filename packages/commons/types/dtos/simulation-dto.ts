@@ -1,9 +1,9 @@
 import { BreakfastTypes, MilkTypes } from '../alimentation';
-import { ColdBeverages, HotBeverages } from '../beverages';
+import { ColdBeveragesAnswer, HotBeveragesAnswer } from '../beverages';
 
 export interface SimulationDto {
   breakfast: BreakfastTypes;
-  hotBeverages: HotBeverages;
-  coldBeverages: ColdBeverages;
+  hotBeverages: HotBeveragesAnswer;
+  coldBeverages: ColdBeveragesAnswer;
   milkType?: MilkTypes;
 }

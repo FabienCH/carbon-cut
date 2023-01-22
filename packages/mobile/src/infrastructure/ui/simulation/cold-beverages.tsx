@@ -14,7 +14,7 @@ import { selectIsLoading } from '../../store/selectors/loading-selectors';
 
 type ColdBeveragesAnswer = Answer<ColdBeveragesKeys, number | null>;
 
-export default function ColdBeverages() {
+export default function ColdBeveragesAnswer() {
   const [presenter] = useState<WebColdBeveragesQuestionPresenter>(
     diContainer.get<WebColdBeveragesQuestionPresenter>(ColdBeveragesQuestionPresenterToken),
   );

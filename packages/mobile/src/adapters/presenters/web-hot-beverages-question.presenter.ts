@@ -1,10 +1,10 @@
-import { BreakfastTypes, HotBeverages } from 'carbon-cut-commons';
+import { BreakfastTypes, HotBeveragesAnswer } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
 import { Answer, QuestionPresenter, QuestionViewModel } from '../../domain/ports/presenters/question.presenter';
 import { Routes } from '../../infrastructure/root-navigation';
 import { selectSimulationAnswers } from '../../infrastructure/store/selectors/simulation-selectors';
 
-export type HotBeveragesKeys = keyof HotBeverages;
+export type HotBeveragesKeys = keyof HotBeveragesAnswer;
 
 @injectable()
 export class WebHotBeveragesQuestionPresenter implements QuestionPresenter<number | string> {
@@ -28,17 +28,17 @@ export class WebHotBeveragesQuestionPresenter implements QuestionPresenter<numbe
     this.viewModel.canSubmit = this.viewModel.answers.every((answer) => answer.value !== null);
   }
 
-  simulationBeverages(): HotBeverages {
+  simulationBeverages(): HotBeveragesAnswer {
     return this.viewModel.answers.reduce((hotBeverages, answer) => {
       hotBeverages = { ...hotBeverages, [answer.id]: answer.value };
       return hotBeverages;
-    }, {} as HotBeverages);
+    }, {} as HotBeveragesAnswer);
   }
 
   nextNavigateRoute(): Routes {
     const isBreakFastWithoutMilk = selectSimulationAnswers()?.breakfast !== BreakfastTypes.milkCerealBreakfast;
     const noHotChocolate = this.#noHotChocolate();
-    return isBreakFastWithoutMilk && noHotChocolate ? Routes.ColdBeverages : Routes.MilkType;
+    return isBreakFastWithoutMilk && noHotChocolate ? Routes.ColdBeveragesAnswer : Routes.MilkType;
   }
 
   #noHotChocolate(): boolean {

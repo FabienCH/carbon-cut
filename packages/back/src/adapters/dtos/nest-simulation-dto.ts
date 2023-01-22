@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BreakfastTypes, ColdBeverages, HotBeverages, MilkTypes, SimulationDto } from 'carbon-cut-commons';
+import { BreakfastTypes, ColdBeveragesAnswer, HotBeveragesAnswer, MilkTypes, SimulationDto } from 'carbon-cut-commons';
 
-class NestHotBeverages implements HotBeverages {
+class NestHotBeveragesAnswer implements HotBeveragesAnswer {
   @ApiProperty()
   coffee: number;
   @ApiProperty()
@@ -10,7 +10,7 @@ class NestHotBeverages implements HotBeverages {
   hotChocolate: number;
 }
 
-class NestColdBeverages implements ColdBeverages {
+class NestColdBeveragesAnswer implements ColdBeveragesAnswer {
   @ApiProperty()
   sweet: number;
 }
@@ -22,9 +22,9 @@ export class NestSimulationDto implements SimulationDto {
   @ApiProperty({ enum: MilkTypes })
   milkType: MilkTypes;
 
-  @ApiProperty({ type: NestHotBeverages })
-  hotBeverages: NestHotBeverages;
+  @ApiProperty({ type: NestHotBeveragesAnswer })
+  hotBeverages: NestHotBeveragesAnswer;
 
-  @ApiProperty({ type: NestColdBeverages })
-  coldBeverages: NestColdBeverages;
+  @ApiProperty({ type: NestColdBeveragesAnswer })
+  coldBeverages: NestColdBeveragesAnswer;
 }
