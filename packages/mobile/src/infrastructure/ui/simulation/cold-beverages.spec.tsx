@@ -100,7 +100,7 @@ describe('ColdBeveragesAnswer component', () => {
   it('should not enable submit answer button if one of the answer is not valid', () => {
     const submitButton = screen.getByRole('button');
     const placeholderElements = screen.getAllByPlaceholderText(/\/ semaine/);
-    const answers = ['zd'];
+    const answers = ['zd', '2'];
 
     placeholderElements.forEach((placeholderElem, idx) => {
       fireEvent.changeText(placeholderElem, answers[idx]);

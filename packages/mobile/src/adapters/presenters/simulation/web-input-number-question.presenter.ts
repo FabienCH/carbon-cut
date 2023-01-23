@@ -6,17 +6,18 @@ export abstract class WebInputNumberQuestionPresenter<AnswersType> implements Qu
   readonly viewModel!: QuestionViewModel<string, string>;
 
   setAnswer({ key, value }: { key: string; value: string }, questionIndex = 0): void {
-    const isPositiveNumber = value?.match(/^[0-9]+.?[0-9]*$/);
     this.viewModel.questions = this.viewModel.questions.map((question, idx) => {
       if (idx === questionIndex) {
         return {
           ...question,
-          answers: question.answers.map((answer) => (answer.id === key ? this.#updateAnswer(answer, value, !!isPositiveNumber) : answer)),
+          answers: this.#updatedAnswers(question.answers, key, value),
         };
       }
       return question;
     });
-    this.viewModel.canSubmit = this.viewModel.questions[questionIndex].answers.every((answer) => answer.value !== null);
+    this.viewModel.canSubmit = this.viewModel.questions.every((question) =>
+      question.answers.every((answer) => answer.value && !isNaN(parseFloat(answer.value))),
+    );
   }
 
   abstract getAnswers(): AnswersType;
@@ -25,11 +26,16 @@ export abstract class WebInputNumberQuestionPresenter<AnswersType> implements Qu
     return parseFloat(value ?? '0');
   }
 
-  #updateAnswer(answer: Answer<string, string | null>, value: string, isPositiveNumber: boolean) {
-    const updatedAnswer = isPositiveNumber
-      ? { value, errorMessage: undefined }
-      : { value: null, errorMessage: `Veuillez saisir un nombre${isNaN(parseFloat(value)) ? '' : ' positif'}` };
+  #updatedAnswers(answers: Answer<string, string | null>[], key: string, value: string): Answer<string, string | null>[] {
+    const commaReplacedValue = value?.replace(',', '.');
+    const isPositiveNumber = commaReplacedValue?.match(/^[0-9]+.?[0-9]*$/);
 
-    return { ...answer, ...updatedAnswer };
+    return answers.map((answer) => (answer.id === key ? this.#updateAnswer(answer, commaReplacedValue, !!isPositiveNumber) : answer));
+  }
+
+  #updateAnswer(answer: Answer<string, string | null>, value: string, isPositiveNumber: boolean) {
+    const errorMessage = isPositiveNumber ? undefined : `Veuillez saisir un nombre${isNaN(parseFloat(value)) ? '' : ' positif'}`;
+
+    return { ...answer, value, errorMessage };
   }
 }
