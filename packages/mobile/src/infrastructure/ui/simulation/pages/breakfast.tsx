@@ -4,11 +4,11 @@ import { Button, Chip } from '@rneui/themed';
 import { BreakfastTypes } from 'carbon-cut-commons';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { WebBreakfastQuestionPresenter } from '../../../adapters/presenters/simulation/web-breakfast-question.presenter';
-import { SelectableAnswer, BreakfastQuestionPresenterToken } from '../../../domain/ports/presenters/question.presenter';
-import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
-import { diContainer } from '../../inversify.config';
-import { RootStackParamList, Routes } from '../../root-navigation';
+import { WebBreakfastQuestionPresenter } from '../../../../adapters/presenters/simulation/web-breakfast-question.presenter';
+import { SelectableAnswer, BreakfastQuestionPresenterToken } from '../../../../domain/ports/presenters/question.presenter';
+import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../../domain/usecases/save-simulation-answer.usecase';
+import { diContainer } from '../../../inversify.config';
+import { RootStackParamList, Routes } from '../../../root-navigation';
 
 type BreakfastNavigationProp = NavigationProp<RootStackParamList, Routes.Breakfast>;
 type BreakfastAnswer = SelectableAnswer<BreakfastTypes>;

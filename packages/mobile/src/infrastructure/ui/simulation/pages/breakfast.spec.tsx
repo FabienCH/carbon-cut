@@ -3,11 +3,11 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 import Breakfast from './breakfast';
 
 import { Provider } from 'react-redux';
-import { appStore } from '../../store/app-store';
-import { selectSimulationAnswers } from '../../store/selectors/simulation-selectors';
+import { appStore } from '../../../store/app-store';
+import { selectSimulationAnswers } from '../../../store/selectors/simulation-selectors';
 import { BreakfastTypes } from 'carbon-cut-commons';
 import { NavigationProp } from '@react-navigation/native';
-import { RootStackParamList, Routes } from '../../root-navigation';
+import { RootStackParamList, Routes } from '../../../root-navigation';
 
 describe('Breakfast component', () => {
   const unselectedAnswerStyle = {
