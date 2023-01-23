@@ -1,7 +1,8 @@
-import { HotBeveragesDto } from './beverages-dto';
+import { ColdBeveragesFootprints, HotBeveragesFootprints } from './beverages-dto';
 
 export interface CarbonFootprintDto {
   breakfast?: number;
-  hotBeverages?: HotBeveragesDto;
+  hotBeverages?: HotBeveragesFootprints;
+  coldBeverages?: ColdBeveragesFootprints;
   total: number;
 }

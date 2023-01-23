@@ -59,10 +59,11 @@ export class WebSimulationResultsPresenter implements SimulationResultsPresenter
     const keyLabelMapper: Record<KeyLabelMapperKeys, string> = {
       breakfast: 'Petit déj.',
       hotBeverages: 'Boissons chaudes',
+      coldBeverages: 'Boissons froides',
     };
-    const { total, breakfast, hotBeverages } = carbonFootprintDto;
+    const { total, breakfast, hotBeverages, coldBeverages } = carbonFootprintDto;
 
-    const categories = getTypedObjectKeys({ breakfast, hotBeverages }).map((carbonFootprintKey) => {
+    const categories = getTypedObjectKeys({ breakfast, hotBeverages, coldBeverages }).map((carbonFootprintKey) => {
       const footprintItem = carbonFootprintDto[carbonFootprintKey];
       if (footprintItem) {
         const footprintValue = typeof footprintItem === 'number' ? footprintItem : footprintItem.total;

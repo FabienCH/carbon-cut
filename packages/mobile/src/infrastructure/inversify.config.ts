@@ -4,12 +4,14 @@ import 'reflect-metadata';
 import { RestCarbonFootprintGateway } from '../adapters/gateways/rest-carbon-footprint.gateway';
 import { ReactToastUserNotifyPresenter } from '../adapters/presenters/react-toast-user-notify.presenter';
 import { WebBreakfastQuestionPresenter } from '../adapters/presenters/web-breakfast-question.presenter';
+import { WebColdBeveragesQuestionPresenter } from '../adapters/presenters/web-cold-beverages-question.presenter';
 import { WebHotBeveragesQuestionPresenter } from '../adapters/presenters/web-hot-beverages-question.presenter';
 import { WebMilkTypeQuestionPresenter } from '../adapters/presenters/web-milk-type-question.presenter';
 import { WebSimulationResultsPresenter } from '../adapters/presenters/web-simulation-results.presenter';
 import { CarbonFootprintGateway, CarbonFootprintGatewayToken } from '../domain/ports/gateways/carbon-footprint.gateway';
 import {
   BreakfastQuestionPresenterToken,
+  ColdBeveragesQuestionPresenterToken,
   HotBeveragesQuestionPresenterToken,
   MilkTypeQuestionPresenterToken,
   QuestionPresenter,
@@ -31,6 +33,7 @@ const diContainer = new Container();
 diContainer.bind<QuestionPresenter<BreakfastTypes>>(BreakfastQuestionPresenterToken).to(WebBreakfastQuestionPresenter);
 diContainer.bind<QuestionPresenter<number | string>>(HotBeveragesQuestionPresenterToken).to(WebHotBeveragesQuestionPresenter);
 diContainer.bind<QuestionPresenter<MilkTypes>>(MilkTypeQuestionPresenterToken).to(WebMilkTypeQuestionPresenter);
+diContainer.bind<QuestionPresenter<number | string>>(ColdBeveragesQuestionPresenterToken).to(WebColdBeveragesQuestionPresenter);
 diContainer.bind<SimulationResultsPresenter>(SimulationResultsPresenterToken).to(WebSimulationResultsPresenter);
 diContainer.bind<UserNotifyPresenter>(UserNotifyPresenterToken).to(ReactToastUserNotifyPresenter);
 

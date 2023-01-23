@@ -1,3 +1,4 @@
-import { HotBeverages } from '../beverages';
+import { ColdBeveragesAnswer, HotBeveragesAnswer } from '../beverages';
 
-export type HotBeveragesDto = Partial<HotBeverages> & { total?: number };
+export type HotBeveragesFootprints = Partial<HotBeveragesAnswer> & { total?: number };
+export type ColdBeveragesFootprints = Partial<ColdBeveragesAnswer> & { total?: number };

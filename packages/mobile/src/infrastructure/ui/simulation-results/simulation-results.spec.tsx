@@ -66,7 +66,11 @@ describe('SimulationResults component', () => {
           hotChocolate: 305.6,
           total: 519.95,
         },
-        total: 1533.304,
+        coldBeverages: {
+          sweet: 73.5,
+          total: 73.5,
+        },
+        total: 1606.804,
       }),
     );
     render(
@@ -77,6 +81,8 @@ describe('SimulationResults component', () => {
 
     const pieChart = screen.getByTestId('SIMULATION_RESULTS').children[2];
     const tooltip = pieChart.props.option.tooltip;
-    expect(tooltip.formatter).toEqual('<div>Petit déj. : 1.01t (66.1 %)</div><div>Boissons chaudes : 520kg (33.9 %)</div>');
+    expect(tooltip.formatter).toEqual(
+      '<div>Petit déj. : 1.01t (63.1 %)</div><div>Boissons chaudes : 520kg (32.4 %)</div><div>Boissons froides : 74kg (4.6 %)</div>',
+    );
   });
 });
