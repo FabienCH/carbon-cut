@@ -1,9 +1,10 @@
 import { MilkTypes } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
-import { QuestionPresenter, SelectableQuestionViewModel } from '../../domain/ports/presenters/question.presenter';
+import { SelectableQuestionViewModel } from '../../../domain/ports/presenters/question.presenter';
+import { WebSelectableQuestionPresenter } from './web-selectable-question.presenter';
 
 @injectable()
-export class WebMilkTypeQuestionPresenter implements QuestionPresenter<MilkTypes> {
+export class WebMilkTypeQuestionPresenter extends WebSelectableQuestionPresenter<MilkTypes> {
   readonly viewModel: SelectableQuestionViewModel<MilkTypes> = {
     questions: [
       {
@@ -18,13 +19,4 @@ export class WebMilkTypeQuestionPresenter implements QuestionPresenter<MilkTypes
     selectedAnswer: undefined,
     canSubmit: false,
   };
-
-  setAnswer(milkType: MilkTypes): void {
-    this.viewModel.selectedAnswer = milkType;
-    this.viewModel.canSubmit = !!this.viewModel.selectedAnswer;
-    this.viewModel.questions[0].answers = this.viewModel.questions[0].answers.map((answer) => ({
-      ...answer,
-      selected: milkType === answer.value,
-    }));
-  }
 }

@@ -1,7 +1,6 @@
 import { Button, Text, Input } from '@rneui/themed';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ColdBeveragesKeys, WebColdBeveragesQuestionPresenter } from '../../../adapters/presenters/web-cold-beverages-question.presenter';
 import { Answer, ColdBeveragesQuestionPresenterToken } from '../../../domain/ports/presenters/question.presenter';
 import { diContainer } from '../../inversify.config';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
@@ -11,6 +10,10 @@ import {
   CarbonFootprintSimulationUseCaseToken,
 } from '../../../domain/usecases/carbon-footprint-simulation.usescase';
 import { selectIsLoading } from '../../store/selectors/loading-selectors';
+import {
+  ColdBeveragesKeys,
+  WebColdBeveragesQuestionPresenter,
+} from '../../../adapters/presenters/simulation/web-cold-beverages-question.presenter';
 
 type ColdBeveragesQuestion = { question: string; answers: Answer<ColdBeveragesKeys, string | null>[] };
 
@@ -35,7 +38,7 @@ export default function ColdBeveragesAnswer() {
   };
 
   const runCalculation = (): void => {
-    saveSimulationAnswerUseCase.execute({ answerKey: 'coldBeverages', answer: presenter.simulationBeverages() });
+    saveSimulationAnswerUseCase.execute({ answerKey: 'coldBeverages', answer: presenter.getAnswers() });
     carbonFootprintSimulationUseCase.execute();
   };
 

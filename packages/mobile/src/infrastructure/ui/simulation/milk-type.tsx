@@ -5,7 +5,7 @@ import { MilkTypes } from 'carbon-cut-commons';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { WebMilkTypeQuestionPresenter } from '../../../adapters/presenters/web-milk-type-question.presenter';
+import { WebMilkTypeQuestionPresenter } from '../../../adapters/presenters/simulation/web-milk-type-question.presenter';
 import { MilkTypeQuestionPresenterToken, SelectableAnswer } from '../../../domain/ports/presenters/question.presenter';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
 import { diContainer } from '../../inversify.config';

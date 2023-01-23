@@ -1,7 +1,6 @@
 import { Button, Text, Input } from '@rneui/themed';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { HotBeveragesKeys, WebHotBeveragesQuestionPresenter } from '../../../adapters/presenters/web-hot-beverages-question.presenter';
 import { Answer, HotBeveragesQuestionPresenterToken } from '../../../domain/ports/presenters/question.presenter';
 import { diContainer } from '../../inversify.config';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
@@ -9,8 +8,12 @@ import { RootStackParamList, Routes } from '../../root-navigation';
 import { NavigationProp } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { selectIsLoading } from '../../store/selectors/loading-selectors';
+import {
+  HotBeveragesKeys,
+  WebHotBeveragesQuestionPresenter,
+} from '../../../adapters/presenters/simulation/web-hot-beverages-question.presenter';
 
-type HotBeveragesAnswer = Answer<HotBeveragesKeys, number | null>;
+type HotBeveragesAnswer = Answer<HotBeveragesKeys, string | null>;
 type HotBeveragesNavigationProp = NavigationProp<RootStackParamList, Routes.HotBeveragesAnswer>;
 
 export default function HotBeveragesAnswer({ navigation }: { navigation: HotBeveragesNavigationProp }) {
@@ -33,7 +36,7 @@ export default function HotBeveragesAnswer({ navigation }: { navigation: HotBeve
   };
 
   const submitButtonPressed = (): void => {
-    saveSimulationAnswerUseCase.execute({ answerKey: 'hotBeverages', answer: presenter.simulationBeverages() });
+    saveSimulationAnswerUseCase.execute({ answerKey: 'hotBeverages', answer: presenter.getAnswers() });
     navigation.navigate(nextNavigateRoute);
   };
 

@@ -1,9 +1,10 @@
 import { BreakfastTypes } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
-import { QuestionPresenter, SelectableQuestionViewModel } from '../../domain/ports/presenters/question.presenter';
+import { SelectableQuestionViewModel } from '../../../domain/ports/presenters/question.presenter';
+import { WebSelectableQuestionPresenter } from './web-selectable-question.presenter';
 
 @injectable()
-export class WebBreakfastQuestionPresenter implements QuestionPresenter<BreakfastTypes> {
+export class WebBreakfastQuestionPresenter extends WebSelectableQuestionPresenter<BreakfastTypes> {
   readonly viewModel: SelectableQuestionViewModel<BreakfastTypes> = {
     questions: [
       {
@@ -20,13 +21,4 @@ export class WebBreakfastQuestionPresenter implements QuestionPresenter<Breakfas
     selectedAnswer: undefined,
     canSubmit: false,
   };
-
-  setAnswer(breakfast: BreakfastTypes): void {
-    this.viewModel.selectedAnswer = breakfast;
-    this.viewModel.canSubmit = !!this.viewModel.selectedAnswer;
-    this.viewModel.questions[0].answers = this.viewModel.questions[0].answers.map((answer) => ({
-      ...answer,
-      selected: breakfast === answer.value,
-    }));
-  }
 }
