@@ -1,22 +1,23 @@
 import { Button, Text, Input } from '@rneui/themed';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Answer, HotBeveragesQuestionPresenterToken } from '../../../domain/ports/presenters/question.presenter';
-import { diContainer } from '../../inversify.config';
-import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
-import { RootStackParamList, Routes } from '../../root-navigation';
+
 import { NavigationProp } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { selectIsLoading } from '../../store/selectors/loading-selectors';
 import {
   HotBeveragesKeys,
   WebHotBeveragesQuestionPresenter,
-} from '../../../adapters/presenters/simulation/web-hot-beverages-question.presenter';
+} from '../../../../adapters/presenters/simulation/web-hot-beverages-question.presenter';
+import { Answer, HotBeveragesQuestionPresenterToken } from '../../../../domain/ports/presenters/question.presenter';
+import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../../domain/usecases/save-simulation-answer.usecase';
+import { diContainer } from '../../../inversify.config';
+import { RootStackParamList, Routes } from '../../../root-navigation';
+import { selectIsLoading } from '../../../store/selectors/loading-selectors';
 
 type HotBeveragesAnswer = Answer<HotBeveragesKeys, string | null>;
-type HotBeveragesNavigationProp = NavigationProp<RootStackParamList, Routes.HotBeveragesAnswer>;
+type HotBeveragesNavigationProp = NavigationProp<RootStackParamList, Routes.HotBeverages>;
 
-export default function HotBeveragesAnswer({ navigation }: { navigation: HotBeveragesNavigationProp }) {
+export default function HotBeverages({ navigation }: { navigation: HotBeveragesNavigationProp }) {
   const [presenter] = useState<WebHotBeveragesQuestionPresenter>(
     diContainer.get<WebHotBeveragesQuestionPresenter>(HotBeveragesQuestionPresenterToken),
   );

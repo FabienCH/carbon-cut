@@ -1,12 +1,12 @@
 import 'reflect-metadata';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
-import { appStore } from '../../store/app-store';
-import { selectSimulationAnswers } from '../../store/selectors/simulation-selectors';
 import { MilkTypes } from 'carbon-cut-commons';
 import MilkType from './milk-type';
-import { RootStackParamList, Routes } from '../../root-navigation';
 import { NavigationProp } from '@react-navigation/native';
+import { RootStackParamList, Routes } from '../../../root-navigation';
+import { appStore } from '../../../store/app-store';
+import { selectSimulationAnswers } from '../../../store/selectors/simulation-selectors';
 
 describe('MilkType component', () => {
   const unselectedAnswerStyle = {

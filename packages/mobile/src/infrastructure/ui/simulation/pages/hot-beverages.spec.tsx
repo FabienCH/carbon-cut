@@ -1,17 +1,17 @@
 import 'reflect-metadata';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
-import { appStore } from '../../store/app-store';
 import HotBeveragesAnswer from './hot-beverages';
-import { selectSimulationAnswers } from '../../store/selectors/simulation-selectors';
-import { RootStackParamList, Routes } from '../../root-navigation';
 import { NavigationProp } from '@react-navigation/native';
+import { RootStackParamList, Routes } from '../../../root-navigation';
+import { appStore } from '../../../store/app-store';
+import { selectSimulationAnswers } from '../../../store/selectors/simulation-selectors';
 
-describe('HotBeveragesAnswer component', () => {
+describe('HotBeverages component', () => {
   beforeEach(() => {
     render(
       <Provider store={appStore}>
-        <HotBeveragesAnswer navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.HotBeveragesAnswer>} />
+        <HotBeveragesAnswer navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.HotBeverages>} />
       </Provider>,
     );
   });

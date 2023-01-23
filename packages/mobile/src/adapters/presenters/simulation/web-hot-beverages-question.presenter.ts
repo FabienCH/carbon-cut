@@ -33,7 +33,7 @@ export class WebHotBeveragesQuestionPresenter extends WebInputNumberQuestionPres
   nextNavigateRoute(): Routes {
     const isBreakFastWithoutMilk = selectSimulationAnswers()?.breakfast !== BreakfastTypes.milkCerealBreakfast;
     const noHotChocolate = this.#noHotChocolate();
-    return isBreakFastWithoutMilk && noHotChocolate ? Routes.ColdBeveragesAnswer : Routes.MilkType;
+    return isBreakFastWithoutMilk && noHotChocolate ? Routes.ColdBeverages : Routes.MilkType;
   }
 
   #noHotChocolate(): boolean {

@@ -1,16 +1,17 @@
 import 'reflect-metadata';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
-import { appStore } from '../../store/app-store';
-import ColdBeveragesAnswer from './cold-beverages';
-import { selectSimulationAnswers, selectSimulationResults } from '../../store/selectors/simulation-selectors';
-import { CarbonFootprintGatewayToken } from '../../../domain/ports/gateways/carbon-footprint.gateway';
-import { diContainer } from '../../inversify.config';
-import { selectIsLoading } from '../../store/selectors/loading-selectors';
+import { ColdBeveragesAnswer } from 'carbon-cut-commons';
+import { CarbonFootprintGatewayToken } from '../../../../domain/ports/gateways/carbon-footprint.gateway';
+import { InMemoryCarbonFootprintGateway } from '../../../../tests/in-memory-carbon-footprint.gateway';
+import { diContainer } from '../../../inversify.config';
+import { appStore } from '../../../store/app-store';
+import { selectIsLoading } from '../../../store/selectors/loading-selectors';
+import { selectSimulationAnswers, selectSimulationResults } from '../../../store/selectors/simulation-selectors';
+import ColdBeverages from './cold-beverages';
 import { RootSiblingParent } from 'react-native-root-siblings';
-import { InMemoryCarbonFootprintGateway } from '../../../tests/in-memory-carbon-footprint.gateway';
 
-describe('ColdBeveragesAnswer component', () => {
+describe('ColdBeverages component', () => {
   beforeAll(() => {
     diContainer.unbind(CarbonFootprintGatewayToken);
     diContainer.bind(CarbonFootprintGatewayToken).to(InMemoryCarbonFootprintGateway);
@@ -19,7 +20,7 @@ describe('ColdBeveragesAnswer component', () => {
   beforeEach(() => {
     render(
       <Provider store={appStore}>
-        <ColdBeveragesAnswer />
+        <ColdBeverages />
       </Provider>,
     );
   });
@@ -146,7 +147,7 @@ describe('ColdBeveragesAnswer component', () => {
       render(
         <Provider store={appStore}>
           <RootSiblingParent>
-            <ColdBeveragesAnswer />
+            <ColdBeverages />
           </RootSiblingParent>
         </Provider>,
       );

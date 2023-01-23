@@ -2,12 +2,12 @@ import { Chip } from '@rneui/themed';
 import { StyleSheet, View } from 'react-native';
 import { SelectableAnswer } from '../../../../domain/ports/presenters/question.presenter';
 
-interface SelectableAnswersProps {
-  answers: SelectableAnswer<any>[];
-  answerSelected: (answer: SelectableAnswer<any>) => {};
+interface SelectableAnswersProps<T> {
+  answers: SelectableAnswer<T>[];
+  answerSelected: (answer: SelectableAnswer<T>) => void;
 }
 
-export default function SelectableAnswers({ answers, answerSelected }: SelectableAnswersProps) {
+export default function SelectableAnswers<T extends string>({ answers, answerSelected }: SelectableAnswersProps<T>) {
   return (
     <View>
       {answers.map((answer) => {
