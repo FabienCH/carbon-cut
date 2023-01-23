@@ -9,11 +9,15 @@ export type HotBeveragesKeys = keyof HotBeveragesAnswer;
 @injectable()
 export class WebHotBeveragesQuestionPresenter implements QuestionPresenter<number | string> {
   readonly viewModel: QuestionViewModel<HotBeveragesKeys, number> = {
-    question: 'Quelle est votre consommation de boissons chaudes par semaine ?',
-    answers: [
-      { id: 'coffee', label: 'Café', placeholder: 'Cafés / semaine', value: null },
-      { id: 'tea', label: 'Thé', placeholder: 'Thés / semaine', value: null },
-      { id: 'hotChocolate', label: 'Chocolat chaud', placeholder: 'Chocolat chaud / semaine', value: null },
+    questions: [
+      {
+        question: 'Quelle est votre consommation de boissons chaudes par semaine ?',
+        answers: [
+          { id: 'coffee', label: 'Café', placeholder: 'Cafés / semaine', value: null },
+          { id: 'tea', label: 'Thé', placeholder: 'Thés / semaine', value: null },
+          { id: 'hotChocolate', label: 'Chocolat chaud', placeholder: 'Chocolat chaud / semaine', value: null },
+        ],
+      },
     ],
     canSubmit: false,
   };
@@ -22,14 +26,14 @@ export class WebHotBeveragesQuestionPresenter implements QuestionPresenter<numbe
     const isPositiveNumber = value?.match(/^[0-9]+$/);
     const intValue = parseInt(value, 10);
 
-    this.viewModel.answers = this.viewModel.answers.map((answer) =>
+    this.viewModel.questions[0].answers = this.viewModel.questions[0].answers.map((answer) =>
       answer.id === key ? this.#updateAnswer(answer, intValue, !!isPositiveNumber) : answer,
     );
-    this.viewModel.canSubmit = this.viewModel.answers.every((answer) => answer.value !== null);
+    this.viewModel.canSubmit = this.viewModel.questions[0].answers.every((answer) => answer.value !== null);
   }
 
   simulationBeverages(): HotBeveragesAnswer {
-    return this.viewModel.answers.reduce((hotBeverages, answer) => {
+    return this.viewModel.questions[0].answers.reduce((hotBeverages, answer) => {
       hotBeverages = { ...hotBeverages, [answer.id]: answer.value };
       return hotBeverages;
     }, {} as HotBeveragesAnswer);
@@ -42,7 +46,7 @@ export class WebHotBeveragesQuestionPresenter implements QuestionPresenter<numbe
   }
 
   #noHotChocolate(): boolean {
-    const hotChocolateValue = this.viewModel.answers.find((answer) => answer.id === 'hotChocolate')?.value;
+    const hotChocolateValue = this.viewModel.questions[0].answers.find((answer) => answer.id === 'hotChocolate')?.value;
     return !hotChocolateValue || hotChocolateValue === 0;
   }
 

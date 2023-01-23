@@ -22,14 +22,14 @@ export default function HotBeveragesAnswer({ navigation }: { navigation: HotBeve
   );
   const isLoading = useSelector(selectIsLoading);
 
-  const [answers, updateAnswers] = useState<HotBeveragesAnswer[]>(presenter.viewModel.answers);
+  const [answers, updateAnswers] = useState<HotBeveragesAnswer[]>(presenter.viewModel.questions[0].answers);
   const [nextNavigateRoute, setNextNavigateRoute] = useState<Routes>(presenter.nextNavigateRoute());
   const { viewModel } = presenter;
 
   const setAnswer = (key: HotBeveragesKeys, value: string): void => {
     presenter.setAnswer({ key, value });
     setNextNavigateRoute(presenter.nextNavigateRoute());
-    updateAnswers(viewModel.answers);
+    updateAnswers(viewModel.questions[0].answers);
   };
 
   const submitButtonPressed = (): void => {
@@ -40,7 +40,7 @@ export default function HotBeveragesAnswer({ navigation }: { navigation: HotBeve
   return (
     <View style={styles.container}>
       <Text accessibilityRole="header" style={styles.question}>
-        {viewModel.question}
+        {viewModel.questions[0].question}
       </Text>
       {answers.map((answer) => {
         const accessibilityLabel = `Entrez le nombre de ${answer.label} par semaine`;

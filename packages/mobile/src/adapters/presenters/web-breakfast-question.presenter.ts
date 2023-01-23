@@ -5,13 +5,17 @@ import { QuestionPresenter, SelectableQuestionViewModel } from '../../domain/por
 @injectable()
 export class WebBreakfastQuestionPresenter implements QuestionPresenter<BreakfastTypes> {
   readonly viewModel: SelectableQuestionViewModel<BreakfastTypes> = {
-    question: 'Quel type de petit déjeuner prenez-vous habituellement ?',
-    answers: [
-      { label: 'Viennoiserie / Pain', value: BreakfastTypes.continentalBreakfast, selected: false },
-      { label: 'Céréales avec lait ou yaourt', value: BreakfastTypes.milkCerealBreakfast, selected: false },
-      { label: 'Salé (britannique)', value: BreakfastTypes.britishBreakfast, selected: false },
-      { label: 'Fruits', value: BreakfastTypes.veganBreakfast, selected: false },
-      { label: 'Pas de petit-déj. (hors boisson)', value: BreakfastTypes.noBreakfast, selected: false },
+    questions: [
+      {
+        question: 'Quel type de petit déjeuner prenez-vous habituellement ?',
+        answers: [
+          { label: 'Viennoiserie / Pain', value: BreakfastTypes.continentalBreakfast, selected: false },
+          { label: 'Céréales avec lait ou yaourt', value: BreakfastTypes.milkCerealBreakfast, selected: false },
+          { label: 'Salé (britannique)', value: BreakfastTypes.britishBreakfast, selected: false },
+          { label: 'Fruits', value: BreakfastTypes.veganBreakfast, selected: false },
+          { label: 'Pas de petit-déj. (hors boisson)', value: BreakfastTypes.noBreakfast, selected: false },
+        ],
+      },
     ],
     selectedAnswer: undefined,
     canSubmit: false,
@@ -20,6 +24,9 @@ export class WebBreakfastQuestionPresenter implements QuestionPresenter<Breakfas
   setAnswer(breakfast: BreakfastTypes): void {
     this.viewModel.selectedAnswer = breakfast;
     this.viewModel.canSubmit = !!this.viewModel.selectedAnswer;
-    this.viewModel.answers = this.viewModel.answers.map((answer) => ({ ...answer, selected: breakfast === answer.value }));
+    this.viewModel.questions[0].answers = this.viewModel.questions[0].answers.map((answer) => ({
+      ...answer,
+      selected: breakfast === answer.value,
+    }));
   }
 }
