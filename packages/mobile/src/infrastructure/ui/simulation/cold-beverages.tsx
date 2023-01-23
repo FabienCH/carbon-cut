@@ -12,7 +12,7 @@ import {
 } from '../../../domain/usecases/carbon-footprint-simulation.usescase';
 import { selectIsLoading } from '../../store/selectors/loading-selectors';
 
-type ColdBeveragesQuestion = { question: string; answers: Answer<ColdBeveragesKeys, number | null>[] };
+type ColdBeveragesQuestion = { question: string; answers: Answer<ColdBeveragesKeys, string | null>[] };
 
 export default function ColdBeveragesAnswer() {
   const [presenter] = useState<WebColdBeveragesQuestionPresenter>(
@@ -43,7 +43,7 @@ export default function ColdBeveragesAnswer() {
     <View style={styles.container}>
       {questions.map((questionItem, questionIdx) => {
         return (
-          <View key={questionIdx}>
+          <View key={questionIdx} style={styles.questionContainer}>
             <Text accessibilityRole="header" style={styles.question}>
               {questionItem.question}
             </Text>
@@ -57,7 +57,6 @@ export default function ColdBeveragesAnswer() {
                   value={answer.value?.toString()}
                   placeholder={answer.placeholder}
                   keyboardType="numeric"
-                  containerStyle={styles.answer}
                   labelStyle={styles.labelStyle}
                   renderErrorMessage={!!answer.errorMessage}
                   errorMessage={answer.errorMessage}
@@ -88,20 +87,19 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
   },
+  questionContainer: {
+    marginBottom: 30,
+  },
   question: {
     marginBottom: 20,
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  answer: {
-    marginVertical: 15,
-  },
-
   labelStyle: {
     color: '#000000',
   },
   button: {
-    marginTop: 30,
+    marginTop: 20,
   },
 });

@@ -5,28 +5,28 @@ import { Answer, QuestionPresenter, QuestionViewModel } from '../../domain/ports
 export type ColdBeveragesKeys = keyof ColdBeveragesAnswer;
 
 @injectable()
-export class WebColdBeveragesQuestionPresenter implements QuestionPresenter<number | string> {
-  readonly viewModel: QuestionViewModel<ColdBeveragesKeys, number> = {
+export class WebColdBeveragesQuestionPresenter implements QuestionPresenter<string> {
+  readonly viewModel: QuestionViewModel<ColdBeveragesKeys, string> = {
     questions: [
       {
-        question: 'Quelle est votre consommation de boissons sucrée par semaine (sodas, jus de fruit, sirops)?',
+        question: 'Quelle est votre consommation de boissons sucrée par semaine (sodas, jus de fruit, sirops) ?',
         answers: [{ id: 'sweet', label: '', placeholder: 'litres / semaine', value: null }],
       },
+      {
+        question: "Quelle est votre consommation d'alcool par semaine(vin, bière, cocktail) ?",
+        answers: [{ id: 'alcohol', label: '', placeholder: 'litres / semaine', value: null }],
+      },
     ],
-
     canSubmit: false,
   };
 
   setAnswer({ key, value }: { key: ColdBeveragesKeys; value: string }, questionIndex: number): void {
     const isPositiveNumber = value?.match(/^[0-9]+.?[0-9]*$/);
-    const intValue = parseFloat(value);
     this.viewModel.questions = this.viewModel.questions.map((question, idx) => {
       if (idx === questionIndex) {
         return {
           ...question,
-          answers: question.answers.map((answer) =>
-            answer.id === key ? this.#updateAnswer(answer, intValue, !!isPositiveNumber) : answer,
-          ),
+          answers: question.answers.map((answer) => (answer.id === key ? this.#updateAnswer(answer, value, !!isPositiveNumber) : answer)),
         };
       }
       return question;
@@ -37,23 +37,18 @@ export class WebColdBeveragesQuestionPresenter implements QuestionPresenter<numb
     console.log('this.viewModel.canSubmit', this.viewModel.canSubmit);
   }
 
-<<<<<<< Updated upstream
   simulationBeverages(): ColdBeveragesAnswer {
-    return this.viewModel.answers.reduce((coldBeverages, answer) => {
-=======
-  simulationBeverages(): ColdBeverages {
     return this.viewModel.questions.reduce((coldBeverages, question) => {
       const answer = question.answers[0];
->>>>>>> Stashed changes
-      coldBeverages = { ...coldBeverages, [answer.id]: answer.value as number };
+      coldBeverages = { ...coldBeverages, [answer.id]: parseFloat(answer?.value ?? '0') };
       return coldBeverages;
     }, {} as ColdBeveragesAnswer);
   }
 
-  #updateAnswer(answer: Answer<ColdBeveragesKeys, number | null>, value: number, isPositiveNumber: boolean) {
+  #updateAnswer(answer: Answer<ColdBeveragesKeys, string | null>, value: string, isPositiveNumber: boolean) {
     const updatedAnswer = isPositiveNumber
       ? { value, errorMessage: undefined }
-      : { value: null, errorMessage: `Veuillez saisir un nombre${isNaN(value) ? '' : ' positif'}` };
+      : { value: null, errorMessage: `Veuillez saisir un nombre${isNaN(parseFloat(value)) ? '' : ' positif'}` };
 
     return { ...answer, ...updatedAnswer };
   }

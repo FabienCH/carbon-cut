@@ -122,13 +122,14 @@ describe('ColdBeveragesAnswer component', () => {
 
     await waitFor(() => {
       const simulationAnswers = selectSimulationAnswers();
-      expect(simulationAnswers?.coldBeverages).toEqual({ sweet: 2 });
+      expect(simulationAnswers?.coldBeverages).toEqual({ sweet: 2, alcohol: 2 });
       const results = selectSimulationResults();
       expect(selectIsLoading()).toBeFalsy();
       expect(results).toEqual({
         breakfast: 171.234,
-        hotBeverages: { coffee: 124.14, tea: 32.4, hotChocolate: 80.57 },
-        total: 408.344,
+        hotBeverages: { coffee: 124.14, tea: 32.4, hotChocolate: 80.57, total: 237.11 },
+        coldBeverages: { sweet: 34.14, alcohol: 25.34, total: 59.48 },
+        total: 467.824,
       });
     });
   });
