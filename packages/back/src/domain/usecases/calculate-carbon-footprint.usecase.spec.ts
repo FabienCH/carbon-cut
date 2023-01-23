@@ -7,7 +7,7 @@ describe('Carbon footprint calculation use case', () => {
   const defaultSimulationAnswers: SimulationDto = {
     breakfast: BreakfastTypes.noBreakfast,
     hotBeverages: { coffee: 0, tea: 0, hotChocolate: 0 },
-    coldBeverages: { sweet: 0 },
+    coldBeverages: { sweet: 0, alcohol: 0 },
   };
   beforeEach(() => {
     calculateCarbonFootprintUseCase = new CalculateCarbonFootprintUseCase(new InMemorySimulationDataRepository(true));
@@ -75,10 +75,19 @@ describe('Carbon footprint calculation use case', () => {
     it('for 2 liters of sweet beverages (soda, fruit juice, sirop...)', async () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         ...defaultSimulationAnswers,
-        coldBeverages: { sweet: 2 },
+        coldBeverages: { ...defaultSimulationAnswers.coldBeverages, sweet: 2 },
       });
 
       expect(footprint).toEqual({ coldBeverages: { sweet: 52.838, total: 52.838 }, total: 52.838 });
+    });
+
+    it('for 0.8 liters of alcohol (beer, wine, cocktail...)', async () => {
+      const footprint = await calculateCarbonFootprintUseCase.execute({
+        ...defaultSimulationAnswers,
+        coldBeverages: { ...defaultSimulationAnswers.coldBeverages, alcohol: 0.8 },
+      });
+
+      expect(footprint).toEqual({ coldBeverages: { alcohol: 45.19, total: 45.19 }, total: 45.19 });
     });
   });
 

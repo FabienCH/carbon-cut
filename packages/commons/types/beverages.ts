@@ -6,4 +6,5 @@ export interface HotBeveragesAnswer {
 
 export interface ColdBeveragesAnswer {
   sweet: number;
+  alcohol: number;
 }

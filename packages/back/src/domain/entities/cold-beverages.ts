@@ -17,8 +17,14 @@ export class ColdBeverages {
         (alimentationData.footprints.fruitsJuice + alimentationData.footprints.sodas + alimentationData.footprints.sirops)) /
       3;
 
+    const weeklyAlcoholFootprint =
+      (this.coldBeverages.alcohol *
+        (alimentationData.footprints.beer + alimentationData.footprints.wine + alimentationData.footprints.cocktail)) /
+      3;
+
     return FootprintHelper.removeNullOrZeroValues({
       sweet: FootprintHelper.getYearlyFootprint(weeklySweetBeveragesFootprint / 7),
+      alcohol: FootprintHelper.getYearlyFootprint(weeklyAlcoholFootprint / 7),
     });
   }
 }

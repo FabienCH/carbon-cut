@@ -42,6 +42,7 @@ export const AlimentationFootprintsMapping: AlimentationFootprintsMappingType = 
   [BeverageTypes.sirops]: 'alimentation . boisson . sucrées . facteur sirops',
   [BeverageTypes.beer]: 'alimentation . boisson . alcool . facteur bière',
   [BeverageTypes.cocktail]: 'alimentation . boisson . alcool . facteur coktail',
+  [BeverageTypes.wine]: 'alimentation . boisson . alcool . facteur vin',
   [MilkTypes.cowMilk]: 'alimentation . empreinte lait de vache',
   [MilkTypes.sojaMilk]: 'alimentation . empreinte lait de soja',
   [MilkTypes.oatsMilk]: "alimentation . empreinte lait d'avoine",
