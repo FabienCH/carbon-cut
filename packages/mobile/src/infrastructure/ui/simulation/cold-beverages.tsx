@@ -1,7 +1,6 @@
 import { Button, Text, Input } from '@rneui/themed';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ColdBeveragesKeys, WebColdBeveragesQuestionPresenter } from '../../../adapters/presenters/web-cold-beverages-question.presenter';
 import { Answer, ColdBeveragesQuestionPresenterToken } from '../../../domain/ports/presenters/question.presenter';
 import { diContainer } from '../../inversify.config';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
@@ -11,8 +10,12 @@ import {
   CarbonFootprintSimulationUseCaseToken,
 } from '../../../domain/usecases/carbon-footprint-simulation.usescase';
 import { selectIsLoading } from '../../store/selectors/loading-selectors';
+import {
+  ColdBeveragesKeys,
+  WebColdBeveragesQuestionPresenter,
+} from '../../../adapters/presenters/simulation/web-cold-beverages-question.presenter';
 
-type ColdBeveragesAnswer = Answer<ColdBeveragesKeys, number | null>;
+type ColdBeveragesQuestion = { question: string; answers: Answer<ColdBeveragesKeys, string | null>[] };
 
 export default function ColdBeveragesAnswer() {
   const [presenter] = useState<WebColdBeveragesQuestionPresenter>(
@@ -26,40 +29,45 @@ export default function ColdBeveragesAnswer() {
   );
   const isLoading = useSelector(selectIsLoading);
 
-  const [answers, updateAnswers] = useState<ColdBeveragesAnswer[]>(presenter.viewModel.answers);
+  const [questions, updateQuestion] = useState<ColdBeveragesQuestion[]>(presenter.viewModel.questions);
   const { viewModel } = presenter;
 
-  const setAnswer = (key: ColdBeveragesKeys, value: string): void => {
-    presenter.setAnswer({ key, value });
-    updateAnswers(viewModel.answers);
+  const setAnswer = (key: ColdBeveragesKeys, value: string, questionIndex: number): void => {
+    presenter.setAnswer({ key, value }, questionIndex);
+    updateQuestion(viewModel.questions);
   };
 
   const runCalculation = (): void => {
-    saveSimulationAnswerUseCase.execute({ answerKey: 'coldBeverages', answer: presenter.simulationBeverages() });
+    saveSimulationAnswerUseCase.execute({ answerKey: 'coldBeverages', answer: presenter.getAnswers() });
     carbonFootprintSimulationUseCase.execute();
   };
 
   return (
     <View style={styles.container}>
-      <Text accessibilityRole="header" style={styles.question}>
-        {viewModel.question}
-      </Text>
-      {answers.map((answer) => {
-        const accessibilityLabel = `Entrez le nombre de ${answer.label} par semaine`;
+      {questions.map((questionItem, questionIdx) => {
         return (
-          <Input
-            key={answer.id}
-            accessibilityLabel={accessibilityLabel}
-            label={answer.label}
-            value={answer.value?.toString()}
-            placeholder={answer.placeholder}
-            keyboardType="numeric"
-            containerStyle={styles.answer}
-            labelStyle={styles.labelStyle}
-            renderErrorMessage={!!answer.errorMessage}
-            errorMessage={answer.errorMessage}
-            onChangeText={(value) => setAnswer(answer.id, value)}
-          />
+          <View key={questionIdx} style={styles.questionContainer}>
+            <Text accessibilityRole="header" style={styles.question}>
+              {questionItem.question}
+            </Text>
+            {questionItem.answers.map((answer) => {
+              const accessibilityLabel = `Entrez le nombre de ${answer.label} par semaine`;
+              return (
+                <Input
+                  key={answer.id}
+                  accessibilityLabel={accessibilityLabel}
+                  label={answer.label}
+                  value={answer.value?.toString()}
+                  placeholder={answer.placeholder}
+                  keyboardType="numeric"
+                  labelStyle={styles.labelStyle}
+                  renderErrorMessage={!!answer.errorMessage}
+                  errorMessage={answer.errorMessage}
+                  onChangeText={(value) => setAnswer(answer.id, value, questionIdx)}
+                />
+              );
+            })}
+          </View>
         );
       })}
       <Button
@@ -82,20 +90,19 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
   },
+  questionContainer: {
+    marginBottom: 30,
+  },
   question: {
     marginBottom: 20,
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  answer: {
-    marginVertical: 15,
-  },
-
   labelStyle: {
     color: '#000000',
   },
   button: {
-    marginTop: 30,
+    marginTop: 20,
   },
 });

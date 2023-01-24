@@ -16,6 +16,8 @@ class NestColdBeveragesDto implements ColdBeveragesFootprints {
   @ApiProperty({ required: false })
   sweet?: number;
   @ApiProperty({ required: false })
+  alcohol?: number;
+  @ApiProperty({ required: false })
   total?: number;
 }
 

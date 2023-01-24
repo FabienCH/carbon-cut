@@ -4,7 +4,7 @@ import { Button, Chip } from '@rneui/themed';
 import { BreakfastTypes } from 'carbon-cut-commons';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { WebBreakfastQuestionPresenter } from '../../../adapters/presenters/web-breakfast-question.presenter';
+import { WebBreakfastQuestionPresenter } from '../../../adapters/presenters/simulation/web-breakfast-question.presenter';
 import { SelectableAnswer, BreakfastQuestionPresenterToken } from '../../../domain/ports/presenters/question.presenter';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
 import { diContainer } from '../../inversify.config';
@@ -20,12 +20,12 @@ export default function Breakfast({ navigation }: { navigation: BreakfastNavigat
   const [saveSimulationAnswerUseCase] = useState<SaveSimulationAnswerUseCase>(
     diContainer.get<SaveSimulationAnswerUseCase>(SaveSimulationAnswerUseCaseToken),
   );
-  const [answers, updateAnswers] = useState<BreakfastAnswer[]>(presenter.viewModel.answers);
+  const [answers, updateAnswers] = useState<BreakfastAnswer[]>(presenter.viewModel.questions[0].answers);
   const { viewModel } = presenter;
 
   const setSelectedBreakfast = (answer: BreakfastAnswer): void => {
     presenter.setAnswer(answer.value);
-    updateAnswers(viewModel.answers);
+    updateAnswers(viewModel.questions[0].answers);
   };
 
   const saveAnswer = (): void => {
@@ -36,7 +36,7 @@ export default function Breakfast({ navigation }: { navigation: BreakfastNavigat
   return (
     <View style={styles.container}>
       <Text accessibilityRole="header" style={styles.question}>
-        {viewModel.question}
+        {viewModel.questions[0].question}
       </Text>
       {answers.map((answer) => {
         const type = answer.selected ? 'solid' : 'outline';

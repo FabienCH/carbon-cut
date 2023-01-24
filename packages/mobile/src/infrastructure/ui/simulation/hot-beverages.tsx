@@ -1,7 +1,6 @@
 import { Button, Text, Input } from '@rneui/themed';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { HotBeveragesKeys, WebHotBeveragesQuestionPresenter } from '../../../adapters/presenters/web-hot-beverages-question.presenter';
 import { Answer, HotBeveragesQuestionPresenterToken } from '../../../domain/ports/presenters/question.presenter';
 import { diContainer } from '../../inversify.config';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
@@ -9,8 +8,12 @@ import { RootStackParamList, Routes } from '../../root-navigation';
 import { NavigationProp } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { selectIsLoading } from '../../store/selectors/loading-selectors';
+import {
+  HotBeveragesKeys,
+  WebHotBeveragesQuestionPresenter,
+} from '../../../adapters/presenters/simulation/web-hot-beverages-question.presenter';
 
-type HotBeveragesAnswer = Answer<HotBeveragesKeys, number | null>;
+type HotBeveragesAnswer = Answer<HotBeveragesKeys, string | null>;
 type HotBeveragesNavigationProp = NavigationProp<RootStackParamList, Routes.HotBeveragesAnswer>;
 
 export default function HotBeveragesAnswer({ navigation }: { navigation: HotBeveragesNavigationProp }) {
@@ -22,25 +25,25 @@ export default function HotBeveragesAnswer({ navigation }: { navigation: HotBeve
   );
   const isLoading = useSelector(selectIsLoading);
 
-  const [answers, updateAnswers] = useState<HotBeveragesAnswer[]>(presenter.viewModel.answers);
+  const [answers, updateAnswers] = useState<HotBeveragesAnswer[]>(presenter.viewModel.questions[0].answers);
   const [nextNavigateRoute, setNextNavigateRoute] = useState<Routes>(presenter.nextNavigateRoute());
   const { viewModel } = presenter;
 
   const setAnswer = (key: HotBeveragesKeys, value: string): void => {
     presenter.setAnswer({ key, value });
     setNextNavigateRoute(presenter.nextNavigateRoute());
-    updateAnswers(viewModel.answers);
+    updateAnswers(viewModel.questions[0].answers);
   };
 
   const submitButtonPressed = (): void => {
-    saveSimulationAnswerUseCase.execute({ answerKey: 'hotBeverages', answer: presenter.simulationBeverages() });
+    saveSimulationAnswerUseCase.execute({ answerKey: 'hotBeverages', answer: presenter.getAnswers() });
     navigation.navigate(nextNavigateRoute);
   };
 
   return (
     <View style={styles.container}>
       <Text accessibilityRole="header" style={styles.question}>
-        {viewModel.question}
+        {viewModel.questions[0].question}
       </Text>
       {answers.map((answer) => {
         const accessibilityLabel = `Entrez le nombre de ${answer.label} par semaine`;

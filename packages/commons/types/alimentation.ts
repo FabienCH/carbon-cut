@@ -24,6 +24,7 @@ export enum BeverageTypes {
   fruitsJuice = 'fruitsJuice',
   sirops = 'sirops',
   beer = 'beer',
+  wine = 'wine',
   cocktail = 'cocktail',
 }
 

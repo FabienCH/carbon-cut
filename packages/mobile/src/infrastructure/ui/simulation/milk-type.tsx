@@ -5,7 +5,7 @@ import { MilkTypes } from 'carbon-cut-commons';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { WebMilkTypeQuestionPresenter } from '../../../adapters/presenters/web-milk-type-question.presenter';
+import { WebMilkTypeQuestionPresenter } from '../../../adapters/presenters/simulation/web-milk-type-question.presenter';
 import { MilkTypeQuestionPresenterToken, SelectableAnswer } from '../../../domain/ports/presenters/question.presenter';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
 import { diContainer } from '../../inversify.config';
@@ -21,13 +21,13 @@ export default function MilkType({ navigation }: { navigation: MilkTypeNavigatio
     diContainer.get<SaveSimulationAnswerUseCase>(SaveSimulationAnswerUseCaseToken),
   );
 
-  const [answers, updateAnswers] = useState<MilkTypeAnswer[]>(presenter.viewModel.answers);
+  const [answers, updateAnswers] = useState<MilkTypeAnswer[]>(presenter.viewModel.questions[0].answers);
   const { viewModel } = presenter;
   const isLoading = useSelector(selectIsLoading);
 
   const setSelectedMilkType = (answer: MilkTypeAnswer): void => {
     presenter.setAnswer(answer.value);
-    updateAnswers(viewModel.answers);
+    updateAnswers(viewModel.questions[0].answers);
   };
 
   const saveAnswer = (): void => {
@@ -38,7 +38,7 @@ export default function MilkType({ navigation }: { navigation: MilkTypeNavigatio
   return (
     <View style={styles.container}>
       <Text accessibilityRole="header" style={styles.question}>
-        {viewModel.question}
+        {viewModel.questions[0].question}
       </Text>
       {answers.map((answer) => {
         const type = answer.selected ? 'solid' : 'outline';

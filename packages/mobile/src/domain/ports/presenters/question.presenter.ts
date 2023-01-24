@@ -19,19 +19,19 @@ export interface SelectableAnswer<AnswerType> extends BaseAnswer<AnswerType> {
 }
 
 interface BaseQuestionViewModel {
-  question: string;
+  questions: { question: string; answers: Answer<string, unknown | null>[] | SelectableAnswer<unknown>[] }[];
   canSubmit: boolean;
 }
 export interface QuestionViewModel<IdType extends string, AnswerType> extends BaseQuestionViewModel {
-  answers: Answer<IdType, AnswerType | null>[];
+  questions: { question: string; answers: Answer<IdType, AnswerType | null>[] }[];
 }
 
 export interface SelectableQuestionViewModel<AnswerType> extends BaseQuestionViewModel {
-  answers: SelectableAnswer<AnswerType>[];
+  questions: { question: string; answers: SelectableAnswer<AnswerType>[] }[];
   selectedAnswer: AnswerType | undefined;
 }
 
 export interface QuestionPresenter<AnswerType> {
   viewModel: QuestionViewModel<string, AnswerType> | SelectableQuestionViewModel<AnswerType>;
-  setAnswer(answerValue: AnswerType | { key: string; value: AnswerType }): void;
+  setAnswer(answerValue: AnswerType | { key: string; value: AnswerType }, questionIndex?: number): void;
 }

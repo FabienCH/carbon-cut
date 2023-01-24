@@ -13,6 +13,8 @@ class NestHotBeveragesAnswer implements HotBeveragesAnswer {
 class NestColdBeveragesAnswer implements ColdBeveragesAnswer {
   @ApiProperty()
   sweet: number;
+  @ApiProperty()
+  alcohol: number;
 }
 
 export class NestSimulationDto implements SimulationDto {

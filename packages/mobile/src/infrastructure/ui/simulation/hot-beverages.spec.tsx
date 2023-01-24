@@ -82,7 +82,7 @@ describe('HotBeveragesAnswer component', () => {
     expect(submitButton.props.accessibilityState.disabled).toBeFalsy();
   });
 
-  it('should not enable submit answer button if on of the answer is not valid', () => {
+  it('should not enable submit answer button if one of the answer is not valid', () => {
     const submitButton = screen.getByRole('button');
     const placeholderElements = screen.getAllByPlaceholderText(/\/ semaine/);
     const answers = ['7', 'abc', '5'];

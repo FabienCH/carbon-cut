@@ -25,6 +25,7 @@ export class InMemorySimulationDataRepository implements SimulationDataRepositor
           fruitsJuice: 0.91,
           sirops: 0.1,
           beer: 1.12,
+          wine: 1.22,
           cocktail: 0.91,
           veganMeal: 0.785,
           vegetarianMeal: 1.115,
