@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@rneui/themed';
-import { theme } from '../infrastructure/ui/theme';
+import { theme } from '../infrastructure/app/theme';
 
 function MockTheme({ children }: any) {
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>;

@@ -1,7 +1,7 @@
 import { createNavigationContainerRef } from '@react-navigation/native';
 import { StyleProp, ViewStyle } from 'react-native';
 import 'reflect-metadata';
-import { styles } from './ui/style';
+import { styles } from './app/style';
 
 export enum Routes {
   Home = 'Home',

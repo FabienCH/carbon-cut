@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { selectSimulationAnswers } from '../../infrastructure/store/selectors/simulation-selectors';
+import { selectSimulationAnswers } from '../../adapters/simulation-results/store/selectors/simulation-selectors';
 import { CarbonFootprintGateway, CarbonFootprintGatewayToken } from '../ports/gateways/carbon-footprint.gateway';
 import { UserNotifyPresenter, UserNotifyPresenterToken } from '../ports/presenters/user-notify.presenter';
 import { LoadingStore, LoadingStoreToken } from '../ports/stores/loading-store';
