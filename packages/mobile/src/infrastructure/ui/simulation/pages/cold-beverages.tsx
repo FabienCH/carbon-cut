@@ -1,6 +1,5 @@
-import { Button, Text, Input } from '@rneui/themed';
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 import {
   ColdBeveragesKeys,
@@ -13,7 +12,6 @@ import {
 } from '../../../../domain/usecases/carbon-footprint-simulation.usescase';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../../domain/usecases/save-simulation-answer.usecase';
 import { diContainer } from '../../../inversify.config';
-import { saveAnswer } from '../../../store/actions/simulation-actions';
 import { selectIsLoading } from '../../../store/selectors/loading-selectors';
 import InputAnswers from '../components/input-answers';
 import Question from '../components/question';
@@ -21,7 +19,7 @@ import SubmitButton from '../components/submit-button';
 
 type ColdBeveragesQuestion = { question: string; answers: Answer<ColdBeveragesKeys, string | null>[] };
 
-export default function ColdBeverages() {
+export default function ColdBeverages({ containerStyle }: { containerStyle: StyleProp<ViewStyle> }) {
   const [presenter] = useState<WebColdBeveragesQuestionPresenter>(
     diContainer.get<WebColdBeveragesQuestionPresenter>(ColdBeveragesQuestionPresenterToken),
   );
@@ -47,9 +45,9 @@ export default function ColdBeverages() {
   };
 
   return (
-    <View>
+    <View style={containerStyle}>
       {questions.map((q, qIdx) => (
-        <Question key={qIdx} question={q.question}>
+        <Question key={qIdx} question={q.question} style={qIdx !== 0 ? styles.question : null}>
           <InputAnswers answers={q.answers} answerChanged={(answerKey, value) => setAnswer(answerKey, value, qIdx)} />
         </Question>
       ))}
@@ -62,3 +60,9 @@ export default function ColdBeverages() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  question: {
+    marginTop: 10,
+  },
+});

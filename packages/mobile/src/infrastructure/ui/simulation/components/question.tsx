@@ -1,14 +1,15 @@
 import { Text } from '@rneui/base';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 interface QuestionProps {
   question: string;
   children: JSX.Element;
+  style?: StyleProp<ViewStyle>;
 }
 
-export default function Question({ children, question }: QuestionProps) {
+export default function Question({ children, question, style }: QuestionProps) {
   return (
-    <View style={styles.container}>
+    <View style={style}>
       <Text accessibilityRole="header" style={styles.question}>
         {question}
       </Text>
@@ -18,14 +19,8 @@ export default function Question({ children, question }: QuestionProps) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
   question: {
-    marginBottom: 20,
+    marginBottom: 15,
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',

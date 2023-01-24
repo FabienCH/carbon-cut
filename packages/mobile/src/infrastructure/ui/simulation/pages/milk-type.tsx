@@ -1,7 +1,7 @@
 import { NavigationProp } from '@react-navigation/native';
 import { MilkTypes } from 'carbon-cut-commons';
 import { useState } from 'react';
-import { View } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 import { WebMilkTypeQuestionPresenter } from '../../../../adapters/presenters/simulation/web-milk-type-question.presenter';
 import { SelectableAnswer, MilkTypeQuestionPresenterToken } from '../../../../domain/ports/presenters/question.presenter';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../../domain/usecases/save-simulation-answer.usecase';
@@ -13,8 +13,12 @@ import SubmitButton from '../components/submit-button';
 
 type MilkTypeAnswer = SelectableAnswer<MilkTypes>;
 type MilkTypeNavigationProp = NavigationProp<RootStackParamList, Routes.MilkType>;
+type MilkTypeProps = {
+  navigation: MilkTypeNavigationProp;
+  containerStyle: StyleProp<ViewStyle>;
+};
 
-export default function MilkType({ navigation }: { navigation: MilkTypeNavigationProp }) {
+export default function MilkType({ navigation, containerStyle }: MilkTypeProps) {
   const [presenter] = useState<WebMilkTypeQuestionPresenter>(diContainer.get<WebMilkTypeQuestionPresenter>(MilkTypeQuestionPresenterToken));
   const [saveSimulationAnswerUseCase] = useState<SaveSimulationAnswerUseCase>(
     diContainer.get<SaveSimulationAnswerUseCase>(SaveSimulationAnswerUseCaseToken),
@@ -30,11 +34,11 @@ export default function MilkType({ navigation }: { navigation: MilkTypeNavigatio
 
   const saveAnswer = (): void => {
     saveSimulationAnswerUseCase.execute({ answerKey: 'milkType', answer: viewModel.selectedAnswer });
-    navigation.navigate(Routes.ColdBeverages);
+    navigation.navigate(Routes.ColdBeverages, { containerStyle });
   };
 
   return (
-    <View>
+    <View style={containerStyle}>
       <Question question={question.question}>
         <SelectableAnswers answers={answers} answerSelected={(answer) => setSelectedMilkType(answer)} />
       </Question>

@@ -9,7 +9,7 @@ interface SelectableAnswersProps<T> {
 
 export default function SelectableAnswers<T extends string>({ answers, answerSelected }: SelectableAnswersProps<T>) {
   return (
-    <View>
+    <View style={styles.container}>
       {answers.map((answer) => {
         const type = answer.selected ? 'solid' : 'outline';
         return (
@@ -28,6 +28,9 @@ export default function SelectableAnswers<T extends string>({ answers, answerSel
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 10,
+  },
   answer: {
     marginVertical: 5,
   },

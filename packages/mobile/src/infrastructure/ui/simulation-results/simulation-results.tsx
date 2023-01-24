@@ -1,5 +1,5 @@
 import { Colors, Theme } from '@rneui/base';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { WebSimulationResultsPresenter } from '../../../adapters/presenters/web-simulation-results.presenter';
 import { SimulationResultsPresenterToken } from '../../../domain/ports/presenters/simulation-results.presenter';
 import { diContainer } from '../../inversify.config';
@@ -7,7 +7,7 @@ import { Text, useTheme } from '@rneui/themed';
 import RNEChartsPro from 'react-native-echarts-pro';
 import { useState } from 'react';
 
-export default function SimulationResults() {
+export default function SimulationResults({ containerStyle }: { containerStyle: StyleProp<ViewStyle> }) {
   const [presenter] = useState<WebSimulationResultsPresenter>(
     diContainer.get<WebSimulationResultsPresenter>(SimulationResultsPresenterToken),
   );
@@ -16,7 +16,7 @@ export default function SimulationResults() {
   const chartHeight = Math.min(width, height) - 40;
 
   return (
-    <View testID="SIMULATION_RESULTS" style={styles.container}>
+    <View testID="SIMULATION_RESULTS" style={containerStyle}>
       <Text accessibilityRole="header" style={styles.title}>
         Votre empreinte carbone actuelle :
       </Text>
@@ -27,12 +27,6 @@ export default function SimulationResults() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
   title: {
     marginBottom: 10,
     fontSize: 20,

@@ -1,7 +1,7 @@
 import { NavigationProp } from '@react-navigation/native';
 import { BreakfastTypes } from 'carbon-cut-commons';
 import { useState } from 'react';
-import { View } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 import { WebBreakfastQuestionPresenter } from '../../../../adapters/presenters/simulation/web-breakfast-question.presenter';
 import { SelectableAnswer, BreakfastQuestionPresenterToken } from '../../../../domain/ports/presenters/question.presenter';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../../domain/usecases/save-simulation-answer.usecase';
@@ -13,8 +13,12 @@ import SubmitButton from '../components/submit-button';
 
 type BreakfastNavigationProp = NavigationProp<RootStackParamList, Routes.Breakfast>;
 type BreakfastAnswer = SelectableAnswer<BreakfastTypes>;
+type BreakfastProps = {
+  navigation: BreakfastNavigationProp;
+  containerStyle: StyleProp<ViewStyle>;
+};
 
-export default function Breakfast({ navigation }: { navigation: BreakfastNavigationProp }) {
+export default function Breakfast({ navigation, containerStyle }: BreakfastProps) {
   const [presenter] = useState<WebBreakfastQuestionPresenter>(
     diContainer.get<WebBreakfastQuestionPresenter>(BreakfastQuestionPresenterToken),
   );
@@ -32,11 +36,11 @@ export default function Breakfast({ navigation }: { navigation: BreakfastNavigat
 
   const saveAnswer = (): void => {
     saveSimulationAnswerUseCase.execute({ answerKey: 'breakfast', answer: viewModel.selectedAnswer });
-    navigation.navigate(Routes.HotBeverages);
+    navigation.navigate(Routes.HotBeverages, { containerStyle });
   };
 
   return (
-    <View>
+    <View style={containerStyle}>
       <Question question={question.question}>
         <SelectableAnswers answers={answers} answerSelected={(answer) => setSelectedBreakfast(answer)} />
       </Question>

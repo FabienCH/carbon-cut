@@ -1,15 +1,18 @@
 import { Button, Colors, Theme, useTheme } from '@rneui/themed';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import type { NavigationProp } from '@react-navigation/native';
 import { RootStackParamList, Routes } from '../../root-navigation';
 
 type HomeNavigationProp = NavigationProp<RootStackParamList, Routes.Home>;
+type HomeProps = {
+  navigation: HomeNavigationProp;
+  containerStyle: StyleProp<ViewStyle>;
+};
 
-export default function Home({ navigation }: { navigation: HomeNavigationProp }) {
+export default function Home({ navigation, containerStyle }: HomeProps) {
   const { theme } = useTheme();
-
   return (
-    <View style={styles.container}>
+    <View style={containerStyle}>
       <Image style={styles.image} source={require('../assets/carbon-cut.png')} />
       <Text style={titleStyles(theme).title}>Réduisons votre empreinte carbone !</Text>
       <Text style={styles.description}>
@@ -17,7 +20,12 @@ export default function Home({ navigation }: { navigation: HomeNavigationProp })
         afin de la réduire.
       </Text>
       <Text style={styles.emphasis}>Commençons par calculer votre empreinte actuelle</Text>
-      <Button accessibilityRole="button" titleStyle={styles.button} size="lg" onPress={() => navigation.navigate(Routes.Breakfast)}>
+      <Button
+        accessibilityRole="button"
+        titleStyle={styles.button}
+        size="lg"
+        onPress={() => navigation.navigate(Routes.Breakfast, { containerStyle })}
+      >
         C'est parti !
       </Button>
     </View>
@@ -25,12 +33,6 @@ export default function Home({ navigation }: { navigation: HomeNavigationProp })
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
   image: {
     marginBottom: 50,
     maxWidth: '100%',
@@ -39,7 +41,7 @@ const styles = StyleSheet.create({
   description: {
     textAlign: 'center',
     fontSize: 16,
-    marginBottom: 50,
+    marginBottom: 30,
   },
   emphasis: {
     fontSize: 20,

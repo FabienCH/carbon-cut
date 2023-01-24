@@ -1,9 +1,5 @@
-import { Button, Text, Input } from '@rneui/themed';
-import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-
+import { StyleProp, View, ViewStyle } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
 import {
   HotBeveragesKeys,
   WebHotBeveragesQuestionPresenter,
@@ -15,11 +11,16 @@ import { RootStackParamList, Routes } from '../../../root-navigation';
 import InputAnswers from '../components/input-answers';
 import Question from '../components/question';
 import SubmitButton from '../components/submit-button';
+import { useState } from 'react';
 
 type HotBeveragesAnswer = Answer<HotBeveragesKeys, string | null>;
 type HotBeveragesNavigationProp = NavigationProp<RootStackParamList, Routes.HotBeverages>;
+type HotBeveragesProps = {
+  navigation: HotBeveragesNavigationProp;
+  containerStyle: StyleProp<ViewStyle>;
+};
 
-export default function HotBeverages({ navigation }: { navigation: HotBeveragesNavigationProp }) {
+export default function HotBeverages({ navigation, containerStyle }: HotBeveragesProps) {
   const [presenter] = useState<WebHotBeveragesQuestionPresenter>(
     diContainer.get<WebHotBeveragesQuestionPresenter>(HotBeveragesQuestionPresenterToken),
   );
@@ -41,11 +42,11 @@ export default function HotBeverages({ navigation }: { navigation: HotBeveragesN
 
   const saveAnswer = (): void => {
     saveSimulationAnswerUseCase.execute({ answerKey: 'hotBeverages', answer: presenter.getAnswers() });
-    navigation.navigate(nextNavigateRoute);
+    navigation.navigate(nextNavigateRoute, { containerStyle });
   };
 
   return (
-    <View>
+    <View style={containerStyle}>
       <Question question={question.question}>
         <InputAnswers answers={answers} answerChanged={(answerKey, value) => setAnswer(answerKey, value)} />
       </Question>

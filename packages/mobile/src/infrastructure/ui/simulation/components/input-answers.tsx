@@ -20,6 +20,7 @@ export default function InputAnswers<T extends string>({ answers, answerChanged 
             value={answer.value?.toString()}
             placeholder={answer.placeholder}
             keyboardType="numeric"
+            containerStyle={styles.answer}
             labelStyle={styles.labelStyle}
             renderErrorMessage={!!answer.errorMessage}
             errorMessage={answer.errorMessage}
@@ -32,6 +33,9 @@ export default function InputAnswers<T extends string>({ answers, answerChanged 
 }
 
 const styles = StyleSheet.create({
+  answer: {
+    marginBottom: 20,
+  },
   labelStyle: {
     color: '#000000',
   },
