@@ -17,7 +17,7 @@ describe('MilkType component', () => {
   beforeEach(() => {
     render(
       <Provider store={appStore}>
-        <MilkType navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.MilkType>} />
+        <MilkType navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.MilkType>} containerStyle={{}} />
       </Provider>,
     );
   });

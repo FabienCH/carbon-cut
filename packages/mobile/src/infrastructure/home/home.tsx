@@ -13,7 +13,7 @@ export default function Home({ navigation, containerStyle }: HomeProps) {
   const { theme } = useTheme();
   return (
     <View style={containerStyle}>
-      <Image style={styles.image} source={require('../assets/carbon-cut.png')} />
+      <Image style={styles.image} source={require('../app/assets/carbon-cut.png')} />
       <Text style={titleStyles(theme).title}>Réduisons votre empreinte carbone !</Text>
       <Text style={styles.description}>
         Carbon Cut vous permet d'estimer votre empreinte carbone annuelle, de l'affiner tout au long de l'année et vous donne des pistes

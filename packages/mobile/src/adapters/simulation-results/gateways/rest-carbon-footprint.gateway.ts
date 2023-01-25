@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { CarbonFootprintDto, SimulationDto } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
-import { CarbonFootprintGateway } from '../../domain/ports/gateways/carbon-footprint.gateway';
+import { CarbonFootprintGateway } from '../../../domain/ports/gateways/carbon-footprint.gateway';
 
 @injectable()
 export class RestCarbonFootprintGateway implements CarbonFootprintGateway {

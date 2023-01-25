@@ -1,14 +1,14 @@
 import { Input } from '@rneui/themed';
 import { StyleSheet, View } from 'react-native';
-import { Answer } from '../../../domain/ports/presenters/question.presenter';
+import { InputAnswer } from '../../../domain/ports/presenters/question.presenter';
 
 interface InputAnswersProps<T extends string> {
-  answers?: Answer<T, any>[];
-  answerChanged: (key: T, value: string) => void;
+  answers: InputAnswer<T, any>[];
+  answerChanged: (value: string, key: T) => void;
 }
 
 export default function InputAnswers<T extends string>({ answers, answerChanged }: InputAnswersProps<T>) {
-  return answers ? (
+  return (
     <View>
       {answers.map((answer) => {
         const accessibilityLabel = `Entrez le nombre de ${answer.label} par semaine`;
@@ -24,12 +24,12 @@ export default function InputAnswers<T extends string>({ answers, answerChanged 
             labelStyle={styles.labelStyle}
             renderErrorMessage={!!answer.errorMessage}
             errorMessage={answer.errorMessage}
-            onChangeText={(value) => answerChanged(answer.id, value)}
+            onChangeText={(value) => answerChanged(value, answer.id)}
           />
         );
       })}
     </View>
-  ) : null;
+  );
 }
 
 const styles = StyleSheet.create({

@@ -1,4 +1,4 @@
-import { BreakfastTypes, MilkTypes } from 'carbon-cut-commons';
+import { BreakfastTypes, ColdBeveragesAnswer, HotBeveragesAnswer, MilkTypes } from 'carbon-cut-commons';
 import { Container } from 'inversify';
 import 'reflect-metadata';
 import { ReactToastUserNotifyPresenter } from '../adapters/commons/presenters/react-toast-user-notify.presenter';
@@ -15,8 +15,9 @@ import {
   BreakfastQuestionPresenterToken,
   ColdBeveragesQuestionPresenterToken,
   HotBeveragesQuestionPresenterToken,
+  InputQuestionPresenter,
   MilkTypeQuestionPresenterToken,
-  QuestionPresenter,
+  SelectableQuestionPresenter,
 } from '../domain/ports/presenters/question.presenter';
 import { SimulationResultsPresenter, SimulationResultsPresenterToken } from '../domain/ports/presenters/simulation-results.presenter';
 import { UserNotifyConfigToken, UserNotifyPresenter, UserNotifyPresenterToken } from '../domain/ports/presenters/user-notify.presenter';
@@ -31,10 +32,14 @@ import { theme } from './app/theme';
 
 const diContainer = new Container();
 
-diContainer.bind<QuestionPresenter<BreakfastTypes>>(BreakfastQuestionPresenterToken).to(WebBreakfastQuestionPresenter);
-diContainer.bind<QuestionPresenter<number | string>>(HotBeveragesQuestionPresenterToken).to(WebHotBeveragesQuestionPresenter);
-diContainer.bind<QuestionPresenter<MilkTypes>>(MilkTypeQuestionPresenterToken).to(WebMilkTypeQuestionPresenter);
-diContainer.bind<QuestionPresenter<number | string>>(ColdBeveragesQuestionPresenterToken).to(WebColdBeveragesQuestionPresenter);
+diContainer.bind<SelectableQuestionPresenter<BreakfastTypes>>(BreakfastQuestionPresenterToken).to(WebBreakfastQuestionPresenter);
+diContainer
+  .bind<InputQuestionPresenter<number | string, HotBeveragesAnswer>>(HotBeveragesQuestionPresenterToken)
+  .to(WebHotBeveragesQuestionPresenter);
+diContainer.bind<SelectableQuestionPresenter<MilkTypes>>(MilkTypeQuestionPresenterToken).to(WebMilkTypeQuestionPresenter);
+diContainer
+  .bind<InputQuestionPresenter<number | string, ColdBeveragesAnswer>>(ColdBeveragesQuestionPresenterToken)
+  .to(WebColdBeveragesQuestionPresenter);
 diContainer.bind<SimulationResultsPresenter>(SimulationResultsPresenterToken).to(WebSimulationResultsPresenter);
 diContainer.bind<UserNotifyPresenter>(UserNotifyPresenterToken).to(ReactToastUserNotifyPresenter);
 diContainer.bind<Record<string, string | undefined>>(UserNotifyConfigToken).toConstantValue({ backgroundColor: theme.darkColors?.error });

@@ -1,41 +1,55 @@
 import { injectable } from 'inversify';
-import { Answer, QuestionPresenter, QuestionViewModel } from '../../../domain/ports/presenters/question.presenter';
+import {
+  ExclusiveUnion,
+  InputAnswer,
+  InputQuestionPresenter,
+  QuestionPresenterViewModel,
+} from '../../../domain/ports/presenters/question.presenter';
 
 @injectable()
-export abstract class WebInputNumberQuestionPresenter<AnswersType> implements QuestionPresenter<string> {
-  readonly viewModel!: QuestionViewModel<string, string>;
+export abstract class WebInputNumberQuestionPresenter<AnswerValues, ViewModel extends QuestionPresenterViewModel>
+  implements InputQuestionPresenter<string, AnswerValues>
+{
+  abstract setAnswer<InputKey extends string>(
+    answerValue: ExclusiveUnion<string | null, { key: InputKey; value: string | null }>,
+    questionIndex?: number | undefined,
+  ): void;
+  protected abstract _viewModel: ViewModel;
 
-  setAnswer({ key, value }: { key: string; value: string }, questionIndex = 0): void {
-    this.viewModel.questions = this.viewModel.questions.map((question, idx) => {
-      if (idx === questionIndex) {
-        return {
-          ...question,
-          answers: this.#updatedAnswers(question.answers, key, value),
-        };
-      }
-      return question;
-    });
-    this.viewModel.canSubmit = this.viewModel.questions.every((question) =>
-      question.answers.every((answer) => answer.value && !isNaN(parseFloat(answer.value))),
-    );
+  abstract answerValues: AnswerValues;
+
+  get viewModel(): ViewModel {
+    return this._viewModel;
   }
 
-  abstract getAnswers(): AnswersType;
+  #notifyChanges!: (viewModel: ViewModel) => void;
+
+  onViewModelChanges(updateViewFn: (viewModel: ViewModel) => void): void {
+    this.#notifyChanges = updateViewFn;
+  }
+
+  protected updateViewModel(viewModel: Partial<ViewModel>) {
+    this._viewModel = { ...this._viewModel, ...viewModel };
+    this.#notifyChanges(this._viewModel);
+  }
+
+  protected updateAnswer<InputKey extends string>(answer: InputAnswer<InputKey, string | null>, value: string | null) {
+    const commaReplacedValue = value?.replace(',', '.') ?? null;
+    const isPositiveNumber = commaReplacedValue?.match(/^[0-9]+.?[0-9]*$/);
+    const errorMessage = isPositiveNumber ? undefined : `Veuillez saisir un nombre${isNaN(parseFloat(value ?? '')) ? '' : ' positif'}`;
+
+    return { ...answer, value: commaReplacedValue, errorMessage };
+  }
+
+  protected formatValue(value: string | null): string | null {
+    return value?.replace(',', '.') ?? null;
+  }
 
   protected valueToNumber(value: string | null): number {
     return parseFloat(value ?? '0');
   }
 
-  #updatedAnswers(answers: Answer<string, string | null>[], key: string, value: string): Answer<string, string | null>[] {
-    const commaReplacedValue = value?.replace(',', '.');
-    const isPositiveNumber = commaReplacedValue?.match(/^[0-9]+.?[0-9]*$/);
-
-    return answers.map((answer) => (answer.id === key ? this.#updateAnswer(answer, commaReplacedValue, !!isPositiveNumber) : answer));
-  }
-
-  #updateAnswer(answer: Answer<string, string | null>, value: string, isPositiveNumber: boolean) {
-    const errorMessage = isPositiveNumber ? undefined : `Veuillez saisir un nombre${isNaN(parseFloat(value)) ? '' : ' positif'}`;
-
-    return { ...answer, value, errorMessage };
+  protected isPositiveNumber(value: string | null): boolean {
+    return !!value?.match(/^[0-9]+.?[0-9]*$/);
   }
 }

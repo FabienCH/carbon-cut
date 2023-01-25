@@ -22,7 +22,7 @@ describe('ColdBeverages component', () => {
   beforeEach(() => {
     render(
       <Provider store={appStore}>
-        <ColdBeverages />
+        <ColdBeverages containerStyle={{}} />
       </Provider>,
     );
   });
@@ -149,7 +149,7 @@ describe('ColdBeverages component', () => {
       render(
         <Provider store={appStore}>
           <RootSiblingParent>
-            <ColdBeverages />
+            <ColdBeverages containerStyle={{}} />
           </RootSiblingParent>
         </Provider>,
       );

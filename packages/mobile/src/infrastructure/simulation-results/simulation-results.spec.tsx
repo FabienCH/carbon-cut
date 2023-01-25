@@ -15,7 +15,7 @@ describe('SimulationResults component', () => {
     );
     render(
       <MockTheme>
-        <SimulationResults />
+        <SimulationResults containerStyle={{}} />
       </MockTheme>,
     );
 
@@ -43,7 +43,7 @@ describe('SimulationResults component', () => {
     );
     render(
       <MockTheme>
-        <SimulationResults />
+        <SimulationResults containerStyle={{}} />
       </MockTheme>,
     );
 
@@ -75,7 +75,7 @@ describe('SimulationResults component', () => {
     );
     render(
       <MockTheme>
-        <SimulationResults />
+        <SimulationResults containerStyle={{}} />
       </MockTheme>,
     );
 

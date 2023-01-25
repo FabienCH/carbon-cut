@@ -17,7 +17,7 @@ describe('Breakfast component', () => {
   beforeEach(() => {
     render(
       <Provider store={appStore}>
-        <Breakfast navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.Breakfast>} />
+        <Breakfast navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.Breakfast>} containerStyle={{}} />
       </Provider>,
     );
   });

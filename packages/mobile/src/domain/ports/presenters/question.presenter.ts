@@ -3,35 +3,54 @@ export const HotBeveragesQuestionPresenterToken = Symbol.for('HotBeveragesQuesti
 export const MilkTypeQuestionPresenterToken = Symbol.for('MilkTypeQuestionPresenter');
 export const ColdBeveragesQuestionPresenterToken = Symbol.for('ColdBeveragesQuestionPresenter');
 
-interface BaseAnswer<T> {
+export interface Answer<T> {
   label: string;
   value: T;
 }
 
-export interface Answer<IdType extends string, AnswerType> extends BaseAnswer<AnswerType> {
+export interface InputAnswer<IdType extends string, AnswerType> extends Answer<AnswerType> {
   id: IdType;
   errorMessage?: string;
   placeholder?: string;
 }
 
-export interface SelectableAnswer<AnswerType> extends BaseAnswer<AnswerType> {
-  selected: boolean;
+export interface MultipleAnswersViewModel<T = InputAnswer<string, unknown | null>[] | Answer<unknown>[]> {
+  answers: T;
 }
 
-interface BaseQuestionViewModel {
-  questions: { question: string; answers: Answer<string, unknown | null>[] | SelectableAnswer<unknown>[] }[];
-  canSubmit: boolean;
-}
-export interface QuestionViewModel<IdType extends string, AnswerType> extends BaseQuestionViewModel {
-  questions: { question: string; answers: Answer<IdType, AnswerType | null>[] }[];
+export interface AnswerViewModel<T = InputAnswer<string, unknown | null> | Answer<unknown>> {
+  answer: T;
 }
 
-export interface SelectableQuestionViewModel<AnswerType> extends BaseQuestionViewModel {
-  questions: { question: string; answers: SelectableAnswer<AnswerType>[] }[];
-  selectedAnswer: AnswerType | undefined;
-}
+export type QuestionViewModel<T = AnswerViewModel<unknown> | MultipleAnswersViewModel<unknown>> = T & { question: string };
+
+export type MultipleQuestionsViewModel<T = QuestionViewModel> = { questions: T[] };
+
+export type QuestionPresenterViewModel<T = QuestionViewModel | MultipleQuestionsViewModel> = T & { canSubmit: boolean };
+
+// export interface InputQuestionViewModel<IdType extends string, AnswerType> extends BaseQuestionViewModel {
+//   questions: { question: string; answers: InputAnswer<IdType, AnswerType | null>[] }[];
+// }
+
+// export interface SelectableQuestionViewModel<AnswerType> extends BaseQuestionViewModel {
+//   questions: { question: string; answers: SelectableAnswer<AnswerType>[] }[];
+//   selectedAnswer: AnswerType | undefined;
+// }
+
+export type ExclusiveUnion<A, B> = (Omit<A, keyof B> | A) | Omit<B, keyof A>;
 
 export interface QuestionPresenter<AnswerType> {
-  viewModel: QuestionViewModel<string, AnswerType> | SelectableQuestionViewModel<AnswerType>;
-  setAnswer(answerValue: AnswerType | { key: string; value: AnswerType }, questionIndex?: number): void;
+  viewModel: QuestionPresenterViewModel;
+  onViewModelChanges(updateViewFn: (viewModel: QuestionPresenterViewModel) => void): void;
+  setAnswer(answerValue: AnswerType | null | { key: string; value: AnswerType | null }, questionIndex?: number): void;
+}
+
+export interface InputQuestionPresenter<AnswerType, AnswerValues> extends QuestionPresenter<AnswerType> {
+  answerValues: AnswerValues;
+  setAnswer(answerValue: ExclusiveUnion<AnswerType | null, { key: string; value: AnswerType | null }>, questionIndex?: number): void;
+}
+
+export interface SelectableQuestionPresenter<AnswerType> extends QuestionPresenter<AnswerType> {
+  selectedAnswer: AnswerType | undefined;
+  setAnswer(answerValue: AnswerType, questionIndex?: number): void;
 }
