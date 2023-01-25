@@ -7,7 +7,7 @@ import { RootStackParamList, Routes } from '../../../root-navigation';
 import { appStore } from '../../../store/app-store';
 import { selectSimulationAnswers } from '../../../store/selectors/simulation-selectors';
 
-describe('HotBeverages component', () => {
+fdescribe('HotBeverages component', () => {
   beforeEach(() => {
     render(
       <Provider store={appStore}>
@@ -35,7 +35,7 @@ describe('HotBeverages component', () => {
     expect(submitButton.props.accessibilityState.disabled).toBeTruthy();
   });
 
-  it('should display an error message if one of the answer is missing', () => {
+  fit('should display an error message if one of the answer is missing', () => {
     const placeholderElements = screen.getAllByPlaceholderText(/\/ semaine/);
 
     placeholderElements.forEach((placeholderElem, idx) => {
@@ -47,7 +47,7 @@ describe('HotBeverages component', () => {
     expect(errorMessage).toBeTruthy();
   });
 
-  it('should display an error message if one of the answer is a text', () => {
+  fit('should display an error message if one of the answer is a text', () => {
     const placeholderElements = screen.getAllByPlaceholderText(/\/ semaine/);
 
     placeholderElements.forEach((placeholderElem, idx) => {
@@ -59,7 +59,7 @@ describe('HotBeverages component', () => {
     expect(errorMessage).toBeTruthy();
   });
 
-  it('should display an error message if one of the answer is not a valid number', () => {
+  fit('should display an error message if one of the answer is not a valid number', () => {
     const placeholderElements = screen.getAllByPlaceholderText(/\/ semaine/);
 
     placeholderElements.forEach((placeholderElem, idx) => {

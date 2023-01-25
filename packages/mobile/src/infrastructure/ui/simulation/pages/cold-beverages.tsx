@@ -13,7 +13,11 @@ import {
 } from '../../../../domain/usecases/carbon-footprint-simulation.usescase';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../../domain/usecases/save-simulation-answer.usecase';
 import { diContainer } from '../../../inversify.config';
+import { saveAnswer } from '../../../store/actions/simulation-actions';
 import { selectIsLoading } from '../../../store/selectors/loading-selectors';
+import InputAnswers from '../components/input-answers';
+import Question from '../components/question';
+import SubmitButton from '../components/submit-button';
 
 type ColdBeveragesQuestion = { question: string; answers: Answer<ColdBeveragesKeys, string | null>[] };
 
@@ -43,66 +47,18 @@ export default function ColdBeverages() {
   };
 
   return (
-    <View style={styles.container}>
-      {questions.map((questionItem, questionIdx) => {
-        return (
-          <View key={questionIdx} style={styles.questionContainer}>
-            <Text accessibilityRole="header" style={styles.question}>
-              {questionItem.question}
-            </Text>
-            {questionItem.answers.map((answer) => {
-              const accessibilityLabel = `Entrez le nombre de ${answer.label} par semaine`;
-              return (
-                <Input
-                  key={answer.id}
-                  accessibilityLabel={accessibilityLabel}
-                  label={answer.label}
-                  value={answer.value?.toString()}
-                  placeholder={answer.placeholder}
-                  keyboardType="numeric"
-                  labelStyle={styles.labelStyle}
-                  renderErrorMessage={!!answer.errorMessage}
-                  errorMessage={answer.errorMessage}
-                  onChangeText={(value) => setAnswer(answer.id, value, questionIdx)}
-                />
-              );
-            })}
-          </View>
-        );
-      })}
-      <Button
-        accessibilityRole="button"
-        containerStyle={styles.button}
-        disabled={!viewModel.canSubmit}
-        loading={isLoading}
-        onPress={() => runCalculation()}
-      >
-        Calculer mon empreinte
-      </Button>
+    <View>
+      {questions.map((q, qIdx) => (
+        <Question key={qIdx} question={q.question}>
+          <InputAnswers answers={q.answers} answerChanged={(answerKey, value) => setAnswer(answerKey, value, qIdx)} />
+        </Question>
+      ))}
+      <SubmitButton
+        isLastQuestion={true}
+        canSubmit={viewModel.canSubmit}
+        isLoading={isLoading}
+        nextButtonClicked={() => runCalculation()}
+      />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-  questionContainer: {
-    marginBottom: 30,
-  },
-  question: {
-    marginBottom: 20,
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  labelStyle: {
-    color: '#000000',
-  },
-  button: {
-    marginTop: 20,
-  },
-});

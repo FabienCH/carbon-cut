@@ -27,7 +27,7 @@ export default function Breakfast({ navigation }: { navigation: BreakfastNavigat
 
   const setSelectedBreakfast = (answer: BreakfastAnswer): void => {
     presenter.setAnswer(answer.value);
-    updateAnswers(question.answers);
+    updateAnswers(viewModel.questions[0].answers);
   };
 
   const saveAnswer = (): void => {

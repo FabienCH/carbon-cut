@@ -12,7 +12,9 @@ import { Answer, HotBeveragesQuestionPresenterToken } from '../../../../domain/p
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../../domain/usecases/save-simulation-answer.usecase';
 import { diContainer } from '../../../inversify.config';
 import { RootStackParamList, Routes } from '../../../root-navigation';
-import { selectIsLoading } from '../../../store/selectors/loading-selectors';
+import InputAnswers from '../components/input-answers';
+import Question from '../components/question';
+import SubmitButton from '../components/submit-button';
 
 type HotBeveragesAnswer = Answer<HotBeveragesKeys, string | null>;
 type HotBeveragesNavigationProp = NavigationProp<RootStackParamList, Routes.HotBeverages>;
@@ -24,11 +26,12 @@ export default function HotBeverages({ navigation }: { navigation: HotBeveragesN
   const [saveSimulationAnswerUseCase] = useState<SaveSimulationAnswerUseCase>(
     diContainer.get<SaveSimulationAnswerUseCase>(SaveSimulationAnswerUseCaseToken),
   );
-  const isLoading = useSelector(selectIsLoading);
 
-  const [answers, updateAnswers] = useState<HotBeveragesAnswer[]>(presenter.viewModel.questions[0].answers);
-  const [nextNavigateRoute, setNextNavigateRoute] = useState<Routes>(presenter.nextNavigateRoute());
   const { viewModel } = presenter;
+  const question = presenter.viewModel.questions[0];
+
+  const [answers, updateAnswers] = useState<HotBeveragesAnswer[]>(question.answers);
+  const [nextNavigateRoute, setNextNavigateRoute] = useState<Routes>(presenter.nextNavigateRoute());
 
   const setAnswer = (key: HotBeveragesKeys, value: string): void => {
     presenter.setAnswer({ key, value });
@@ -36,68 +39,17 @@ export default function HotBeverages({ navigation }: { navigation: HotBeveragesN
     updateAnswers(viewModel.questions[0].answers);
   };
 
-  const submitButtonPressed = (): void => {
+  const saveAnswer = (): void => {
     saveSimulationAnswerUseCase.execute({ answerKey: 'hotBeverages', answer: presenter.getAnswers() });
     navigation.navigate(nextNavigateRoute);
   };
 
   return (
-    <View style={styles.container}>
-      <Text accessibilityRole="header" style={styles.question}>
-        {viewModel.questions[0].question}
-      </Text>
-      {answers.map((answer) => {
-        const accessibilityLabel = `Entrez le nombre de ${answer.label} par semaine`;
-        return (
-          <Input
-            key={answer.id}
-            accessibilityLabel={accessibilityLabel}
-            label={answer.label}
-            value={answer.value?.toString()}
-            placeholder={answer.placeholder}
-            keyboardType="numeric"
-            containerStyle={styles.answer}
-            labelStyle={styles.labelStyle}
-            renderErrorMessage={!!answer.errorMessage}
-            errorMessage={answer.errorMessage}
-            onChangeText={(value) => setAnswer(answer.id, value)}
-          />
-        );
-      })}
-      <Button
-        accessibilityRole="button"
-        containerStyle={styles.button}
-        disabled={!viewModel.canSubmit}
-        loading={isLoading}
-        onPress={() => submitButtonPressed()}
-      >
-        Suivant
-      </Button>
+    <View>
+      <Question question={question.question}>
+        <InputAnswers answers={answers} answerChanged={(answerKey, value) => setAnswer(answerKey, value)} />
+      </Question>
+      <SubmitButton isLastQuestion={false} canSubmit={viewModel.canSubmit} nextButtonClicked={() => saveAnswer()} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-  question: {
-    marginBottom: 20,
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  answer: {
-    marginVertical: 15,
-  },
-
-  labelStyle: {
-    color: '#000000',
-  },
-  button: {
-    marginTop: 30,
-  },
-});
