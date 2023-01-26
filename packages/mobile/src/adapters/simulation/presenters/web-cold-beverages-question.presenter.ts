@@ -1,8 +1,10 @@
 import { ColdBeveragesAnswer } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
+import { PositiveNumberError } from '../../../domain/entites/answer-validator';
 import {
   AnswerViewModel,
   InputAnswer,
+  InputAnswerValue,
   MultipleQuestionsViewModel,
   QuestionPresenterViewModel,
   QuestionViewModel,
@@ -13,7 +15,7 @@ export type ColdBeveragesKeys = keyof ColdBeveragesAnswer;
 export type ColdBeveragesViewModel = QuestionPresenterViewModel<
   MultipleQuestionsViewModel<QuestionViewModel<AnswerViewModel<ColdBeverageAnswerValue>>>
 >;
-type ColdBeverageAnswerValue = InputAnswer<ColdBeveragesKeys, string | null>;
+type ColdBeverageAnswerValue = InputAnswer<ColdBeveragesKeys>;
 
 @injectable()
 export class WebColdBeveragesQuestionPresenter extends WebInputNumberQuestionPresenter<ColdBeveragesAnswer, ColdBeveragesViewModel> {
@@ -39,15 +41,14 @@ export class WebColdBeveragesQuestionPresenter extends WebInputNumberQuestionPre
     canSubmit: false,
   };
 
-  setAnswer(answerValue: string | null, questionIndex: number): void {
+  setAnswer({ value }: InputAnswerValue<ColdBeveragesKeys>, error: PositiveNumberError, canSubmit: boolean, questionIndex: number): void {
     const questions = this._viewModel.questions.map((question, idx) => {
       if (idx === questionIndex) {
-        const updatedAnswer = this.updateAnswer(question.answer, answerValue);
+        const updatedAnswer = this.updateAnswer(question.answer, value, error);
         return { ...question, answer: updatedAnswer };
       }
       return question;
     });
-    const canSubmit = questions.every((question) => question.answer.value && !isNaN(parseFloat(question.answer.value)));
     this.updateViewModel({ questions, canSubmit });
   }
 }

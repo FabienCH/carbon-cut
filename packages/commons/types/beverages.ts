@@ -1,10 +1,10 @@
-export interface HotBeveragesAnswer {
+export type HotBeveragesAnswer = {
   coffee: number;
   tea: number;
   hotChocolate: number;
-}
+};
 
-export interface ColdBeveragesAnswer {
+export type ColdBeveragesAnswer = {
   sweet: number;
   alcohol: number;
-}
+};

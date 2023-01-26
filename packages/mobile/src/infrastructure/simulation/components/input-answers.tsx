@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { InputAnswer } from '../../../domain/ports/presenters/question.presenter';
 
 interface InputAnswersProps<T extends string> {
-  answers: InputAnswer<T, any>[];
+  answers: InputAnswer<T>[];
   answerChanged: (value: string, key: T) => void;
 }
 

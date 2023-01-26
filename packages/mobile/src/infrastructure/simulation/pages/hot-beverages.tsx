@@ -14,6 +14,7 @@ import { HotBeveragesQuestionPresenterToken } from '../../../domain/ports/presen
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
 import { diContainer } from '../../inversify.config';
 import { RootStackParamList, Routes } from '../../root-navigation';
+import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '../../../domain/usecases/set-input-answer.usecase';
 
 type HotBeveragesNavigationProp = NavigationProp<RootStackParamList, Routes.HotBeverages>;
 type HotBeveragesProps = {
@@ -25,6 +26,7 @@ export default function HotBeverages({ navigation, containerStyle }: HotBeverage
   const [presenter] = useState<WebHotBeveragesQuestionPresenter>(
     diContainer.get<WebHotBeveragesQuestionPresenter>(HotBeveragesQuestionPresenterToken),
   );
+  const [setInputAnswerUseCase] = useState<SetInputAnswerUseCase>(diContainer.get<SetInputAnswerUseCase>(SetInputAnswerUseCaseToken));
   const [saveSimulationAnswerUseCase] = useState<SaveSimulationAnswerUseCase>(
     diContainer.get<SaveSimulationAnswerUseCase>(SaveSimulationAnswerUseCaseToken),
   );
@@ -36,8 +38,8 @@ export default function HotBeverages({ navigation, containerStyle }: HotBeverage
     presenter.onViewModelChanges(updateViewModel);
   }, [presenter, presenter.viewModel]);
 
-  const setAnswer = (value: string, key: HotBeveragesKeys): void => {
-    presenter.setAnswer({ key, value });
+  const setAnswer = (value: string, id: HotBeveragesKeys): void => {
+    setInputAnswerUseCase.execute(presenter, { id, value });
     setNextNavigateRoute(presenter.nextNavigateRoute());
   };
 

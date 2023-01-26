@@ -8,13 +8,7 @@ export const SaveSimulationAnswerUseCaseToken = Symbol.for('SaveSimulationAnswer
 export class SaveSimulationAnswerUseCase {
   constructor(@inject(SimulationStoreToken) private readonly simulationStore: SimulationStore) {}
 
-  async execute({
-    answerKey,
-    answer,
-  }: {
-    answerKey: keyof SimulationDto;
-    answer: SimulationDto[typeof answerKey] | undefined;
-  }): Promise<void> {
+  execute({ answerKey, answer }: { answerKey: keyof SimulationDto; answer: SimulationDto[typeof answerKey] | undefined }): void {
     if (answer) {
       this.simulationStore.saveAnswer({ [answerKey]: answer });
     }

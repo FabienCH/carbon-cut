@@ -1,19 +1,25 @@
 import { injectable } from 'inversify';
+import { PositiveNumberError } from '../../../domain/entites/answer-validator';
 import {
-  ExclusiveUnion,
   InputAnswer,
+  InputAnswerValue,
   InputQuestionPresenter,
   QuestionPresenterViewModel,
 } from '../../../domain/ports/presenters/question.presenter';
 
 @injectable()
-export abstract class WebInputNumberQuestionPresenter<AnswerValues, ViewModel extends QuestionPresenterViewModel>
-  implements InputQuestionPresenter<string, AnswerValues>
+export abstract class WebInputNumberQuestionPresenter<
+  AnswerValues extends Record<string, number | undefined>,
+  ViewModel extends QuestionPresenterViewModel,
+> implements InputQuestionPresenter<AnswerValues>
 {
-  abstract setAnswer<InputKey extends string>(
-    answerValue: ExclusiveUnion<string | null, { key: InputKey; value: string | null }>,
+  abstract setAnswer(
+    answerValue: InputAnswerValue<keyof AnswerValues>,
+    error: PositiveNumberError,
+    canSubmit: boolean,
     questionIndex?: number | undefined,
   ): void;
+
   protected abstract _viewModel: ViewModel;
 
   abstract answerValues: AnswerValues;
@@ -33,23 +39,20 @@ export abstract class WebInputNumberQuestionPresenter<AnswerValues, ViewModel ex
     this.#notifyChanges(this._viewModel);
   }
 
-  protected updateAnswer<InputKey extends string>(answer: InputAnswer<InputKey, string | null>, value: string | null) {
-    const commaReplacedValue = value?.replace(',', '.') ?? null;
-    const isPositiveNumber = commaReplacedValue?.match(/^[0-9]+.?[0-9]*$/);
-    const errorMessage = isPositiveNumber ? undefined : `Veuillez saisir un nombre${isNaN(parseFloat(value ?? '')) ? '' : ' positif'}`;
+  protected updateAnswer<InputKey extends string>(answer: InputAnswer<InputKey>, value: string | null, answerError: PositiveNumberError) {
+    const errorMessage = answerError ? `Veuillez saisir un nombre${answerError.error === 'isNotPositive' ? ' positif' : ''}` : undefined;
 
-    return { ...answer, value: commaReplacedValue, errorMessage };
+    return { ...answer, value: this.#formatValue(value), errorMessage };
   }
 
-  protected formatValue(value: string | null): string | null {
-    return value?.replace(',', '.') ?? null;
-  }
-
-  protected valueToNumber(value: string | null): number {
+  protected valueToNumber(value: string | null): number | null {
+    if (value === null) {
+      return null;
+    }
     return parseFloat(value ?? '0');
   }
 
-  protected isPositiveNumber(value: string | null): boolean {
-    return !!value?.match(/^[0-9]+.?[0-9]*$/);
+  #formatValue(value: string | null): string | null {
+    return value?.replace(',', '.') ?? null;
   }
 }

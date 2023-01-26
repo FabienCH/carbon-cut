@@ -14,8 +14,7 @@ export class ReduxSimulationStore implements SimulationStore {
   }
 
   getSimulationsAnswers() {
-    const simulationAnswers = selectSimulationAnswers() as SimulationDto;
-    return simulationAnswers;
+    return selectSimulationAnswers();
   }
 
   saveAnswer(answer: Partial<SimulationDto>) {

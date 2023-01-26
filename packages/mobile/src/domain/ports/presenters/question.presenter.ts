@@ -1,3 +1,5 @@
+import { PositiveNumberError } from '../../entites/answer-validator';
+
 export const BreakfastQuestionPresenterToken = Symbol.for('BreakfastQuestionPresenter');
 export const HotBeveragesQuestionPresenterToken = Symbol.for('HotBeveragesQuestionPresenter');
 export const MilkTypeQuestionPresenterToken = Symbol.for('MilkTypeQuestionPresenter');
@@ -8,17 +10,17 @@ export interface Answer<T> {
   value: T;
 }
 
-export interface InputAnswer<IdType extends string, AnswerType> extends Answer<AnswerType> {
+export interface InputAnswer<IdType extends string> extends Answer<string | null> {
   id: IdType;
   errorMessage?: string;
   placeholder?: string;
 }
 
-export interface MultipleAnswersViewModel<T = InputAnswer<string, unknown | null>[] | Answer<unknown>[]> {
+export interface MultipleAnswersViewModel<T = InputAnswer<string>[] | Answer<unknown>[]> {
   answers: T;
 }
 
-export interface AnswerViewModel<T = InputAnswer<string, unknown | null> | Answer<unknown>> {
+export interface AnswerViewModel<T = InputAnswer<string> | Answer<unknown>> {
   answer: T;
 }
 
@@ -28,29 +30,24 @@ export type MultipleQuestionsViewModel<T = QuestionViewModel> = { questions: T[]
 
 export type QuestionPresenterViewModel<T = QuestionViewModel | MultipleQuestionsViewModel> = T & { canSubmit: boolean };
 
-// export interface InputQuestionViewModel<IdType extends string, AnswerType> extends BaseQuestionViewModel {
-//   questions: { question: string; answers: InputAnswer<IdType, AnswerType | null>[] }[];
-// }
-
-// export interface SelectableQuestionViewModel<AnswerType> extends BaseQuestionViewModel {
-//   questions: { question: string; answers: SelectableAnswer<AnswerType>[] }[];
-//   selectedAnswer: AnswerType | undefined;
-// }
-
-export type ExclusiveUnion<A, B> = (Omit<A, keyof B> | A) | Omit<B, keyof A>;
-
-export interface QuestionPresenter<AnswerType> {
+export interface QuestionPresenter {
   viewModel: QuestionPresenterViewModel;
   onViewModelChanges(updateViewFn: (viewModel: QuestionPresenterViewModel) => void): void;
-  setAnswer(answerValue: AnswerType | null | { key: string; value: AnswerType | null }, questionIndex?: number): void;
 }
 
-export interface InputQuestionPresenter<AnswerType, AnswerValues> extends QuestionPresenter<AnswerType> {
+export type InputAnswerValue<IdType> = { id: IdType; value: string | null };
+
+export interface InputQuestionPresenter<AnswerValues extends Record<string, number | undefined>> extends QuestionPresenter {
   answerValues: AnswerValues;
-  setAnswer(answerValue: ExclusiveUnion<AnswerType | null, { key: string; value: AnswerType | null }>, questionIndex?: number): void;
+  setAnswer(
+    answerValue: InputAnswerValue<keyof AnswerValues>,
+    error: PositiveNumberError,
+    canSubmit: boolean,
+    questionIndex?: number,
+  ): void;
 }
 
-export interface SelectableQuestionPresenter<AnswerType> extends QuestionPresenter<AnswerType> {
+export interface SelectableQuestionPresenter<AnswerType = string> extends QuestionPresenter {
   selectedAnswer: AnswerType | undefined;
   setAnswer(answerValue: AnswerType, questionIndex?: number): void;
 }

@@ -1,4 +1,5 @@
 import { BreakfastTypes } from 'carbon-cut-commons';
+import { injectable } from 'inversify';
 import {
   Answer,
   MultipleAnswersViewModel,
@@ -10,6 +11,7 @@ import { WebSelectableQuestionPresenter } from './web-selectable-question.presen
 export type BreakfastAnswer = Answer<BreakfastTypes>;
 export type BreakfastViewModel = QuestionPresenterViewModel<QuestionViewModel<MultipleAnswersViewModel<BreakfastAnswer[]>>>;
 
+@injectable()
 export class WebBreakfastQuestionPresenter extends WebSelectableQuestionPresenter<BreakfastTypes, BreakfastViewModel> {
   protected readonly _viewModel: BreakfastViewModel = {
     question: 'Quel type de petit déjeuner prenez-vous habituellement ?',

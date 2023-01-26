@@ -1,7 +1,9 @@
 import { BreakfastTypes, HotBeveragesAnswer } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
+import { PositiveNumberError } from '../../../domain/entites/answer-validator';
 import {
   InputAnswer,
+  InputAnswerValue,
   MultipleAnswersViewModel,
   QuestionPresenterViewModel,
   QuestionViewModel,
@@ -14,7 +16,7 @@ export type HotBeveragesKeys = keyof HotBeveragesAnswer;
 export type HotBeverageViewModel = QuestionPresenterViewModel<
   QuestionViewModel<QuestionViewModel<MultipleAnswersViewModel<HotBeverageAnswerValue[]>>>
 >;
-type HotBeverageAnswerValue = InputAnswer<HotBeveragesKeys, string | null>;
+type HotBeverageAnswerValue = InputAnswer<HotBeveragesKeys>;
 
 @injectable()
 export class WebHotBeveragesQuestionPresenter extends WebInputNumberQuestionPresenter<HotBeveragesAnswer, HotBeverageViewModel> {
@@ -35,18 +37,15 @@ export class WebHotBeveragesQuestionPresenter extends WebInputNumberQuestionPres
     canSubmit: false,
   };
 
-  setAnswer({ key, value }: { key: HotBeveragesKeys; value: string | null }): void {
+  setAnswer({ id, value }: InputAnswerValue<HotBeveragesKeys>, error: PositiveNumberError, canSubmit: boolean): void {
     const answers = this._viewModel.answers.map((answer) => {
-      if (answer.id === key) {
-        return this.updateAnswer(answer, value);
+      if (answer.id === id) {
+        return this.updateAnswer(answer, value, error);
       }
 
       return answer;
     });
-    const canSubmit = answers.every((answer) => {
-      const floatValue = parseFloat(answer?.value ?? '');
-      return !isNaN(floatValue) && floatValue >= 0;
-    });
+
     this.updateViewModel({ answers, canSubmit });
   }
 

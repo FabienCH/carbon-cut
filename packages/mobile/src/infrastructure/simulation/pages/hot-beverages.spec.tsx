@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
-import HotBeveragesAnswer from './hot-beverages';
+import HotBeverages from './hot-beverages';
 import { NavigationProp } from '@react-navigation/native';
 import { selectSimulationAnswers } from '../../../adapters/simulation-results/store/selectors/simulation-selectors';
 import { appStore } from '../../../adapters/commons/store/app-store';
@@ -11,10 +11,7 @@ describe('HotBeverages component', () => {
   beforeEach(() => {
     render(
       <Provider store={appStore}>
-        <HotBeveragesAnswer
-          navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.HotBeverages>}
-          containerStyle={{}}
-        />
+        <HotBeverages navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.HotBeverages>} containerStyle={{}} />
       </Provider>,
     );
   });

@@ -28,18 +28,15 @@ import {
   CarbonFootprintSimulationUseCaseToken,
 } from '../domain/usecases/carbon-footprint-simulation.usescase';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../domain/usecases/save-simulation-answer.usecase';
+import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '../domain/usecases/set-input-answer.usecase';
 import { theme } from './app/theme';
 
 const diContainer = new Container();
 
 diContainer.bind<SelectableQuestionPresenter<BreakfastTypes>>(BreakfastQuestionPresenterToken).to(WebBreakfastQuestionPresenter);
-diContainer
-  .bind<InputQuestionPresenter<number | string, HotBeveragesAnswer>>(HotBeveragesQuestionPresenterToken)
-  .to(WebHotBeveragesQuestionPresenter);
+diContainer.bind<InputQuestionPresenter<HotBeveragesAnswer>>(HotBeveragesQuestionPresenterToken).to(WebHotBeveragesQuestionPresenter);
 diContainer.bind<SelectableQuestionPresenter<MilkTypes>>(MilkTypeQuestionPresenterToken).to(WebMilkTypeQuestionPresenter);
-diContainer
-  .bind<InputQuestionPresenter<number | string, ColdBeveragesAnswer>>(ColdBeveragesQuestionPresenterToken)
-  .to(WebColdBeveragesQuestionPresenter);
+diContainer.bind<InputQuestionPresenter<ColdBeveragesAnswer>>(ColdBeveragesQuestionPresenterToken).to(WebColdBeveragesQuestionPresenter);
 diContainer.bind<SimulationResultsPresenter>(SimulationResultsPresenterToken).to(WebSimulationResultsPresenter);
 diContainer.bind<UserNotifyPresenter>(UserNotifyPresenterToken).to(ReactToastUserNotifyPresenter);
 diContainer.bind<Record<string, string | undefined>>(UserNotifyConfigToken).toConstantValue({ backgroundColor: theme.darkColors?.error });
@@ -48,6 +45,7 @@ diContainer.bind<CarbonFootprintGateway>(CarbonFootprintGatewayToken).to(RestCar
 
 diContainer.bind<CarbonFootprintSimulationUseCase>(CarbonFootprintSimulationUseCaseToken).to(CarbonFootprintSimulationUseCase);
 diContainer.bind<SaveSimulationAnswerUseCase>(SaveSimulationAnswerUseCaseToken).to(SaveSimulationAnswerUseCase);
+diContainer.bind<SetInputAnswerUseCase>(SetInputAnswerUseCaseToken).to(SetInputAnswerUseCase);
 
 diContainer.bind<SimulationStore>(SimulationStoreToken).to(ReduxSimulationStore);
 diContainer.bind<LoadingStore>(LoadingStoreToken).to(ReduxLoadingStore);

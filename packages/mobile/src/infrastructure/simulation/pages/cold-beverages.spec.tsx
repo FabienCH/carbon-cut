@@ -41,10 +41,12 @@ describe('ColdBeverages component', () => {
     const placeholderElements = screen.getAllByPlaceholderText(/\/ semaine/);
 
     fireEvent.changeText(placeholderElements[0], '1.3');
+    fireEvent.changeText(placeholderElements[1], '1,2');
 
     const errorMessage = screen.queryByText('Veuillez saisir un nombre positif');
     expect(errorMessage).toBeNull();
     expect(placeholderElements[0].props.value).toEqual('1.3');
+    expect(placeholderElements[1].props.value).toEqual('1.2');
   });
 
   it('should display a disable submit answer button', () => {

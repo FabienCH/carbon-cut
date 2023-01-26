@@ -43,6 +43,7 @@ export default function Breakfast({ navigation, containerStyle }: BreakfastProps
     saveSimulationAnswerUseCase.execute({ answerKey: 'breakfast', answer: presenter.selectedAnswer });
     navigation.navigate(Routes.HotBeverages, { containerStyle });
   };
+
   return (
     <View style={containerStyle}>
       <Question question={viewModel.question}>
