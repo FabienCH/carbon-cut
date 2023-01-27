@@ -10,7 +10,7 @@ export interface Answer<T> {
   value: T;
 }
 
-export interface InputAnswer<IdType extends string> extends Answer<string | null> {
+export interface InputAnswer<IdType extends string> extends Answer<string | undefined> {
   id: IdType;
   errorMessage?: string;
   placeholder?: string;
@@ -35,7 +35,7 @@ export interface QuestionPresenter {
   onViewModelChanges(updateViewFn: (viewModel: QuestionPresenterViewModel) => void): void;
 }
 
-export type InputAnswerValue<IdType> = { id: IdType; value: string | null };
+export type InputAnswerValue<IdType> = { id: IdType; value: string | undefined };
 
 export interface InputQuestionPresenter<AnswerValues extends Record<string, number | undefined>> extends QuestionPresenter {
   answerValues: AnswerValues;

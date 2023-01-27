@@ -31,11 +31,11 @@ export class WebColdBeveragesQuestionPresenter extends WebInputNumberQuestionPre
     questions: [
       {
         question: 'Quelle est votre consommation de boissons sucrée par semaine (sodas, jus de fruit, sirops) ?',
-        answer: { id: 'sweet', label: '', placeholder: 'litres / semaine', value: null },
+        answer: { id: 'sweet', label: '', placeholder: 'litres / semaine', value: undefined },
       },
       {
         question: "Quelle est votre consommation d'alcool par semaine (vin, bière, cocktail) ?",
-        answer: { id: 'alcohol', label: '', placeholder: 'litres / semaine', value: null },
+        answer: { id: 'alcohol', label: '', placeholder: 'litres / semaine', value: undefined },
       },
     ],
     canSubmit: false,

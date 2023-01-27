@@ -17,7 +17,7 @@ export default function InputAnswers<T extends string>({ answers, answerChanged 
             key={answer.id}
             accessibilityLabel={accessibilityLabel}
             label={answer.label}
-            value={answer.value?.toString()}
+            value={answer.value}
             placeholder={answer.placeholder}
             keyboardType="numeric"
             containerStyle={styles.answer}

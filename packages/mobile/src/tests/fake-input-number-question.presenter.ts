@@ -13,7 +13,7 @@ export class FakeInputQuestionPresenter extends WebInputNumberQuestionPresenter<
   protected _viewModel!: QuestionPresenterViewModel;
   answerValues!: Record<string, number | undefined>;
 
-  setAnswer({ id, value }: { id: string; value: string | null }, __: PositiveNumberError): void {
-    this.answerValues[id] = value === null ? undefined : parseFloat(value);
+  setAnswer({ id, value }: { id: string; value: string | undefined }, __: PositiveNumberError): void {
+    this.answerValues[id] = value === undefined ? undefined : parseFloat(value);
   }
 }

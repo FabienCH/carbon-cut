@@ -30,9 +30,9 @@ export class WebHotBeveragesQuestionPresenter extends WebInputNumberQuestionPres
   protected readonly _viewModel: HotBeverageViewModel = {
     question: 'Quelle est votre consommation de boissons chaudes par semaine ?',
     answers: [
-      { id: 'coffee', label: 'Café', placeholder: 'Cafés / semaine', value: null },
-      { id: 'tea', label: 'Thé', placeholder: 'Thés / semaine', value: null },
-      { id: 'hotChocolate', label: 'Chocolat chaud', placeholder: 'Chocolat chaud / semaine', value: null },
+      { id: 'coffee', label: 'Café', placeholder: 'Cafés / semaine', value: undefined },
+      { id: 'tea', label: 'Thé', placeholder: 'Thés / semaine', value: undefined },
+      { id: 'hotChocolate', label: 'Chocolat chaud', placeholder: 'Chocolat chaud / semaine', value: undefined },
     ],
     canSubmit: false,
   };

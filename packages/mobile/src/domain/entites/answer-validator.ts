@@ -1,7 +1,7 @@
 export type PositiveNumberError = { error: 'isNotNumber' | 'isNotPositive' } | null;
 
 export class AnswerValidator {
-  static positiveNumberValidator(value: string | null): PositiveNumberError {
+  static positiveNumberValidator(value: string | undefined): PositiveNumberError {
     if (!value || isNaN(parseFloat(value))) {
       return { error: 'isNotNumber' };
     }

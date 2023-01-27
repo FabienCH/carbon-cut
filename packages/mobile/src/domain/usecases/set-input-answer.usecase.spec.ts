@@ -33,9 +33,9 @@ describe('Set input answer use case', () => {
   });
 
   it('should not allow an empty value', () => {
-    setInputAnswerUseCase.execute(fakeInputQuestionPresenter, { id: 'id', value: null });
+    setInputAnswerUseCase.execute(fakeInputQuestionPresenter, { id: 'id', value: undefined });
 
-    expect(setAnswerSpy).toHaveBeenCalledWith({ id: 'id', value: null }, { error: 'isNotNumber' }, false, undefined);
+    expect(setAnswerSpy).toHaveBeenCalledWith({ id: 'id', value: undefined }, { error: 'isNotNumber' }, false, undefined);
   });
 
   it('should not allow a text', () => {

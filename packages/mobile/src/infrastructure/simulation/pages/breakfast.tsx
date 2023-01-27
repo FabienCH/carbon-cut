@@ -1,8 +1,6 @@
 import { NavigationProp } from '@react-navigation/native';
-import { BreakfastTypes } from 'carbon-cut-commons';
 import { useEffect, useState } from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
-import { useSelector } from 'react-redux';
 import {
   BreakfastAnswer,
   BreakfastViewModel,

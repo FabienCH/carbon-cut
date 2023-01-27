@@ -16,7 +16,7 @@ export class SetInputAnswerUseCase {
       if (answerKey === answerValue.id) {
         return answerError === null;
       }
-      const value = inputQuestionPresenter.answerValues[answerKey]?.toString() ?? null;
+      const value = inputQuestionPresenter.answerValues[answerKey]?.toString();
       return AnswerValidator.positiveNumberValidator(value) === null;
     });
     inputQuestionPresenter.setAnswer(answerValue, answerError, canSubmit, questionIndex);
