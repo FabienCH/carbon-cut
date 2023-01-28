@@ -4,7 +4,7 @@ export default {
   ...config,
   preset: 'react-native',
   coverageDirectory: './coverage',
-  testRegex: '.*\\.spec\\.tsx$',
+  testRegex: '.*\\.spec\\.tsx?$',
   setupFiles: ['./jest-setup.js'],
   transform: {
     '^.+\\.tsx?$': [

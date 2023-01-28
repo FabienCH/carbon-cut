@@ -1,37 +1,53 @@
+import { PositiveNumberError } from '../../entites/answer-validator';
+
 export const BreakfastQuestionPresenterToken = Symbol.for('BreakfastQuestionPresenter');
 export const HotBeveragesQuestionPresenterToken = Symbol.for('HotBeveragesQuestionPresenter');
 export const MilkTypeQuestionPresenterToken = Symbol.for('MilkTypeQuestionPresenter');
 export const ColdBeveragesQuestionPresenterToken = Symbol.for('ColdBeveragesQuestionPresenter');
 
-interface BaseAnswer<T> {
+export interface Answer<T> {
   label: string;
   value: T;
 }
 
-export interface Answer<IdType extends string, AnswerType> extends BaseAnswer<AnswerType> {
+export interface InputAnswer<IdType extends string> extends Answer<string | undefined> {
   id: IdType;
   errorMessage?: string;
   placeholder?: string;
 }
 
-export interface SelectableAnswer<AnswerType> extends BaseAnswer<AnswerType> {
-  selected: boolean;
+export interface MultipleAnswersViewModel<T = InputAnswer<string>[] | Answer<unknown>[]> {
+  answers: T;
 }
 
-interface BaseQuestionViewModel {
-  questions: { question: string; answers: Answer<string, unknown | null>[] | SelectableAnswer<unknown>[] }[];
-  canSubmit: boolean;
-}
-export interface QuestionViewModel<IdType extends string, AnswerType> extends BaseQuestionViewModel {
-  questions: { question: string; answers: Answer<IdType, AnswerType | null>[] }[];
+export interface AnswerViewModel<T = InputAnswer<string> | Answer<unknown>> {
+  answer: T;
 }
 
-export interface SelectableQuestionViewModel<AnswerType> extends BaseQuestionViewModel {
-  questions: { question: string; answers: SelectableAnswer<AnswerType>[] }[];
+export type QuestionViewModel<T = AnswerViewModel<unknown> | MultipleAnswersViewModel<unknown>> = T & { question: string };
+
+export type MultipleQuestionsViewModel<T = QuestionViewModel> = { questions: T[] };
+
+export type QuestionPresenterViewModel<T = QuestionViewModel | MultipleQuestionsViewModel> = T & { canSubmit: boolean };
+
+export interface QuestionPresenter {
+  viewModel: QuestionPresenterViewModel;
+  onViewModelChanges(updateViewFn: (viewModel: QuestionPresenterViewModel) => void): void;
+}
+
+export type InputAnswerValue<IdType> = { id: IdType; value: string | undefined };
+
+export interface InputQuestionPresenter<AnswerValues extends Record<string, number | undefined>> extends QuestionPresenter {
+  answerValues: AnswerValues;
+  setAnswer(
+    answerValue: InputAnswerValue<keyof AnswerValues>,
+    error: PositiveNumberError,
+    canSubmit: boolean,
+    questionIndex?: number,
+  ): void;
+}
+
+export interface SelectableQuestionPresenter<AnswerType = string> extends QuestionPresenter {
   selectedAnswer: AnswerType | undefined;
-}
-
-export interface QuestionPresenter<AnswerType> {
-  viewModel: QuestionViewModel<string, AnswerType> | SelectableQuestionViewModel<AnswerType>;
-  setAnswer(answerValue: AnswerType | { key: string; value: AnswerType }, questionIndex?: number): void;
+  setAnswer(answerValue: AnswerType, questionIndex?: number): void;
 }
