@@ -98,7 +98,7 @@ describe('Carbon footprint calculation use case', () => {
           ...defaultSimulationAnswers,
           breakfast: BreakfastTypes.milkCerealBreakfast,
         }),
-      ).rejects.toThrowError('Milk type is mandatory with cereal milk breakfast');
+      ).rejects.toThrowError('Milk type should not be empty with cereal milk breakfast');
     });
 
     it('should have a milk type if it has hot chocolate beverages', async () => {
@@ -108,7 +108,7 @@ describe('Carbon footprint calculation use case', () => {
           breakfast: BreakfastTypes.britishBreakfast,
           hotBeverages: { ...defaultSimulationAnswers.hotBeverages, hotChocolate: 2 },
         }),
-      ).rejects.toThrowError('Milk type is mandatory with hot chocolate beverage');
+      ).rejects.toThrowError('Milk type should not be empty with hot chocolate beverage');
     });
   });
 });
