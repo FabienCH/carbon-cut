@@ -4,6 +4,7 @@ import { FootprintHelper } from './footprints-helper';
 import { HotBeverages } from './hot-beverages';
 import { Meals } from './meals';
 import { AlimentationData, BreakfastMilkTypes, BreakfastWithMilkTypes } from './simulation-data';
+import { ValidationError } from './validation-error';
 
 export class Simulation {
   readonly #breakfast: BreakfastTypes;
@@ -39,7 +40,7 @@ export class Simulation {
 
   #validate(): void {
     if (this.#breakfast === BreakfastTypes.milkCerealBreakfast && !this.#milkType) {
-      throw new Error('Milk type should not be empty with cereal milk breakfast');
+      throw new ValidationError(['Milk type should not be empty with cereal milk breakfast']);
     }
   }
 

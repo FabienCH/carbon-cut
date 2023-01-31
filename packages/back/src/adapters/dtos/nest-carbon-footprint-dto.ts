@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CarbonFootprintDto, ColdBeveragesFootprints, HotBeveragesFootprints } from 'carbon-cut-commons';
-import { MealsFootprints } from 'carbon-cut-commons/dist/types/dtos/meals-dto';
+import { CarbonFootprintDto, ColdBeveragesFootprints, HotBeveragesFootprints, MealsFootprints } from 'carbon-cut-commons';
 
 class NestHotBeveragesFootprintsDto implements HotBeveragesFootprints {
   @ApiProperty({ required: false })

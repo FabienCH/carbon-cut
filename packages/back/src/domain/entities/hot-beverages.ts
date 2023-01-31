@@ -2,6 +2,7 @@ import { HotBeveragesAnswer, HotBeveragesFootprints, MilkTypes } from 'carbon-cu
 import { AnswerValidator } from './answer-validator';
 import { FootprintHelper } from './footprints-helper';
 import { AlimentationData } from './simulation-data';
+import { ValidationError } from './validation-error';
 
 export class HotBeverages {
   constructor(private readonly hotBeverages: HotBeveragesAnswer, private readonly milkType: MilkTypes) {
@@ -18,7 +19,7 @@ export class HotBeverages {
     AnswerValidator.validatePositiveValues(this.hotBeverages, 'hotBeverages');
 
     if (this.hotBeverages.hotChocolate > 0 && !this.milkType) {
-      throw new Error('Milk type should not be empty with hot chocolate beverage');
+      throw new ValidationError(['Milk type should not be empty with hot chocolate beverage']);
     }
   }
 

@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BreakfastTypes, ColdBeveragesAnswer, HotBeveragesAnswer, MilkTypes, SimulationDto } from 'carbon-cut-commons';
-import { MealsAnswer } from 'carbon-cut-commons/dist/types/meals';
+import { BreakfastTypes, ColdBeveragesAnswer, HotBeveragesAnswer, MealsAnswer, MilkTypes, SimulationDto } from 'carbon-cut-commons';
 import { Type } from 'class-transformer';
 import { IsEnum, IsNotEmpty, IsNumber, IsOptional, ValidateNested } from 'class-validator';
 
