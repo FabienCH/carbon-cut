@@ -1,4 +1,5 @@
 import { HotBeveragesAnswer, HotBeveragesFootprints, MilkTypes } from 'carbon-cut-commons';
+import { AnswerValidator } from './answer-validator';
 import { FootprintHelper } from './footprints-helper';
 import { AlimentationData } from './simulation-data';
 
@@ -14,6 +15,8 @@ export class HotBeverages {
   }
 
   #validate(): void {
+    AnswerValidator.validatePositiveValues(this.hotBeverages, 'hotBeverages');
+
     if (this.hotBeverages.hotChocolate > 0 && !this.milkType) {
       throw new Error('Milk type should not be empty with hot chocolate beverage');
     }

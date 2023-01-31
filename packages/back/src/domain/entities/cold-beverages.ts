@@ -1,9 +1,12 @@
 import { ColdBeveragesAnswer, ColdBeveragesFootprints } from 'carbon-cut-commons';
+import { AnswerValidator } from './answer-validator';
 import { FootprintHelper } from './footprints-helper';
 import { AlimentationData } from './simulation-data';
 
 export class ColdBeverages {
-  constructor(private readonly coldBeverages: ColdBeveragesAnswer) {}
+  constructor(private readonly coldBeverages: ColdBeveragesAnswer) {
+    AnswerValidator.validatePositiveValues(this.coldBeverages, 'coldBeverages');
+  }
 
   calculateYearlyFootprint(alimentationData: AlimentationData): ColdBeveragesFootprints {
     const coldBeveragesFootprint = this.#getYearlyColdBeveragesFootprint(alimentationData);

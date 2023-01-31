@@ -105,5 +105,19 @@ describe('Carbon footprint calculation use case', () => {
 
       expectBadRequestError(response, 'Milk type should not be empty with hot chocolate beverage', '');
     });
+
+    it('should not accept request with negative values', async () => {
+      const response = await getResponse({
+        breakfast: BreakfastTypes.milkCerealBreakfast,
+        hotBeverages: { coffee: -1, tea: -2, hotChocolate: -3 },
+        coldBeverages: { sweet: 1, alcohol: 2 },
+      });
+
+      expectBadRequestError(response, [
+        'hotBeverages.coffee must be positive, -1 given',
+        'hotBeverages.tea must be positive, -2 given',
+        'hotBeverages.hotChocolate must be positive, -3 given',
+      ]);
+    });
   });
 });
