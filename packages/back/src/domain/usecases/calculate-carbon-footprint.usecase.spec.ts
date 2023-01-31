@@ -1,5 +1,6 @@
 import { BreakfastTypes, MilkTypes, SimulationDto } from 'carbon-cut-commons';
 import { InMemorySimulationDataRepository } from '../../tests/repositories/in-memory-simulation-data.repository';
+import { ValidationError } from '../entities/validation-error';
 import { CalculateCarbonFootprintUseCase } from './calculate-carbon-footprint.usecase';
 
 describe('Carbon footprint calculation use case', () => {
@@ -98,7 +99,7 @@ describe('Carbon footprint calculation use case', () => {
           ...defaultSimulationAnswers,
           breakfast: BreakfastTypes.milkCerealBreakfast,
         }),
-      ).rejects.toThrowError('Milk type is mandatory with cereal milk breakfast');
+      ).rejects.toThrowError('Milk type should not be empty with cereal milk breakfast');
     });
 
     it('should have a milk type if it has hot chocolate beverages', async () => {
@@ -108,7 +109,35 @@ describe('Carbon footprint calculation use case', () => {
           breakfast: BreakfastTypes.britishBreakfast,
           hotBeverages: { ...defaultSimulationAnswers.hotBeverages, hotChocolate: 2 },
         }),
-      ).rejects.toThrowError('Milk type is mandatory with hot chocolate beverage');
+      ).rejects.toThrowError('Milk type should not be empty with hot chocolate beverage');
+    });
+
+    it('should not have negatives values in hot beverages', async () => {
+      await expect(
+        calculateCarbonFootprintUseCase.execute({
+          ...defaultSimulationAnswers,
+          breakfast: BreakfastTypes.britishBreakfast,
+          hotBeverages: { coffee: -3, hotChocolate: -2, tea: -0.5 },
+        }),
+      ).rejects.toThrowError(
+        new ValidationError([
+          'hotBeverages.coffee must be positive, -3 given',
+          'hotBeverages.hotChocolate must be positive, -2 given',
+          'hotBeverages.tea must be positive, -0.5 given',
+        ]),
+      );
+    });
+
+    it('should not have negatives values in cold beverages', async () => {
+      await expect(
+        calculateCarbonFootprintUseCase.execute({
+          ...defaultSimulationAnswers,
+          breakfast: BreakfastTypes.britishBreakfast,
+          coldBeverages: { sweet: -0.7, alcohol: -2 },
+        }),
+      ).rejects.toThrowError(
+        new ValidationError(['coldBeverages.sweet must be positive, -0.7 given', 'coldBeverages.alcohol must be positive, -2 given']),
+      );
     });
   });
 });

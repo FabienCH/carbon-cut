@@ -14,7 +14,6 @@ export class Simulation {
     [MilkTypes.sojaMilk]: 'sojaMilkCerealBreakfast',
     [MilkTypes.oatsMilk]: 'oatsMilkCerealBreakfast',
   };
-  error: string;
 
   constructor(simulationDto: SimulationDto) {
     const { breakfast, hotBeverages, coldBeverages, milkType } = simulationDto;
@@ -22,6 +21,7 @@ export class Simulation {
     this.#hotBeverages = new HotBeverages(hotBeverages, milkType);
     this.#coldBeverages = new ColdBeverages(coldBeverages);
     this.#milkType = milkType;
+    this.#validate();
   }
 
   calculate(alimentationData: AlimentationData): CarbonFootprintDto {
@@ -33,16 +33,10 @@ export class Simulation {
     return { ...FootprintHelper.removeNullOrZeroValues({ breakfast, hotBeverages, coldBeverages }), total };
   }
 
-  isValid(): boolean {
-    if (!this.#hotBeverages.isValid()) {
-      this.error = this.#hotBeverages.error;
-      return false;
-    }
+  #validate(): void {
     if (this.#breakfast === BreakfastTypes.milkCerealBreakfast && !this.#milkType) {
-      this.error = 'Milk type is mandatory with cereal milk breakfast';
-      return false;
+      throw new Error('Milk type should not be empty with cereal milk breakfast');
     }
-    return true;
   }
 
   #getBreakfastType(): BreakfastWithMilkTypes {

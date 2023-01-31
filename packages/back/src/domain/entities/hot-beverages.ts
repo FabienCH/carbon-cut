@@ -1,11 +1,12 @@
 import { HotBeveragesAnswer, HotBeveragesFootprints, MilkTypes } from 'carbon-cut-commons';
+import { AnswerValidator } from './answer-validator';
 import { FootprintHelper } from './footprints-helper';
 import { AlimentationData } from './simulation-data';
 
 export class HotBeverages {
-  error: string;
-
-  constructor(private readonly hotBeverages: HotBeveragesAnswer, private readonly milkType: MilkTypes) {}
+  constructor(private readonly hotBeverages: HotBeveragesAnswer, private readonly milkType: MilkTypes) {
+    this.#validate();
+  }
 
   calculateYearlyFootprint(alimentationData: AlimentationData): HotBeveragesFootprints {
     const hotBeveragesFootprint = this.#getYearlyHotBeveragesFootprint(alimentationData);
@@ -13,12 +14,12 @@ export class HotBeverages {
     return FootprintHelper.removeNullOrZeroValues({ ...hotBeveragesFootprint, total: totalHotBeverages });
   }
 
-  isValid(): boolean {
+  #validate(): void {
+    AnswerValidator.validatePositiveValues(this.hotBeverages, 'hotBeverages');
+
     if (this.hotBeverages.hotChocolate > 0 && !this.milkType) {
-      this.error = 'Milk type is mandatory with hot chocolate beverage';
-      return false;
+      throw new Error('Milk type should not be empty with hot chocolate beverage');
     }
-    return true;
   }
 
   #getYearlyHotBeveragesFootprint(alimentationData: AlimentationData): Partial<HotBeveragesAnswer> {
