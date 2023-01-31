@@ -1,15 +1,12 @@
-import { BreakfastTypes, MilkTypes, SimulationDto } from 'carbon-cut-commons';
+import { BreakfastTypes, MilkTypes } from 'carbon-cut-commons';
 import { InMemorySimulationDataRepository } from '../../tests/repositories/in-memory-simulation-data.repository';
+import { defaultSimulationAnswers } from '../../tests/simulation-answers';
 import { ValidationError } from '../entities/validation-error';
 import { CalculateCarbonFootprintUseCase } from './calculate-carbon-footprint.usecase';
 
 describe('Carbon footprint calculation use case', () => {
   let calculateCarbonFootprintUseCase: CalculateCarbonFootprintUseCase;
-  const defaultSimulationAnswers: SimulationDto = {
-    breakfast: BreakfastTypes.noBreakfast,
-    hotBeverages: { coffee: 0, tea: 0, hotChocolate: 0 },
-    coldBeverages: { sweet: 0, alcohol: 0 },
-  };
+
   beforeEach(() => {
     calculateCarbonFootprintUseCase = new CalculateCarbonFootprintUseCase(new InMemorySimulationDataRepository(true));
   });
@@ -89,6 +86,26 @@ describe('Carbon footprint calculation use case', () => {
       });
 
       expect(footprint).toEqual({ coldBeverages: { alcohol: 45.19, total: 45.19 }, total: 45.19 });
+    });
+
+    it('with 4 vegans, 3 vegetarians, 2 white meat, 1 read meat, 2 white fishes and 2 red fishes meals', async () => {
+      const footprint = await calculateCarbonFootprintUseCase.execute({
+        ...defaultSimulationAnswers,
+        meals: { vegan: 4, vegetarian: 3, whiteMeat: 2, redMeat: 1, whiteFish: 2, fish: 2 },
+      });
+
+      expect(footprint).toEqual({
+        meals: {
+          vegan: 1146.1,
+          vegetarian: 1220.925,
+          whiteMeat: 1531.54,
+          redMeat: 2011.15,
+          whiteFish: 1728.64,
+          fish: 1189.9,
+          total: 8828.255,
+        },
+        total: 8828.255,
+      });
     });
   });
 

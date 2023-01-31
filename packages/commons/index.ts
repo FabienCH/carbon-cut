@@ -1,4 +1,4 @@
-export { BeverageTypes, BreakfastTypes, FoodTypes, MilkTypes } from './types/alimentation';
+export { BeverageTypes, BreakfastTypes, FoodTypes, MilkTypes } from './types/alimentation-enums';
 export { ColdBeveragesAnswer, HotBeveragesAnswer } from './types/beverages';
 export { ColdBeveragesFootprints, HotBeveragesFootprints } from './types/dtos/beverages-dto';
 export { CarbonFootprintDto } from './types/dtos/carbon-footprint-dto';

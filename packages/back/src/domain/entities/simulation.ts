@@ -2,12 +2,14 @@ import { BreakfastTypes, CarbonFootprintDto, MilkTypes, SimulationDto } from 'ca
 import { ColdBeverages } from './cold-beverages';
 import { FootprintHelper } from './footprints-helper';
 import { HotBeverages } from './hot-beverages';
+import { Meals } from './meals';
 import { AlimentationData, BreakfastMilkTypes, BreakfastWithMilkTypes } from './simulation-data';
 
 export class Simulation {
   readonly #breakfast: BreakfastTypes;
   readonly #hotBeverages: HotBeverages;
   readonly #coldBeverages: ColdBeverages;
+  readonly #meals: Meals;
   readonly #milkType?: MilkTypes;
   readonly #breakfastsWithMilkMapping: Record<MilkTypes, BreakfastMilkTypes> = {
     [MilkTypes.cowMilk]: 'cowMilkCerealBreakfast',
@@ -16,10 +18,11 @@ export class Simulation {
   };
 
   constructor(simulationDto: SimulationDto) {
-    const { breakfast, hotBeverages, coldBeverages, milkType } = simulationDto;
+    const { breakfast, hotBeverages, coldBeverages, milkType, meals } = simulationDto;
     this.#breakfast = breakfast;
     this.#hotBeverages = new HotBeverages(hotBeverages, milkType);
     this.#coldBeverages = new ColdBeverages(coldBeverages);
+    this.#meals = new Meals(meals);
     this.#milkType = milkType;
     this.#validate();
   }
@@ -28,9 +31,10 @@ export class Simulation {
     const breakfast = FootprintHelper.getYearlyFootprint(alimentationData.footprints[this.#getBreakfastType()]);
     const hotBeverages = this.#hotBeverages.calculateYearlyFootprint(alimentationData);
     const coldBeverages = this.#coldBeverages.calculateYearlyFootprint(alimentationData);
-    const total = this.#getTotal([breakfast], [hotBeverages?.total, coldBeverages?.total]);
+    const meals = this.#meals.calculateYearlyFootprint(alimentationData);
+    const total = this.#getTotal([breakfast], [hotBeverages?.total, coldBeverages?.total, meals?.total]);
 
-    return { ...FootprintHelper.removeNullOrZeroValues({ breakfast, hotBeverages, coldBeverages }), total };
+    return { ...FootprintHelper.removeNullOrZeroValues({ breakfast, hotBeverages, coldBeverages, meals }), total };
   }
 
   #validate(): void {
