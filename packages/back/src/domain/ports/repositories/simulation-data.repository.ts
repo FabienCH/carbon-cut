@@ -1,4 +1,4 @@
-import { AlimentationData } from '../../entities/simulation-data';
+import { AlimentationData } from '../../types/alimentation-types';
 
 export const SimulationDataRepositoryToken = 'SimulationDataRepository';
 

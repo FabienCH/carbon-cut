@@ -1,20 +1,56 @@
-import { MealsFootprints } from 'carbon-cut-commons/dist/types/dtos/meals-dto';
-import { MealsAnswer } from 'carbon-cut-commons/dist/types/meals';
+import { MealsAnswer, MealsFootprints } from 'carbon-cut-commons';
+import { AlimentationData } from '../types/alimentation-types';
+import { AlimentationFootprintData, AlimentationFootprints } from './alimentation-footprints';
 import { AnswerValidator } from './answer-validator';
-import { FootprintHelper } from './footprints-helper';
-import { AlimentationData } from './simulation-data';
+import { FootprintCategory } from './footprint-category';
 import { ValidationError } from './validation-error';
 
-export class Meals {
+export class Meals extends FootprintCategory {
+  protected readonly hasWeeklyFootprint = false;
   readonly #mealsInAWeek = 14;
-  constructor(private readonly meals: MealsAnswer) {
+  readonly #veganFootprintData: AlimentationFootprintData = {
+    footprintValue: this.footprintsData.veganMeal,
+  };
+  readonly #vegetarianFootprintData: AlimentationFootprintData = {
+    footprintValue: this.footprintsData.vegetarianMeal,
+  };
+  readonly #whiteMeatFootprintData: AlimentationFootprintData = {
+    footprintValue: this.footprintsData.whiteMeatMeal,
+  };
+  readonly #redMeatFootprintData: AlimentationFootprintData = {
+    footprintValue: this.footprintsData.redMeatMeal,
+  };
+  readonly #whiteFishFootprintData: AlimentationFootprintData = {
+    footprintValue: this.footprintsData.whiteFishMeal,
+  };
+  readonly #fishFootprintData: AlimentationFootprintData = {
+    footprintValue: this.footprintsData.fishMeal,
+  };
+  constructor(
+    private readonly alimentationFootprints: AlimentationFootprints,
+    readonly alimentationData: AlimentationData,
+    private readonly meals: MealsAnswer,
+  ) {
+    super(alimentationData);
     this.#validate();
   }
 
-  calculateYearlyFootprint(alimentationData: AlimentationData): MealsFootprints {
-    const mealsFootprint = this.#getYearlyMealsFootprint(alimentationData);
-    const totalMeals = FootprintHelper.getTotalFromObject(mealsFootprint);
-    return FootprintHelper.removeNullOrZeroValues({ ...mealsFootprint, total: totalMeals });
+  protected getYearlyFootprints(): Partial<MealsFootprints> {
+    const veganFootprint = this.alimentationFootprints.calculateFootprint(this.meals.vegan, this.#veganFootprintData);
+    const vegetarianFootprint = this.alimentationFootprints.calculateFootprint(this.meals.vegetarian, this.#vegetarianFootprintData);
+    const whiteMeatFootprint = this.alimentationFootprints.calculateFootprint(this.meals.whiteMeat, this.#whiteMeatFootprintData);
+    const redMeatFootprint = this.alimentationFootprints.calculateFootprint(this.meals.redMeat, this.#redMeatFootprintData);
+    const whiteFishFootprint = this.alimentationFootprints.calculateFootprint(this.meals.whiteFish, this.#whiteFishFootprintData);
+    const fishFootprint = this.alimentationFootprints.calculateFootprint(this.meals.fish, this.#fishFootprintData);
+
+    return this.getYearlyNonNullFootprint({
+      vegan: veganFootprint,
+      vegetarian: vegetarianFootprint,
+      whiteMeat: whiteMeatFootprint,
+      redMeat: redMeatFootprint,
+      whiteFish: whiteFishFootprint,
+      fish: fishFootprint,
+    });
   }
 
   #validate(): void {
@@ -24,23 +60,5 @@ export class Meals {
     if (numberOfMeals !== this.#mealsInAWeek) {
       throw new ValidationError(['The number of meals must be 14']);
     }
-  }
-
-  #getYearlyMealsFootprint(alimentationData: AlimentationData): Partial<MealsAnswer> {
-    const veganFootprint = this.meals.vegan * alimentationData.footprints.veganMeal;
-    const vegetarianFootprint = this.meals.vegetarian * alimentationData.footprints.vegetarianMeal;
-    const whiteMeatFootprint = this.meals.whiteMeat * alimentationData.footprints.whiteMeatMeal;
-    const redMeatFootprint = this.meals.redMeat * alimentationData.footprints.redMeatMeal;
-    const whiteFishFootprint = this.meals.whiteFish * alimentationData.footprints.whiteFishMeal;
-    const fishFootprint = this.meals.fish * alimentationData.footprints.fishMeal;
-
-    return FootprintHelper.removeNullOrZeroValues({
-      vegan: FootprintHelper.getYearlyFootprint(veganFootprint),
-      vegetarian: FootprintHelper.getYearlyFootprint(vegetarianFootprint),
-      whiteMeat: FootprintHelper.getYearlyFootprint(whiteMeatFootprint),
-      redMeat: FootprintHelper.getYearlyFootprint(redMeatFootprint),
-      whiteFish: FootprintHelper.getYearlyFootprint(whiteFishFootprint),
-      fish: FootprintHelper.getYearlyFootprint(fishFootprint),
-    });
   }
 }

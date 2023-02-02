@@ -1,9 +1,10 @@
 import { BreakfastTypes, CarbonFootprintDto, MilkTypes, SimulationDto } from 'carbon-cut-commons';
+import { AlimentationData, BreakfastMilkTypes, BreakfastWithMilkTypes } from '../types/alimentation-types';
+import { AlimentationFootprints } from './alimentation-footprints';
 import { ColdBeverages } from './cold-beverages';
 import { FootprintHelper } from './footprints-helper';
 import { HotBeverages } from './hot-beverages';
 import { Meals } from './meals';
-import { AlimentationData, BreakfastMilkTypes, BreakfastWithMilkTypes } from './simulation-data';
 import { ValidationError } from './validation-error';
 
 export class Simulation {
@@ -18,21 +19,22 @@ export class Simulation {
     [MilkTypes.oatsMilk]: 'oatsMilkCerealBreakfast',
   };
 
-  constructor(simulationDto: SimulationDto) {
+  constructor(simulationDto: SimulationDto, alimentationData: AlimentationData) {
+    const alimentationFootprints = new AlimentationFootprints();
     const { breakfast, hotBeverages, coldBeverages, milkType, meals } = simulationDto;
     this.#breakfast = breakfast;
-    this.#hotBeverages = new HotBeverages(hotBeverages, milkType);
-    this.#coldBeverages = new ColdBeverages(coldBeverages);
-    this.#meals = new Meals(meals);
+    this.#hotBeverages = new HotBeverages(alimentationFootprints, alimentationData, hotBeverages, milkType);
+    this.#coldBeverages = new ColdBeverages(alimentationFootprints, alimentationData, coldBeverages);
+    this.#meals = new Meals(alimentationFootprints, alimentationData, meals);
     this.#milkType = milkType;
     this.#validate();
   }
 
   calculate(alimentationData: AlimentationData): CarbonFootprintDto {
     const breakfast = FootprintHelper.getYearlyFootprint(alimentationData.footprints[this.#getBreakfastType()]);
-    const hotBeverages = this.#hotBeverages.calculateYearlyFootprint(alimentationData);
-    const coldBeverages = this.#coldBeverages.calculateYearlyFootprint(alimentationData);
-    const meals = this.#meals.calculateYearlyFootprint(alimentationData);
+    const hotBeverages = this.#hotBeverages.calculateYearlyFootprint();
+    const coldBeverages = this.#coldBeverages.calculateYearlyFootprint();
+    const meals = this.#meals.calculateYearlyFootprint();
     const total = this.#getTotal([breakfast], [hotBeverages?.total, coldBeverages?.total, meals?.total]);
 
     return { ...FootprintHelper.removeNullOrZeroValues({ breakfast, hotBeverages, coldBeverages, meals }), total };

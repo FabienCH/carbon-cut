@@ -1,4 +1,4 @@
-import { DataRecord } from '../../entities/data-record';
+import { DataRecord } from '../../types/data-record';
 
 export type SimulationSectors = 'alimentation';
 

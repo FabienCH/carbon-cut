@@ -1,33 +1,36 @@
 import { ColdBeveragesAnswer, ColdBeveragesFootprints } from 'carbon-cut-commons';
+import { AlimentationData } from '../types/alimentation-types';
+import { AlimentationFootprints } from './alimentation-footprints';
 import { AnswerValidator } from './answer-validator';
-import { FootprintHelper } from './footprints-helper';
-import { AlimentationData } from './simulation-data';
+import { FootprintCategory } from './footprint-category';
 
-export class ColdBeverages {
-  constructor(private readonly coldBeverages: ColdBeveragesAnswer) {
+export class ColdBeverages extends FootprintCategory {
+  protected readonly hasWeeklyFootprint = true;
+  readonly #sweetFootprintValues: number[];
+  readonly #alcoholFootprintValues: number[];
+
+  constructor(
+    private readonly alimentationFootprints: AlimentationFootprints,
+    readonly alimentationData: AlimentationData,
+    private readonly coldBeverages: ColdBeveragesAnswer,
+  ) {
+    super(alimentationData);
     AnswerValidator.validatePositiveValues(this.coldBeverages, 'coldBeverages');
+    const { fruitsJuice, sodas, sirops, beer, wine, cocktail } = this.footprintsData;
+    this.#sweetFootprintValues = [fruitsJuice, sodas, sirops];
+    this.#alcoholFootprintValues = [beer, wine, cocktail];
   }
 
-  calculateYearlyFootprint(alimentationData: AlimentationData): ColdBeveragesFootprints {
-    const coldBeveragesFootprint = this.#getYearlyColdBeveragesFootprint(alimentationData);
-    const totalColdBeverages = FootprintHelper.getTotalFromObject(coldBeveragesFootprint);
-    return FootprintHelper.removeNullOrZeroValues({ ...coldBeveragesFootprint, total: totalColdBeverages });
-  }
+  protected getYearlyFootprints(): Partial<ColdBeveragesFootprints> {
+    const sweetBeveragesFootprint = this.alimentationFootprints.calculateAveragedFootprint(
+      this.coldBeverages.sweet,
+      this.#sweetFootprintValues,
+    );
+    const alcoholBeveragesFootprint = this.alimentationFootprints.calculateAveragedFootprint(
+      this.coldBeverages.alcohol,
+      this.#alcoholFootprintValues,
+    );
 
-  #getYearlyColdBeveragesFootprint(alimentationData: AlimentationData): Partial<ColdBeveragesAnswer> {
-    const weeklySweetBeveragesFootprint =
-      (this.coldBeverages.sweet *
-        (alimentationData.footprints.fruitsJuice + alimentationData.footprints.sodas + alimentationData.footprints.sirops)) /
-      3;
-
-    const weeklyAlcoholFootprint =
-      (this.coldBeverages.alcohol *
-        (alimentationData.footprints.beer + alimentationData.footprints.wine + alimentationData.footprints.cocktail)) /
-      3;
-
-    return FootprintHelper.removeNullOrZeroValues({
-      sweet: FootprintHelper.getYearlyFootprint(weeklySweetBeveragesFootprint / 7),
-      alcohol: FootprintHelper.getYearlyFootprint(weeklyAlcoholFootprint / 7),
-    });
+    return this.getYearlyNonNullFootprint({ sweet: sweetBeveragesFootprint, alcohol: alcoholBeveragesFootprint });
   }
 }

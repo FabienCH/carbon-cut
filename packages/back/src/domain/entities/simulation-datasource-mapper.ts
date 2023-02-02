@@ -1,25 +1,24 @@
 import { BreakfastTypes, getTypedObjectKeys } from 'carbon-cut-commons';
-import { DataRecord } from './data-record';
-import { Formula } from './formula';
 import {
   AlimentationData,
-  AlimentationFootprints,
-  AlimentationFootprintsMapping,
+  AlimentationDataFootprints,
+  AlimentationDataMultipliers,
+  AlimentationDataQuantities,
   AlimentationFootprintsMappingType,
-  AlimentationMultipliers,
-  AlimentationQuantities,
-  MultipliersMapping,
-  QuantitiesMapping,
-} from './simulation-data';
+} from '../types/alimentation-types';
+import { DataRecord } from '../types/data-record';
+import { AlimentationFootprintsMapping, MultipliersMapping, QuantitiesMapping } from './alimentation-data';
+
+import { Formula } from './formula';
 
 export class SimulationDataSourceMapper {
   mapAlimentationData(alimentation: DataRecord): AlimentationData {
     return {
-      quantities: this.mapObject<AlimentationQuantities>(alimentation, QuantitiesMapping),
-      footprints: this.mapObject<AlimentationFootprints>(alimentation, AlimentationFootprintsMapping, {
+      quantities: this.mapObject<AlimentationDataQuantities>(alimentation, QuantitiesMapping),
+      footprints: this.mapObject<AlimentationDataFootprints>(alimentation, AlimentationFootprintsMapping, {
         [BreakfastTypes.noBreakfast]: 0,
       }),
-      multipliers: this.mapObject<AlimentationMultipliers>(alimentation, MultipliersMapping),
+      multipliers: this.mapObject<AlimentationDataMultipliers>(alimentation, MultipliersMapping),
     };
   }
 
