@@ -7,7 +7,7 @@ import {
   AlimentationFootprintsMappingType,
 } from '../types/alimentation-types';
 import { DataRecord } from '../types/data-record';
-import { AlimentationFootprintsMapping, MultipliersMapping, QuantitiesMapping } from './alimentation-data';
+import { AlimentationFootprintsMapping, MultipliersMapping, QuantitiesMapping } from './alimentation/alimentation-data-mapping';
 
 import { Formula } from './formula';
 

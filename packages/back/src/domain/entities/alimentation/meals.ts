@@ -1,13 +1,12 @@
 import { MealsAnswer, MealsFootprints } from 'carbon-cut-commons';
-import { AlimentationData } from '../types/alimentation-types';
+import { AlimentationData } from '../../types/alimentation-types';
+import { AnswerValidator } from '../answer-validator';
+import { FootprintCategory } from '../footprint-category';
+import { ValidationError } from '../validation-error';
 import { AlimentationFootprintData, AlimentationFootprints } from './alimentation-footprints';
-import { AnswerValidator } from './answer-validator';
-import { FootprintCategory } from './footprint-category';
-import { ValidationError } from './validation-error';
 
 export class Meals extends FootprintCategory {
   protected readonly hasWeeklyFootprint = false;
-  readonly #mealsInAWeek = 14;
   readonly #veganFootprintData: AlimentationFootprintData = {
     footprintValue: this.footprintsData.veganMeal,
   };
@@ -56,8 +55,9 @@ export class Meals extends FootprintCategory {
   #validate(): void {
     AnswerValidator.validatePositiveValues(this.meals, 'meals');
 
+    const mealsInAWeek = 14;
     const numberOfMeals = Object.values(this.meals).reduce((count, meal) => (count += meal), 0);
-    if (numberOfMeals !== this.#mealsInAWeek) {
+    if (numberOfMeals !== mealsInAWeek) {
       throw new ValidationError(['The number of meals must be 14']);
     }
   }

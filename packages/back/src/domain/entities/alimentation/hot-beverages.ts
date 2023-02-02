@@ -1,9 +1,9 @@
 import { HotBeveragesAnswer, HotBeveragesFootprints, MilkTypes } from 'carbon-cut-commons';
-import { AlimentationData } from '../types/alimentation-types';
+import { AlimentationData } from '../../types/alimentation-types';
+import { AnswerValidator } from '../answer-validator';
+import { FootprintCategory } from '../footprint-category';
+import { ValidationError } from '../validation-error';
 import { AlimentationFootprintData, AlimentationFootprints } from './alimentation-footprints';
-import { AnswerValidator } from './answer-validator';
-import { FootprintCategory } from './footprint-category';
-import { ValidationError } from './validation-error';
 
 export class HotBeverages extends FootprintCategory {
   protected readonly hasWeeklyFootprint = true;

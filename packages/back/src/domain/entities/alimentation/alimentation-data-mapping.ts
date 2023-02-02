@@ -1,5 +1,5 @@
 import { BeverageTypes, BreakfastTypes, FoodTypes, MilkTypes } from 'carbon-cut-commons';
-import { AlimentationFootprintsMappingType } from '../types/alimentation-types';
+import { AlimentationFootprintsMappingType } from '../../types/alimentation-types';
 
 export enum QuantitiesMapping {
   coffeePerCup = 'alimentation . boisson . tasse de café . quantité café par tasse',

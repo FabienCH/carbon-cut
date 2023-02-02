@@ -1,8 +1,8 @@
 import { ColdBeveragesAnswer, ColdBeveragesFootprints } from 'carbon-cut-commons';
-import { AlimentationData } from '../types/alimentation-types';
+import { AlimentationData } from '../../types/alimentation-types';
+import { AnswerValidator } from '../answer-validator';
+import { FootprintCategory } from '../footprint-category';
 import { AlimentationFootprints } from './alimentation-footprints';
-import { AnswerValidator } from './answer-validator';
-import { FootprintCategory } from './footprint-category';
 
 export class ColdBeverages extends FootprintCategory {
   protected readonly hasWeeklyFootprint = true;

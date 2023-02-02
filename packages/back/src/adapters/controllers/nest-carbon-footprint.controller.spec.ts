@@ -102,7 +102,7 @@ describe('Carbon footprint calculation use case', () => {
         coldBeverages: { sweet: 1, alcohol: 2 },
       });
 
-      expectBadRequestError(response, ['Milk type should not be empty with hot chocolate beverage']);
+      expectBadRequestError(response, ['Milk type should not be empty with cereal milk breakfast']);
     });
 
     it('should not accept request with negative values', async () => {

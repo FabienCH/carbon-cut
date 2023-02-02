@@ -60,6 +60,7 @@ export class WebSimulationResultsPresenter implements SimulationResultsPresenter
       breakfast: 'Petit déj.',
       hotBeverages: 'Boissons chaudes',
       coldBeverages: 'Boissons froides',
+      meals: 'Repas',
     };
     const { total, breakfast, hotBeverages, coldBeverages } = carbonFootprintDto;
 

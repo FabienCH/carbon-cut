@@ -1,5 +1,5 @@
 import { BeverageTypes, BreakfastTypes, FoodTypes, MilkTypes } from 'carbon-cut-commons';
-import { AlimentationFootprintsMapping, MultipliersMapping, QuantitiesMapping } from '../entities/alimentation-data';
+import { AlimentationFootprintsMapping, MultipliersMapping, QuantitiesMapping } from '../entities/alimentation/alimentation-data-mapping';
 
 export type AlimentationDataQuantities = {
   [quantityKey in keyof typeof QuantitiesMapping]: number;
