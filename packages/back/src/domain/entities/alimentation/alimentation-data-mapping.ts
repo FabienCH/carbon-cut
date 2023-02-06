@@ -1,4 +1,5 @@
 import { BeverageTypes, BreakfastTypes, FoodTypes, MilkTypes } from 'carbon-cut-commons';
+import { AlimentationFootprintsMappingType } from '../../types/alimentation-types';
 
 export enum QuantitiesMapping {
   coffeePerCup = 'alimentation . boisson . tasse de café . quantité café par tasse',
@@ -6,19 +7,6 @@ export enum QuantitiesMapping {
   cacaoPerCup = 'alimentation . boisson . tasse de chocolat chaud . quantité cacao par tasse',
   milkPerCup = 'alimentation . boisson . tasse de chocolat chaud . quantité lait par tasse',
 }
-
-export type AlimentationQuantities = {
-  [quantityKey in keyof typeof QuantitiesMapping]: number;
-};
-
-export type BreakfastMilkTypes = 'cowMilkCerealBreakfast' | 'sojaMilkCerealBreakfast' | 'oatsMilkCerealBreakfast';
-
-export type BreakfastWithMilkTypes = Exclude<BreakfastTypes, BreakfastTypes.milkCerealBreakfast> | BreakfastMilkTypes;
-
-export type AlimentationFootprintsMappingType = Record<
-  Exclude<BreakfastWithMilkTypes, BreakfastTypes.noBreakfast> | MilkTypes | FoodTypes | BeverageTypes,
-  string
->;
 
 export const AlimentationFootprintsMapping: AlimentationFootprintsMappingType = {
   cowMilkCerealBreakfast: 'alimentation . petit déjeuner . lait vache céréales',
@@ -48,10 +36,6 @@ export const AlimentationFootprintsMapping: AlimentationFootprintsMappingType = 
   [MilkTypes.oatsMilk]: "alimentation . empreinte lait d'avoine",
 };
 
-export type AlimentationFootprints = {
-  [footprintKey in keyof typeof AlimentationFootprintsMapping | BreakfastTypes.noBreakfast]: number;
-};
-
 export enum MultipliersMapping {
   localFoodReductionPercent = 'alimentation . local . niveau',
   localMealReductionPercent = 'alimentation . local . part locale',
@@ -59,14 +43,4 @@ export enum MultipliersMapping {
   seasonMealRatio = 'alimentation . de saison . niveau',
   seasonablePercent = 'alimentation . de saison . pourcentage saisonable',
   teaHeatingPercent = 'alimentation . boisson . tasse de thé . part consommation empreinte thé infusé',
-}
-
-export type AlimentationMultipliers = {
-  [multiplierKey in keyof typeof MultipliersMapping]: number | Record<string, number>;
-};
-
-export interface AlimentationData {
-  quantities: AlimentationQuantities;
-  footprints: AlimentationFootprints;
-  multipliers: AlimentationMultipliers;
 }

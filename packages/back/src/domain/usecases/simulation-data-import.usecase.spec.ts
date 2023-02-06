@@ -1,7 +1,7 @@
 import { InMemorySimulationDataSourceRepository } from '../../tests/repositories/in-memory-simulation-data-source.repository';
 import { InMemorySimulationDataRepository } from '../../tests/repositories/in-memory-simulation-data.repository';
-import { AlimentationData } from '../entities/simulation-data';
 import { SimulationDataSourceMapper } from '../entities/simulation-datasource-mapper';
+import { AlimentationData } from '../types/alimentation-types';
 import { SimulationDataImportUseCase } from './simulation-data-import.usecase';
 
 describe('Simulation data importer use case', () => {

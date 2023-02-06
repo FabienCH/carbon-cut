@@ -1,49 +1,35 @@
-import { BreakfastTypes, CarbonFootprintDto, MilkTypes, SimulationDto } from 'carbon-cut-commons';
-import { ColdBeverages } from './cold-beverages';
+import { CarbonFootprintDto, SimulationDto } from 'carbon-cut-commons';
+import { AlimentationData } from '../types/alimentation-types';
+import { AlimentationFootprints } from './alimentation/alimentation-footprints';
+import { Breakfast } from './alimentation/breakfast';
+import { ColdBeverages } from './alimentation/cold-beverages';
+import { HotBeverages } from './alimentation/hot-beverages';
+import { Meals } from './alimentation/meals';
 import { FootprintHelper } from './footprints-helper';
-import { HotBeverages } from './hot-beverages';
-import { AlimentationData, BreakfastMilkTypes, BreakfastWithMilkTypes } from './simulation-data';
 
 export class Simulation {
-  readonly #breakfast: BreakfastTypes;
+  readonly #breakfast: Breakfast;
   readonly #hotBeverages: HotBeverages;
   readonly #coldBeverages: ColdBeverages;
-  readonly #milkType?: MilkTypes;
-  readonly #breakfastsWithMilkMapping: Record<MilkTypes, BreakfastMilkTypes> = {
-    [MilkTypes.cowMilk]: 'cowMilkCerealBreakfast',
-    [MilkTypes.sojaMilk]: 'sojaMilkCerealBreakfast',
-    [MilkTypes.oatsMilk]: 'oatsMilkCerealBreakfast',
-  };
+  readonly #meals: Meals;
 
-  constructor(simulationDto: SimulationDto) {
-    const { breakfast, hotBeverages, coldBeverages, milkType } = simulationDto;
-    this.#breakfast = breakfast;
-    this.#hotBeverages = new HotBeverages(hotBeverages, milkType);
-    this.#coldBeverages = new ColdBeverages(coldBeverages);
-    this.#milkType = milkType;
-    this.#validate();
+  constructor(simulationDto: SimulationDto, alimentationData: AlimentationData) {
+    const alimentationFootprints = new AlimentationFootprints();
+    const { breakfast, hotBeverages, coldBeverages, milkType, meals } = simulationDto;
+    this.#breakfast = new Breakfast(alimentationData, breakfast, milkType);
+    this.#hotBeverages = new HotBeverages(alimentationFootprints, alimentationData, hotBeverages, milkType);
+    this.#coldBeverages = new ColdBeverages(alimentationFootprints, alimentationData, coldBeverages);
+    this.#meals = new Meals(alimentationFootprints, alimentationData, meals);
   }
 
-  calculate(alimentationData: AlimentationData): CarbonFootprintDto {
-    const breakfast = FootprintHelper.getYearlyFootprint(alimentationData.footprints[this.#getBreakfastType()]);
-    const hotBeverages = this.#hotBeverages.calculateYearlyFootprint(alimentationData);
-    const coldBeverages = this.#coldBeverages.calculateYearlyFootprint(alimentationData);
-    const total = this.#getTotal([breakfast], [hotBeverages?.total, coldBeverages?.total]);
+  calculate(): CarbonFootprintDto {
+    const breakfast = this.#breakfast.calculateYearlyFootprint();
+    const hotBeverages = this.#hotBeverages.calculateYearlyFootprint();
+    const coldBeverages = this.#coldBeverages.calculateYearlyFootprint();
+    const meals = this.#meals.calculateYearlyFootprint();
+    const total = this.#getTotal([breakfast], [hotBeverages?.total, coldBeverages?.total, meals.total]);
 
-    return { ...FootprintHelper.removeNullOrZeroValues({ breakfast, hotBeverages, coldBeverages }), total };
-  }
-
-  #validate(): void {
-    if (this.#breakfast === BreakfastTypes.milkCerealBreakfast && !this.#milkType) {
-      throw new Error('Milk type should not be empty with cereal milk breakfast');
-    }
-  }
-
-  #getBreakfastType(): BreakfastWithMilkTypes {
-    if (this.#breakfast !== BreakfastTypes.milkCerealBreakfast) {
-      return this.#breakfast;
-    }
-    return this.#breakfastsWithMilkMapping[this.#milkType];
+    return { ...FootprintHelper.removeNullishFootprints({ breakfast, hotBeverages, coldBeverages }), meals, total };
   }
 
   #getTotal(numbers: number[], nullableNumbers: Array<number | undefined>): number {

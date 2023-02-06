@@ -8,7 +8,7 @@ export class CalculateCarbonFootprintUseCase {
 
   async execute(simulationDto: SimulationDto): Promise<CarbonFootprintDto> {
     const alimentationData = await this.simulationDataRepository.get();
-    const simulation = new Simulation(simulationDto);
-    return simulation.calculate(alimentationData);
+    const simulation = new Simulation(simulationDto, alimentationData);
+    return simulation.calculate();
   }
 }

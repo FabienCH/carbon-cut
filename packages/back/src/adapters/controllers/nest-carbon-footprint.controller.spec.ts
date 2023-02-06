@@ -5,6 +5,7 @@ import * as request from 'supertest';
 import { SimulationDataRepositoryToken } from '../../domain/ports/repositories/simulation-data.repository';
 import { CalculateCarbonFootprintUseCase } from '../../domain/usecases/calculate-carbon-footprint.usecase';
 import { InMemorySimulationDataRepository } from '../../tests/repositories/in-memory-simulation-data.repository';
+import { defaultSimulationAnswers } from '../../tests/simulation-answers';
 import { NestCarbonFootprintController } from './nest-carbon-footprint.controller';
 
 describe('Carbon footprint calculation use case', () => {
@@ -50,13 +51,13 @@ describe('Carbon footprint calculation use case', () => {
         'breakfast should not be empty',
         'hotBeverages should not be empty',
         'coldBeverages should not be empty',
+        'meals should not be empty',
       ]);
     });
 
     it('should not accept request with empty cold beverages', async () => {
       const response = await getResponse({
-        breakfast: BreakfastTypes.britishBreakfast,
-        hotBeverages: { coffee: 1, tea: 2, hotChocolate: 3 },
+        ...defaultSimulationAnswers,
         coldBeverages: {},
       });
 
@@ -70,9 +71,8 @@ describe('Carbon footprint calculation use case', () => {
 
     it('should not accept request with empty hot beverages', async () => {
       const response = await getResponse({
-        breakfast: BreakfastTypes.veganBreakfast,
+        ...defaultSimulationAnswers,
         hotBeverages: {},
-        coldBeverages: { sweet: 1, alcohol: 2 },
       });
 
       expectBadRequestError(response, [
@@ -87,9 +87,7 @@ describe('Carbon footprint calculation use case', () => {
 
     it('should not accept request with invalid milk type', async () => {
       const response = await getResponse({
-        breakfast: BreakfastTypes.veganBreakfast,
-        hotBeverages: { coffee: 1, tea: 2, hotChocolate: 3 },
-        coldBeverages: { sweet: 1, alcohol: 2 },
+        ...defaultSimulationAnswers,
         milkType: 'some type',
       });
 
@@ -98,19 +96,19 @@ describe('Carbon footprint calculation use case', () => {
 
     it('should not accept request with no milk type if milk cereal breakfast or hot chocolate', async () => {
       const response = await getResponse({
+        ...defaultSimulationAnswers,
         breakfast: BreakfastTypes.milkCerealBreakfast,
         hotBeverages: { coffee: 1, tea: 2, hotChocolate: 3 },
         coldBeverages: { sweet: 1, alcohol: 2 },
       });
 
-      expectBadRequestError(response, 'Milk type should not be empty with hot chocolate beverage', '');
+      expectBadRequestError(response, ['Milk type should not be empty with cereal milk breakfast']);
     });
 
     it('should not accept request with negative values', async () => {
       const response = await getResponse({
-        breakfast: BreakfastTypes.milkCerealBreakfast,
+        ...defaultSimulationAnswers,
         hotBeverages: { coffee: -1, tea: -2, hotChocolate: -3 },
-        coldBeverages: { sweet: 1, alcohol: 2 },
       });
 
       expectBadRequestError(response, [
@@ -118,6 +116,15 @@ describe('Carbon footprint calculation use case', () => {
         'hotBeverages.tea must be positive, -2 given',
         'hotBeverages.hotChocolate must be positive, -3 given',
       ]);
+    });
+
+    it('should not accept request with a number of meals not equals to 14', async () => {
+      const response = await getResponse({
+        ...defaultSimulationAnswers,
+        meals: { vegan: 2, vegetarian: 2, whiteMeat: 2, redMeat: 2, whiteFish: 2, fish: 3 },
+      });
+
+      expectBadRequestError(response, ['The number of meals must be 14']);
     });
   });
 });

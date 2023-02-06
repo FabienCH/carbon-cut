@@ -10,6 +10,7 @@ describe('SimulationResults component', () => {
     appStore.dispatch(
       setCarbonFootprint({
         breakfast: 603.354,
+        meals: { total: 0 },
         total: 603.354,
       }),
     );
@@ -38,6 +39,7 @@ describe('SimulationResults component', () => {
           hotChocolate: 305.6,
           total: 519.95,
         },
+        meals: { total: 0 },
         total: 1123.304,
       }),
     );
@@ -70,6 +72,7 @@ describe('SimulationResults component', () => {
           sweet: 73.5,
           total: 73.5,
         },
+        meals: { total: 0 },
         total: 1606.804,
       }),
     );

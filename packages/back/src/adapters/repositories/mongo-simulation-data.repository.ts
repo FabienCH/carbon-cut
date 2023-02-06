@@ -1,7 +1,7 @@
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
-import { AlimentationData } from '../../domain/entities/simulation-data';
 import { SimulationDataRepository } from '../../domain/ports/repositories/simulation-data.repository';
+import { AlimentationData } from '../../domain/types/alimentation-types';
 import {
   AlimentationCollectionName,
   AlimentationDataDocument,

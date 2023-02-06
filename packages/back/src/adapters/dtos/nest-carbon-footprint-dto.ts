@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CarbonFootprintDto, ColdBeveragesFootprints, HotBeveragesFootprints } from 'carbon-cut-commons';
+import { CarbonFootprintDto, ColdBeveragesFootprints, HotBeveragesFootprints, MealsFootprints } from 'carbon-cut-commons';
 
-class NestHotBeveragesDto implements HotBeveragesFootprints {
+class NestHotBeveragesFootprintsDto implements HotBeveragesFootprints {
   @ApiProperty({ required: false })
   coffee?: number;
   @ApiProperty({ required: false })
@@ -12,7 +12,7 @@ class NestHotBeveragesDto implements HotBeveragesFootprints {
   total?: number;
 }
 
-class NestColdBeveragesDto implements ColdBeveragesFootprints {
+class NestColdBeveragesFootprintsDto implements ColdBeveragesFootprints {
   @ApiProperty({ required: false })
   sweet?: number;
   @ApiProperty({ required: false })
@@ -21,13 +21,32 @@ class NestColdBeveragesDto implements ColdBeveragesFootprints {
   total?: number;
 }
 
+class NestMealsFootprintsDto implements MealsFootprints {
+  @ApiProperty({ required: false })
+  vegan?: number;
+  @ApiProperty({ required: false })
+  vegetarian?: number;
+  @ApiProperty({ required: false })
+  whiteMeat?: number;
+  @ApiProperty({ required: false })
+  redMeat?: number;
+  @ApiProperty({ required: false })
+  whiteFish?: number;
+  @ApiProperty({ required: false })
+  fish?: number;
+  @ApiProperty()
+  total: number;
+}
+
 export class NestCarbonFootprintDto implements CarbonFootprintDto {
   @ApiProperty({ required: false })
   breakfast?: number;
-  @ApiProperty({ required: false, type: NestHotBeveragesDto })
+  @ApiProperty({ required: false, type: NestHotBeveragesFootprintsDto })
   hotBeverages?: HotBeveragesFootprints;
-  @ApiProperty({ required: false, type: NestColdBeveragesDto })
+  @ApiProperty({ required: false, type: NestColdBeveragesFootprintsDto })
   coldBeverages?: ColdBeveragesFootprints;
+  @ApiProperty({ type: NestMealsFootprintsDto })
+  meals: MealsFootprints;
   @ApiProperty()
   total: number;
 }

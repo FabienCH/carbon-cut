@@ -1,8 +1,8 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as YAML from 'yaml';
-import { DataRecord } from '../../domain/entities/data-record';
 import { SimulationDataSourceRepository, SimulationSectors } from '../../domain/ports/repositories/simulation-datasource.repository';
+import { DataRecord } from '../../domain/types/data-record';
 
 export class FileSimulationDataSourceRepository implements SimulationDataSourceRepository {
   async getBySector(sector: SimulationSectors): Promise<DataRecord> {
