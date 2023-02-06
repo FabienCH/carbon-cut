@@ -1,10 +1,11 @@
 import { ColdBeveragesAnswer, ColdBeveragesFootprints } from 'carbon-cut-commons';
 import { AlimentationData } from '../../types/alimentation-types';
 import { AnswerValidator } from '../answer-validator';
-import { FootprintCategory } from '../footprint-category';
+import { FootprintCategory, WithoutTotal } from '../footprint-category';
+import { FootprintHelper } from '../footprints-helper';
 import { AlimentationFootprints } from './alimentation-footprints';
 
-export class ColdBeverages extends FootprintCategory {
+export class ColdBeverages extends FootprintCategory<ColdBeveragesFootprints> {
   protected readonly hasWeeklyFootprint = true;
   readonly #sweetFootprintValues: number[];
   readonly #alcoholFootprintValues: number[];
@@ -12,22 +13,26 @@ export class ColdBeverages extends FootprintCategory {
   constructor(
     private readonly alimentationFootprints: AlimentationFootprints,
     readonly alimentationData: AlimentationData,
-    private readonly coldBeverages: ColdBeveragesAnswer,
+    private readonly coldBeveragesAnswer: ColdBeveragesAnswer,
   ) {
     super(alimentationData);
-    AnswerValidator.validatePositiveValues(this.coldBeverages, 'coldBeverages');
+    AnswerValidator.validatePositiveValues(this.coldBeveragesAnswer, 'coldBeverages');
     const { fruitsJuice, sodas, sirops, beer, wine, cocktail } = this.footprintsData;
     this.#sweetFootprintValues = [fruitsJuice, sodas, sirops];
     this.#alcoholFootprintValues = [beer, wine, cocktail];
   }
 
-  protected getYearlyFootprints(): Partial<ColdBeveragesFootprints> {
+  calculateYearlyFootprint(): ColdBeveragesFootprints {
+    return FootprintHelper.removeNullishFootprints(this.calculateYearlyFootprintWithTotal());
+  }
+
+  protected getYearlyFootprints(): Partial<WithoutTotal<ColdBeveragesFootprints>> {
     const sweetBeveragesFootprint = this.alimentationFootprints.calculateAveragedFootprint(
-      this.coldBeverages.sweet,
+      this.coldBeveragesAnswer.sweet,
       this.#sweetFootprintValues,
     );
     const alcoholBeveragesFootprint = this.alimentationFootprints.calculateAveragedFootprint(
-      this.coldBeverages.alcohol,
+      this.coldBeveragesAnswer.alcohol,
       this.#alcoholFootprintValues,
     );
 

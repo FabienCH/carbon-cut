@@ -27,9 +27,9 @@ export class Simulation {
     const hotBeverages = this.#hotBeverages.calculateYearlyFootprint();
     const coldBeverages = this.#coldBeverages.calculateYearlyFootprint();
     const meals = this.#meals.calculateYearlyFootprint();
-    const total = this.#getTotal([breakfast], [hotBeverages?.total, coldBeverages?.total, meals?.total]);
+    const total = this.#getTotal([breakfast], [hotBeverages?.total, coldBeverages?.total, meals.total]);
 
-    return { ...FootprintHelper.removeNullOrZeroValues({ breakfast, hotBeverages, coldBeverages, meals }), total };
+    return { ...FootprintHelper.removeNullishFootprints({ breakfast, hotBeverages, coldBeverages }), meals, total };
   }
 
   #getTotal(numbers: number[], nullableNumbers: Array<number | undefined>): number {

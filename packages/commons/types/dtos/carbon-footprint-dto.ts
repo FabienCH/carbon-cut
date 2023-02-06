@@ -5,6 +5,6 @@ export interface CarbonFootprintDto {
   breakfast?: number;
   hotBeverages?: HotBeveragesFootprints;
   coldBeverages?: ColdBeveragesFootprints;
-  meals?: MealsFootprints;
+  meals: MealsFootprints;
   total: number;
 }

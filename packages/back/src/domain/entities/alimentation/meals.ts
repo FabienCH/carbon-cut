@@ -2,45 +2,35 @@ import { MealsAnswer, MealsFootprints } from 'carbon-cut-commons';
 import { AlimentationData } from '../../types/alimentation-types';
 import { AnswerValidator } from '../answer-validator';
 import { FootprintCategory } from '../footprint-category';
+import { FootprintHelper } from '../footprints-helper';
 import { ValidationError } from '../validation-error';
-import { AlimentationFootprintData, AlimentationFootprints } from './alimentation-footprints';
+import { AlimentationFootprints } from './alimentation-footprints';
 
-export class Meals extends FootprintCategory {
+export class Meals extends FootprintCategory<MealsFootprints> {
   protected readonly hasWeeklyFootprint = false;
-  readonly #veganFootprintData: AlimentationFootprintData = {
-    footprintValue: this.footprintsData.veganMeal,
-  };
-  readonly #vegetarianFootprintData: AlimentationFootprintData = {
-    footprintValue: this.footprintsData.vegetarianMeal,
-  };
-  readonly #whiteMeatFootprintData: AlimentationFootprintData = {
-    footprintValue: this.footprintsData.whiteMeatMeal,
-  };
-  readonly #redMeatFootprintData: AlimentationFootprintData = {
-    footprintValue: this.footprintsData.redMeatMeal,
-  };
-  readonly #whiteFishFootprintData: AlimentationFootprintData = {
-    footprintValue: this.footprintsData.whiteFishMeal,
-  };
-  readonly #fishFootprintData: AlimentationFootprintData = {
-    footprintValue: this.footprintsData.fishMeal,
-  };
+
   constructor(
     private readonly alimentationFootprints: AlimentationFootprints,
     readonly alimentationData: AlimentationData,
-    private readonly meals: MealsAnswer,
+    private readonly mealsAnswer: MealsAnswer,
   ) {
     super(alimentationData);
     this.#validate();
   }
 
+  calculateYearlyFootprint(): MealsFootprints {
+    const { total, ...footprints } = this.calculateYearlyFootprintWithTotal();
+    return { ...FootprintHelper.removeNullishFootprints(footprints), total };
+  }
+
   protected getYearlyFootprints(): Partial<MealsFootprints> {
-    const veganFootprint = this.alimentationFootprints.calculateFootprint(this.meals.vegan, this.#veganFootprintData);
-    const vegetarianFootprint = this.alimentationFootprints.calculateFootprint(this.meals.vegetarian, this.#vegetarianFootprintData);
-    const whiteMeatFootprint = this.alimentationFootprints.calculateFootprint(this.meals.whiteMeat, this.#whiteMeatFootprintData);
-    const redMeatFootprint = this.alimentationFootprints.calculateFootprint(this.meals.redMeat, this.#redMeatFootprintData);
-    const whiteFishFootprint = this.alimentationFootprints.calculateFootprint(this.meals.whiteFish, this.#whiteFishFootprintData);
-    const fishFootprint = this.alimentationFootprints.calculateFootprint(this.meals.fish, this.#fishFootprintData);
+    const { veganMeal, vegetarianMeal, whiteMeatMeal, redMeatMeal, whiteFishMeal, fishMeal } = this.footprintsData;
+    const veganFootprint = this.alimentationFootprints.calculateFootprint(this.mealsAnswer.vegan, veganMeal);
+    const vegetarianFootprint = this.alimentationFootprints.calculateFootprint(this.mealsAnswer.vegetarian, vegetarianMeal);
+    const whiteMeatFootprint = this.alimentationFootprints.calculateFootprint(this.mealsAnswer.whiteMeat, whiteMeatMeal);
+    const redMeatFootprint = this.alimentationFootprints.calculateFootprint(this.mealsAnswer.redMeat, redMeatMeal);
+    const whiteFishFootprint = this.alimentationFootprints.calculateFootprint(this.mealsAnswer.whiteFish, whiteFishMeal);
+    const fishFootprint = this.alimentationFootprints.calculateFootprint(this.mealsAnswer.fish, fishMeal);
 
     return this.getYearlyNonNullFootprint({
       vegan: veganFootprint,
@@ -53,10 +43,10 @@ export class Meals extends FootprintCategory {
   }
 
   #validate(): void {
-    AnswerValidator.validatePositiveValues(this.meals, 'meals');
+    AnswerValidator.validatePositiveValues(this.mealsAnswer, 'meals');
 
     const mealsInAWeek = 14;
-    const numberOfMeals = Object.values(this.meals).reduce((count, meal) => (count += meal), 0);
+    const numberOfMeals = Object.values(this.mealsAnswer).reduce((count, meal) => (count += meal), 0);
     if (numberOfMeals !== mealsInAWeek) {
       throw new ValidationError(['The number of meals must be 14']);
     }

@@ -1,40 +1,47 @@
-import {
-  ColdBeveragesAnswer,
-  ColdBeveragesFootprints,
-  getTypedObjectKeys,
-  HotBeveragesAnswer,
-  HotBeveragesFootprints,
-  MealsAnswer,
-  MealsFootprints,
-} from 'carbon-cut-commons';
+import { getTypedObjectKeys, NumberFormatter } from 'carbon-cut-commons';
 import { AlimentationData, AlimentationDataFootprints, AlimentationDataQuantities } from '../types/alimentation-types';
 import { FootprintHelper } from './footprints-helper';
 
-export abstract class FootprintCategory {
+export type WithoutTotal<T extends Record<string, number> & { total?: number }> = Omit<T, 'total'>;
+
+export abstract class FootprintCategory<T extends Record<string, number> & { total?: number }> {
   protected readonly footprintsData: AlimentationDataFootprints;
   protected readonly quantitiesData: AlimentationDataQuantities;
   protected abstract readonly hasWeeklyFootprint: boolean;
+
+  protected footprint: WithoutTotal<T>;
 
   constructor(alimentationData: AlimentationData) {
     this.footprintsData = alimentationData.footprints;
     this.quantitiesData = alimentationData.quantities;
   }
 
-  calculateYearlyFootprint(): ColdBeveragesFootprints | HotBeveragesFootprints | MealsFootprints {
+  protected calculateYearlyFootprintWithTotal(): WithoutTotal<T> & { total: number } {
     const footprints = this.getYearlyFootprints();
-    const totalFootprints = FootprintHelper.getTotalFromObject(footprints);
-    return FootprintHelper.removeNullOrZeroValues({ ...footprints, total: totalFootprints });
+    const totalFootprints = this.#getTotal(footprints);
+
+    return { ...footprints, total: totalFootprints };
   }
 
-  protected getYearlyNonNullFootprint(
-    footprint: ColdBeveragesAnswer | HotBeveragesAnswer | MealsAnswer,
-  ): Partial<ColdBeveragesFootprints | HotBeveragesFootprints | MealsFootprints> {
+  protected getYearlyNonNullFootprint(footprint: WithoutTotal<T>): WithoutTotal<T> {
     const yearlyFootprint = getTypedObjectKeys(footprint).reduce((footprintAcc, footprintKey) => {
-      const dailyFootprint = this.hasWeeklyFootprint ? footprint[footprintKey] / 7 : footprint[footprintKey];
+      const footprintValue = footprint[footprintKey];
+      const dailyFootprint = this.hasWeeklyFootprint ? footprintValue / 7 : footprintValue;
       return { ...footprintAcc, [footprintKey]: FootprintHelper.getYearlyFootprint(dailyFootprint) };
     }, footprint);
-    return FootprintHelper.removeNullOrZeroValues(yearlyFootprint);
+    return yearlyFootprint;
   }
 
-  protected abstract getYearlyFootprints(): Partial<ColdBeveragesFootprints | HotBeveragesFootprints | MealsFootprints>;
+  #getTotal(object: Record<string, number | undefined | never>): number {
+    if (!object) {
+      return 0;
+    }
+    return NumberFormatter.roundNumber(
+      Object.values(object).reduce((acc, val) => acc + val, 0),
+      3,
+    );
+  }
+
+  abstract calculateYearlyFootprint(): T;
+  protected abstract getYearlyFootprints(): WithoutTotal<T>;
 }

@@ -2,26 +2,20 @@ import { HotBeveragesAnswer, HotBeveragesFootprints, MilkTypes } from 'carbon-cu
 import { AlimentationData } from '../../types/alimentation-types';
 import { AnswerValidator } from '../answer-validator';
 import { FootprintCategory } from '../footprint-category';
+import { FootprintHelper } from '../footprints-helper';
 import { ValidationError } from '../validation-error';
 import { AlimentationFootprintData, AlimentationFootprints } from './alimentation-footprints';
 
-export class HotBeverages extends FootprintCategory {
+export class HotBeverages extends FootprintCategory<HotBeveragesFootprints> {
   protected readonly hasWeeklyFootprint = true;
-  readonly #coffeeFootprintData: AlimentationFootprintData = {
-    footprintValue: this.footprintsData.groundedCoffee,
-    quantityMultiplier: this.quantitiesData.coffeePerCup,
-  };
-  readonly #teaFootprintData: AlimentationFootprintData = {
-    footprintValue: this.footprintsData.infusedTea,
-    quantityMultiplier: this.quantitiesData.teaPerCup,
-  };
+
   readonly #hotChocolateFootprintData: AlimentationFootprintData[] = [
     {
       footprintValue: this.footprintsData.cacaoPowder,
       quantityMultiplier: this.quantitiesData.cacaoPerCup,
     },
     {
-      footprintValue: this.footprintsData[this.milkType],
+      footprintValue: this.milkType ? this.footprintsData[this.milkType] : 0,
       quantityMultiplier: this.quantitiesData.milkPerCup,
     },
   ];
@@ -30,15 +24,23 @@ export class HotBeverages extends FootprintCategory {
     private readonly alimentationFootprints: AlimentationFootprints,
     readonly alimentationData: AlimentationData,
     private readonly hotBeveragesAnswer: HotBeveragesAnswer,
-    private readonly milkType: MilkTypes,
+    private readonly milkType?: MilkTypes,
   ) {
     super(alimentationData);
     this.#validate();
+    console.log('this.milkType', this.milkType);
+    console.log('this.#hotChocolateFootprintData[1]', this.#hotChocolateFootprintData[1]);
+  }
+
+  calculateYearlyFootprint(): HotBeveragesFootprints {
+    return FootprintHelper.removeNullishFootprints(this.calculateYearlyFootprintWithTotal());
   }
 
   protected getYearlyFootprints(): Partial<HotBeveragesFootprints> {
-    const coffeeFootprint = this.alimentationFootprints.calculateFootprint(this.hotBeveragesAnswer.coffee, this.#coffeeFootprintData);
-    const teaFootprint = this.alimentationFootprints.calculateFootprint(this.hotBeveragesAnswer.tea, this.#teaFootprintData);
+    const { groundedCoffee, infusedTea } = this.footprintsData;
+    const { coffeePerCup, teaPerCup } = this.quantitiesData;
+    const coffeeFootprint = this.alimentationFootprints.calculateFootprint(this.hotBeveragesAnswer.coffee, groundedCoffee, coffeePerCup);
+    const teaFootprint = this.alimentationFootprints.calculateFootprint(this.hotBeveragesAnswer.tea, infusedTea, teaPerCup);
     const hotChocolateFootprint = this.alimentationFootprints.calculateMultipleIngredientsFootprint(
       this.hotBeveragesAnswer.hotChocolate,
       this.#hotChocolateFootprintData,

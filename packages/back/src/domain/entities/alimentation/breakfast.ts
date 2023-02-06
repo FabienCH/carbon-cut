@@ -12,7 +12,7 @@ export class Breakfast {
 
   constructor(
     readonly alimentationData: AlimentationData,
-    private readonly breakfast: BreakfastTypes,
+    private readonly breakfastType: BreakfastTypes,
     private readonly milkType: MilkTypes,
   ) {
     this.#validate();
@@ -23,14 +23,14 @@ export class Breakfast {
   }
 
   #validate(): void {
-    if (this.breakfast === BreakfastTypes.milkCerealBreakfast && !this.milkType) {
+    if (this.breakfastType === BreakfastTypes.milkCerealBreakfast && !this.milkType) {
       throw new ValidationError(['Milk type should not be empty with cereal milk breakfast']);
     }
   }
 
   #getBreakfastType(): BreakfastWithMilkTypes {
-    if (this.breakfast !== BreakfastTypes.milkCerealBreakfast) {
-      return this.breakfast;
+    if (this.breakfastType !== BreakfastTypes.milkCerealBreakfast) {
+      return this.breakfastType;
     }
     return this.#breakfastsWithMilkMapping[this.milkType];
   }

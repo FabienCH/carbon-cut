@@ -34,8 +34,8 @@ class NestMealsFootprintsDto implements MealsFootprints {
   whiteFish?: number;
   @ApiProperty({ required: false })
   fish?: number;
-  @ApiProperty({ required: false })
-  total?: number;
+  @ApiProperty()
+  total: number;
 }
 
 export class NestCarbonFootprintDto implements CarbonFootprintDto {
@@ -45,8 +45,8 @@ export class NestCarbonFootprintDto implements CarbonFootprintDto {
   hotBeverages?: HotBeveragesFootprints;
   @ApiProperty({ required: false, type: NestColdBeveragesFootprintsDto })
   coldBeverages?: ColdBeveragesFootprints;
-  @ApiProperty({ required: false, type: NestMealsFootprintsDto })
-  meals?: MealsFootprints;
+  @ApiProperty({ type: NestMealsFootprintsDto })
+  meals: MealsFootprints;
   @ApiProperty()
   total: number;
 }
