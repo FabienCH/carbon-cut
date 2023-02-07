@@ -7,14 +7,15 @@ import { CalculateCarbonFootprintUseCase } from './calculate-carbon-footprint.us
 describe('Carbon footprint calculation use case', () => {
   let calculateCarbonFootprintUseCase: CalculateCarbonFootprintUseCase;
   const defaultMealsFootprint = {
-    vegan: 859.575,
-    vegetarian: 1627.9,
-    whiteMeat: 1531.54,
-    redMeat: 2011.15,
-    whiteFish: 1728.64,
-    fish: 1189.9,
-    total: 8948.705,
+    fish: 169.986,
+    redMeat: 287.307,
+    total: 1247.101,
+    vegan: 163.729,
+    vegetarian: 174.418,
+    whiteFish: 123.474,
+    whiteMeat: 328.187,
   };
+
   beforeEach(() => {
     calculateCarbonFootprintUseCase = new CalculateCarbonFootprintUseCase(new InMemorySimulationDataRepository(true));
   });
@@ -30,7 +31,7 @@ describe('Carbon footprint calculation use case', () => {
         breakfast: 105.485,
         hotBeverages: { coffee: 31.567, total: 31.567 },
         meals: defaultMealsFootprint,
-        total: 9085.757,
+        total: 1384.153,
       });
     });
 
@@ -41,7 +42,7 @@ describe('Carbon footprint calculation use case', () => {
         milkType: MilkTypes.cowMilk,
       });
 
-      expect(footprint).toEqual({ breakfast: 170.82, meals: defaultMealsFootprint, total: 9119.525 });
+      expect(footprint).toEqual({ breakfast: 170.82, meals: defaultMealsFootprint, total: 1417.921 });
     });
 
     it('for a breakfast with soja milk and cereal', async () => {
@@ -51,7 +52,7 @@ describe('Carbon footprint calculation use case', () => {
         milkType: MilkTypes.sojaMilk,
       });
 
-      expect(footprint).toEqual({ breakfast: 106.58, meals: defaultMealsFootprint, total: 9055.285 });
+      expect(footprint).toEqual({ breakfast: 106.58, meals: defaultMealsFootprint, total: 1353.681 });
     });
 
     it('for a vegan breakfast ', async () => {
@@ -60,7 +61,7 @@ describe('Carbon footprint calculation use case', () => {
         breakfast: BreakfastTypes.veganBreakfast,
       });
 
-      expect(footprint).toEqual({ breakfast: 152.935, meals: defaultMealsFootprint, total: 9101.64 });
+      expect(footprint).toEqual({ breakfast: 152.935, meals: defaultMealsFootprint, total: 1400.036 });
     });
 
     it('for no breakfast with coffee tea and hot chocolate with cow milk', async () => {
@@ -73,7 +74,7 @@ describe('Carbon footprint calculation use case', () => {
       expect(footprint).toEqual({
         hotBeverages: { coffee: 44.194, tea: 1.043, hotChocolate: 167.942, total: 213.179 },
         meals: defaultMealsFootprint,
-        total: 9161.884,
+        total: 1460.28,
       });
     });
 
@@ -87,7 +88,7 @@ describe('Carbon footprint calculation use case', () => {
       expect(footprint).toEqual({
         hotBeverages: { coffee: 44.194, tea: 1.043, hotChocolate: 135.405, total: 180.642 },
         meals: defaultMealsFootprint,
-        total: 9129.347,
+        total: 1427.743,
       });
     });
 
@@ -97,7 +98,7 @@ describe('Carbon footprint calculation use case', () => {
         coldBeverages: { ...defaultSimulationAnswers.coldBeverages, sweet: 2 },
       });
 
-      expect(footprint).toEqual({ coldBeverages: { sweet: 52.838, total: 52.838 }, meals: defaultMealsFootprint, total: 9001.543 });
+      expect(footprint).toEqual({ coldBeverages: { sweet: 52.838, total: 52.838 }, meals: defaultMealsFootprint, total: 1299.939 });
     });
 
     it('for 0.8 liters of alcohol (beer, wine, cocktail...)', async () => {
@@ -106,7 +107,7 @@ describe('Carbon footprint calculation use case', () => {
         coldBeverages: { ...defaultSimulationAnswers.coldBeverages, alcohol: 0.8 },
       });
 
-      expect(footprint).toEqual({ coldBeverages: { alcohol: 45.19, total: 45.19 }, meals: defaultMealsFootprint, total: 8993.895 });
+      expect(footprint).toEqual({ coldBeverages: { alcohol: 45.19, total: 45.19 }, meals: defaultMealsFootprint, total: 1292.291 });
     });
 
     it('with 4 vegans, 3 vegetarians, 2 white meat, 1 read meat, 2 white fishes and 2 red fishes meals', async () => {
@@ -117,15 +118,15 @@ describe('Carbon footprint calculation use case', () => {
 
       expect(footprint).toEqual({
         meals: {
-          vegan: 1146.1,
-          vegetarian: 1220.925,
-          whiteMeat: 1531.54,
-          redMeat: 2011.15,
-          whiteFish: 1728.64,
-          fish: 1189.9,
-          total: 8828.255,
+          fish: 169.986,
+          redMeat: 287.307,
+          total: 1261.18,
+          vegan: 163.729,
+          vegetarian: 174.418,
+          whiteFish: 246.949,
+          whiteMeat: 218.791,
         },
-        total: 8828.255,
+        total: 1261.18,
       });
     });
   });

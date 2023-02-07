@@ -7,7 +7,6 @@ export type WithoutTotal<T extends Record<string, number> & { total?: number }> 
 export abstract class FootprintCategory<T extends Record<string, number> & { total?: number }> {
   protected readonly footprintsData: AlimentationDataFootprints;
   protected readonly quantitiesData: AlimentationDataQuantities;
-  protected abstract readonly hasWeeklyFootprint: boolean;
 
   protected footprint: WithoutTotal<T>;
 
@@ -26,7 +25,7 @@ export abstract class FootprintCategory<T extends Record<string, number> & { tot
   protected getYearlyNonNullFootprint(footprint: WithoutTotal<T>): WithoutTotal<T> {
     const yearlyFootprint = getTypedObjectKeys(footprint).reduce((footprintAcc, footprintKey) => {
       const footprintValue = footprint[footprintKey];
-      const dailyFootprint = this.hasWeeklyFootprint ? footprintValue / 7 : footprintValue;
+      const dailyFootprint = footprintValue / 7;
       return { ...footprintAcc, [footprintKey]: FootprintHelper.getYearlyFootprint(dailyFootprint) };
     }, footprint);
     return yearlyFootprint;

@@ -1,4 +1,4 @@
-import { CarbonFootprintDto, SimulationDto } from 'carbon-cut-commons';
+import { CarbonFootprintDto, NumberFormatter, SimulationDto } from 'carbon-cut-commons';
 import { AlimentationData } from '../types/alimentation-types';
 import { AlimentationFootprints } from './alimentation/alimentation-footprints';
 import { Breakfast } from './alimentation/breakfast';
@@ -34,6 +34,9 @@ export class Simulation {
 
   #getTotal(numbers: number[], nullableNumbers: Array<number | undefined>): number {
     const cleanedNullableNumbers = nullableNumbers.filter((number) => !isNaN(number));
-    return [...numbers, ...cleanedNullableNumbers].reduce((acc, val) => acc + val, 0);
+    return NumberFormatter.roundNumber(
+      [...numbers, ...cleanedNullableNumbers].reduce((acc, val) => acc + val, 0),
+      3,
+    );
   }
 }
