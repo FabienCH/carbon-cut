@@ -1,4 +1,4 @@
-import { Input } from '@rneui/themed';
+import { Colors, Input, Theme, useTheme } from '@rneui/themed';
 import { StyleSheet, View } from 'react-native';
 import { InputAnswer } from '../../../domain/ports/presenters/question.presenter';
 
@@ -8,6 +8,7 @@ interface InputAnswersProps<T extends string> {
 }
 
 export default function InputAnswers<T extends string>({ answers, answerChanged }: InputAnswersProps<T>) {
+  const { theme } = useTheme();
   return (
     <View>
       {answers.map((answer) => {
@@ -21,7 +22,7 @@ export default function InputAnswers<T extends string>({ answers, answerChanged 
             placeholder={answer.placeholder}
             keyboardType="numeric"
             containerStyle={styles.answer}
-            labelStyle={styles.labelStyle}
+            labelStyle={labelStyle(theme).label}
             renderErrorMessage={!!answer.errorMessage}
             errorMessage={answer.errorMessage}
             onChangeText={(value) => answerChanged(value, answer.id)}
@@ -36,7 +37,13 @@ const styles = StyleSheet.create({
   answer: {
     marginBottom: 20,
   },
-  labelStyle: {
-    color: '#000000',
-  },
 });
+
+const labelStyle = (
+  theme: {
+    colors: Colors;
+  } & Theme,
+) =>
+  StyleSheet.create({
+    label: { color: theme.colors.primary },
+  });

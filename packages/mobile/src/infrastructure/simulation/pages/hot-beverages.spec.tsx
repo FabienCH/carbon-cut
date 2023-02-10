@@ -6,12 +6,18 @@ import { NavigationProp } from '@react-navigation/native';
 import { selectSimulationAnswers } from '../../../adapters/simulation-results/store/selectors/simulation-selectors';
 import { appStore } from '../../../adapters/commons/store/app-store';
 import { RootStackParamList, Routes } from '../../root-navigation';
+import MockTheme from '../../../tests/theme-mock';
 
 describe('HotBeverages component', () => {
   beforeEach(() => {
     render(
       <Provider store={appStore}>
-        <HotBeverages navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.HotBeverages>} containerStyle={{}} />
+        <MockTheme>
+          <HotBeverages
+            navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.HotBeverages>}
+            containerStyle={{}}
+          />
+        </MockTheme>
       </Provider>,
     );
   });

@@ -14,6 +14,7 @@ import Breakfast from '../simulation/pages/breakfast';
 import ColdBeverages from '../simulation/pages/cold-beverages';
 import HotBeverages from '../simulation/pages/hot-beverages';
 import MilkType from '../simulation/pages/milk-type';
+import Meals from '../simulation/pages/meals';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -38,6 +39,7 @@ export default function App() {
                 <Stack.Screen name={Routes.ColdBeverages}>
                   {(props) => <ColdBeverages {...props} containerStyle={styles.container} />}
                 </Stack.Screen>
+                <Stack.Screen name={Routes.Meals}>{(props) => <Meals {...props} containerStyle={styles.container} />}</Stack.Screen>
                 <Stack.Screen name={Routes.SimulationResults}>
                   {(props) => <SimulationResults {...props} containerStyle={styles.container} />}
                 </Stack.Screen>
