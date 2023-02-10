@@ -186,17 +186,17 @@ describe('Carbon footprint calculation use case', () => {
           breakfast: BreakfastTypes.britishBreakfast,
           meals: { vegan: 2, vegetarian: 2, whiteMeat: 2, redMeat: 2, whiteFish: 2, fish: 3 },
         }),
-      ).rejects.toThrowError(new ValidationError(['The number of meals must be 14']));
+      ).rejects.toThrowError(new ValidationError(['The number of meals must be 14, 13 given']));
     });
 
-    it('should not have a number of meals higher than 15', async () => {
+    it('should not have a number of meals higher than 14', async () => {
       await expect(
         calculateCarbonFootprintUseCase.execute({
           ...defaultSimulationAnswers,
           breakfast: BreakfastTypes.britishBreakfast,
-          meals: { vegan: 2, vegetarian: 2, whiteMeat: 2, redMeat: 2, whiteFish: 2, fish: 3 },
+          meals: { vegan: 2, vegetarian: 2, whiteMeat: 2, redMeat: 3.1, whiteFish: 2, fish: 3 },
         }),
-      ).rejects.toThrowError(new ValidationError(['The number of meals must be 14']));
+      ).rejects.toThrowError(new ValidationError(['The number of meals must be 14, 14.1 given']));
     });
   });
 });

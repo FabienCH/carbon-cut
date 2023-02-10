@@ -6,6 +6,7 @@ import {
   ColdBeveragesViewModel,
   WebColdBeveragesQuestionPresenter,
 } from '../../../adapters/simulation/presenters/web-cold-beverages-question.presenter';
+import { AnswerValidator } from '../../../domain/entites/answer-validator';
 import { ColdBeveragesQuestionPresenterToken } from '../../../domain/ports/presenters/question.presenter';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
 import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '../../../domain/usecases/set-input-answer.usecase';
@@ -38,7 +39,12 @@ export default function ColdBeverages({ navigation, containerStyle }: ColdBevera
   }, [presenter, presenter.viewModel]);
 
   const setAnswer = (value: string, id: ColdBeveragesKeys, questionIndex: number): void => {
-    setInputAnswerUseCase.execute(presenter, { id, value }, questionIndex);
+    setInputAnswerUseCase.execute(
+      presenter,
+      { id, value },
+      { answerValidatorsFn: [AnswerValidator.positiveNumberValidator] },
+      questionIndex,
+    );
   };
 
   const saveAnswer = (): void => {

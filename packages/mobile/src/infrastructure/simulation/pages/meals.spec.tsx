@@ -31,7 +31,7 @@ describe('Meals component', () => {
   });
 
   it('should display a list of answers', () => {
-    const mealsTypes = ['végétalien', 'végétarien', 'viande blanche', 'viande rouge', 'poisson blanc', 'autres poissons'];
+    const mealsTypes = ['végétaliens', 'végétariens', 'viande blanche', 'viande rouge', 'poisson blanc', 'autres poissons'];
     const expectedPlaceholders = (mealsTypesIdx: number) => `Repas ${mealsTypes[mealsTypesIdx]} / semaine`;
 
     const placeholderElements = screen.getAllByPlaceholderText(/\/ semaine/);
@@ -83,13 +83,22 @@ describe('Meals component', () => {
     expect(errorMessage).toBeTruthy();
   });
 
-  it('should enable submit answer button if all answers are valid', () => {
-    const submitButton = screen.getByRole('button');
+  it('should display an error message if total of the answers is not 14', () => {
     const placeholderElements = screen.getAllByPlaceholderText(/\/ semaine/);
 
     placeholderElements.forEach((placeholderElem) => {
       fireEvent.changeText(placeholderElem, '2');
     });
+
+    const errorMessage = screen.getByText('Le nombre de repas pour une semaine doit être de 14');
+    expect(errorMessage).toBeTruthy();
+  });
+
+  it('should enable submit answer button if all answers are valid', () => {
+    const submitButton = screen.getByRole('button');
+    const placeholderElements = screen.getAllByPlaceholderText(/\/ semaine/);
+
+    fillValidForm(placeholderElements);
 
     expect(submitButton.props.accessibilityState.disabled).toBeFalsy();
   });
@@ -110,10 +119,7 @@ describe('Meals component', () => {
     const submitButton = screen.getByRole('button');
     const placeholderElements = screen.getAllByPlaceholderText(/\/ semaine/);
 
-    placeholderElements.forEach((placeholderElem, idx) => {
-      const value = idx < 2 ? '3' : '2';
-      fireEvent.changeText(placeholderElem, value);
-    });
+    fillValidForm(placeholderElements);
     fireEvent.press(submitButton);
 
     expect(selectIsLoading()).toBeTruthy();
@@ -165,9 +171,7 @@ describe('Meals component', () => {
       const submitButton = screen.getByRole('button');
       const placeholderElements = screen.getAllByPlaceholderText(/\/ semaine/);
 
-      placeholderElements.forEach((placeholderElem) => {
-        fireEvent.changeText(placeholderElem, '2');
-      });
+      fillValidForm(placeholderElements);
       fireEvent.press(submitButton);
 
       await waitFor(() => {
@@ -178,4 +182,11 @@ describe('Meals component', () => {
       });
     });
   });
+
+  function fillValidForm(placeholderElements: any[]) {
+    placeholderElements.forEach((placeholderElem, idx) => {
+      const value = idx < 2 ? '3' : '2';
+      fireEvent.changeText(placeholderElem, value);
+    });
+  }
 });

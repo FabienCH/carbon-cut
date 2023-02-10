@@ -1,3 +1,4 @@
+import { Colors, Theme } from '@rneui/themed';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -9,3 +10,12 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export const errorStyle = (
+  theme: {
+    colors: Colors;
+  } & Theme,
+) =>
+  StyleSheet.create({
+    error: { color: theme.colors.error },
+  });

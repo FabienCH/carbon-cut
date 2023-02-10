@@ -15,6 +15,7 @@ import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '.
 import { diContainer } from '../../inversify.config';
 import { RootStackParamList, Routes } from '../../root-navigation';
 import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '../../../domain/usecases/set-input-answer.usecase';
+import { AnswerValidator } from '../../../domain/entites/answer-validator';
 
 type HotBeveragesNavigationProp = NavigationProp<RootStackParamList, Routes.HotBeverages>;
 type HotBeveragesProps = {
@@ -39,7 +40,7 @@ export default function HotBeverages({ navigation, containerStyle }: HotBeverage
   }, [presenter, presenter.viewModel]);
 
   const setAnswer = (value: string, id: HotBeveragesKeys): void => {
-    setInputAnswerUseCase.execute(presenter, { id, value });
+    setInputAnswerUseCase.execute(presenter, { id, value }, { answerValidatorsFn: [AnswerValidator.positiveNumberValidator] });
     setNextNavigateRoute(presenter.nextNavigateRoute());
   };
 
