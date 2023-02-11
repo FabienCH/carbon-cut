@@ -5,7 +5,7 @@ import * as request from 'supertest';
 import { SimulationDataRepositoryToken } from '../../domain/ports/repositories/simulation-data.repository';
 import { CalculateCarbonFootprintUseCase } from '../../domain/usecases/calculate-carbon-footprint.usecase';
 import { InMemorySimulationDataRepository } from '../../tests/repositories/in-memory-simulation-data.repository';
-import { defaultSimulationAnswers } from '../../tests/simulation-answers';
+import { defaultAlimentationAnswers, defaultSimulationAnswers } from '../../tests/simulation-answers';
 import { NestCarbonFootprintController } from './nest-carbon-footprint.controller';
 
 describe('Carbon footprint calculation use case', () => {
@@ -46,60 +46,69 @@ describe('Carbon footprint calculation use case', () => {
     it('should not accept empty request ', async () => {
       const response = await getResponse({});
 
+      expectBadRequestError(response, ['alimentation should not be empty']);
+    });
+
+    it('should not accept request with empty alimentation', async () => {
+      const response = await getResponse({ alimentation: {} });
+
       expectBadRequestError(response, [
-        'breakfast must be one of the following values: continentalBreakfast, milkCerealBreakfast, britishBreakfast, veganBreakfast, noBreakfast',
-        'breakfast should not be empty',
-        'hotBeverages should not be empty',
-        'coldBeverages should not be empty',
-        'meals should not be empty',
+        'alimentation.breakfast must be one of the following values: continentalBreakfast, milkCerealBreakfast, britishBreakfast, veganBreakfast, noBreakfast',
+        'alimentation.breakfast should not be empty',
+        'alimentation.hotBeverages should not be empty',
+        'alimentation.coldBeverages should not be empty',
+        'alimentation.meals should not be empty',
       ]);
     });
 
     it('should not accept request with empty cold beverages', async () => {
       const response = await getResponse({
         ...defaultSimulationAnswers,
-        coldBeverages: {},
+        alimentation: { ...defaultAlimentationAnswers, coldBeverages: {} },
       });
 
       expectBadRequestError(response, [
-        'coldBeverages.sweet must be a number conforming to the specified constraints',
-        'coldBeverages.sweet should not be empty',
-        'coldBeverages.alcohol must be a number conforming to the specified constraints',
-        'coldBeverages.alcohol should not be empty',
+        'alimentation.coldBeverages.sweet must be a number conforming to the specified constraints',
+        'alimentation.coldBeverages.sweet should not be empty',
+        'alimentation.coldBeverages.alcohol must be a number conforming to the specified constraints',
+        'alimentation.coldBeverages.alcohol should not be empty',
       ]);
     });
 
     it('should not accept request with empty hot beverages', async () => {
       const response = await getResponse({
         ...defaultSimulationAnswers,
-        hotBeverages: {},
+        alimentation: { ...defaultAlimentationAnswers, hotBeverages: {} },
       });
 
       expectBadRequestError(response, [
-        'hotBeverages.coffee must be a number conforming to the specified constraints',
-        'hotBeverages.coffee should not be empty',
-        'hotBeverages.tea must be a number conforming to the specified constraints',
-        'hotBeverages.tea should not be empty',
-        'hotBeverages.hotChocolate must be a number conforming to the specified constraints',
-        'hotBeverages.hotChocolate should not be empty',
+        'alimentation.hotBeverages.coffee must be a number conforming to the specified constraints',
+        'alimentation.hotBeverages.coffee should not be empty',
+        'alimentation.hotBeverages.tea must be a number conforming to the specified constraints',
+        'alimentation.hotBeverages.tea should not be empty',
+        'alimentation.hotBeverages.hotChocolate must be a number conforming to the specified constraints',
+        'alimentation.hotBeverages.hotChocolate should not be empty',
       ]);
     });
 
     it('should not accept request with invalid milk type', async () => {
       const response = await getResponse({
         ...defaultSimulationAnswers,
-        milkType: 'some type',
+        alimentation: { ...defaultAlimentationAnswers, milkType: 'some type' },
       });
 
-      expectBadRequestError(response, ['milkType must be one of the following values: cowMilk, sojaMilk, oatsMilk']);
+      expectBadRequestError(response, ['alimentation.milkType must be one of the following values: cowMilk, sojaMilk, oatsMilk']);
     });
 
     it('should not accept request with no milk type if milk cereal breakfast or hot chocolate', async () => {
       const response = await getResponse({
         ...defaultSimulationAnswers,
-        breakfast: BreakfastTypes.milkCerealBreakfast,
-        hotBeverages: { coffee: 1, tea: 2, hotChocolate: 3 },
-        coldBeverages: { sweet: 1, alcohol: 2 },
+        alimentation: {
+          ...defaultAlimentationAnswers,
+          breakfast: BreakfastTypes.milkCerealBreakfast,
+          hotBeverages: { coffee: 1, tea: 2, hotChocolate: 3 },
+          coldBeverages: { sweet: 1, alcohol: 2 },
+        },
       });
 
       expectBadRequestError(response, ['Milk type should not be empty with cereal milk breakfast']);
@@ -108,7 +117,7 @@ describe('Carbon footprint calculation use case', () => {
     it('should not accept request with negative values', async () => {
       const response = await getResponse({
         ...defaultSimulationAnswers,
-        hotBeverages: { coffee: -1, tea: -2, hotChocolate: -3 },
+        alimentation: { ...defaultAlimentationAnswers, hotBeverages: { coffee: -1, tea: -2, hotChocolate: -3 } },
       });
 
       expectBadRequestError(response, [
@@ -121,7 +130,10 @@ describe('Carbon footprint calculation use case', () => {
     it('should not accept request with a number of meals not equals to 14', async () => {
       const response = await getResponse({
         ...defaultSimulationAnswers,
-        meals: { vegan: 2, vegetarian: 2, whiteMeat: 2, redMeat: 2, whiteFish: 2, fish: 3 },
+        alimentation: {
+          ...defaultAlimentationAnswers,
+          meals: { vegan: 2, vegetarian: 2, whiteMeat: 2, redMeat: 2, whiteFish: 2, fish: 3 },
+        },
       });
 
       expectBadRequestError(response, ['The number of meals must be 14, 13 given']);
