@@ -71,6 +71,17 @@ export class InMemorySimulationDataRepository implements SimulationDataRepositor
             teaHeatingPercent: 0.25,
           },
         },
+        transportData: {
+          footprints: {
+            carDieselByLiter: 3.07,
+            carEssenceE10ByLiter: 2.7,
+            essenceE85byLiter: 1.11,
+            smallElectricalCarByKm: 0.0159,
+            mediumElectricalCarByKm: 0.0198,
+            largeElectricalCarByKm: 0.0273,
+          },
+          multipliers: { carHybridReduction: 0.85 },
+        },
       };
     }
   }

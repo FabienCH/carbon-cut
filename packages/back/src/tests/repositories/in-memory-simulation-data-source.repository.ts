@@ -4,7 +4,7 @@ import { DataRecord } from '../../domain/types/data-record';
 export class InMemorySimulationDataSourceRepository implements SimulationDataSourceRepository {
   constructor(private readonly returnIncorrectData = false) {}
 
-  readonly #dataToImport: DataRecord = {
+  readonly #alimentationDataToImport: DataRecord = {
     'alimentation . boisson': { icônes: '🥤', formule: { somme: ['chaude', 'froide'] } },
     'alimentation . boisson . chaude': {
       mosaique: {
@@ -531,6 +531,606 @@ export class InMemorySimulationDataSourceRepository implements SimulationDataSou
     },
   };
 
+  readonly #transportDataToImport: DataRecord = {
+    'transport . empreinte': {
+      titre: 'Transport',
+      formule: {
+        somme: ['voiture . empreinte', 'avion', 'deux roues thermique', 'bus', 'train', 'métro ou tram', 'vélo', 'vacances'],
+      },
+    },
+    'transport . vacances': {
+      mosaique: {
+        type: 'selection',
+        clé: 'propriétaire',
+      },
+      question: 'Que possédez-vous pour vos week-ends, vos vacances ?',
+      icônes: '🏖',
+      formule: {
+        somme: ['caravane . empreinte . usage réel', 'camping car . empreinte . usage réel', 'van', 'maison secondaire'],
+      },
+    },
+    'transport . vacances . maison secondaire': {
+      titre: 'Maison secondaire',
+      icônes: '🏠',
+      'applicable si': 'propriétaire',
+      formule: 0,
+    },
+    'transport . vacances . maison secondaire . propriétaire': {
+      question: 'Possédez-vous une maison secondaire ?',
+      'par défaut': 'non',
+      inactif: 'oui',
+    },
+    'transport . vacances . van': {
+      titre: 'Van',
+      icônes: '🚐',
+      'applicable si': 'propriétaire',
+      formule: 0,
+    },
+    'transport . vacances . van . propriétaire': {
+      question: 'Possédez-vous un van ?',
+      'par défaut': 'non',
+      inactif: 'oui',
+    },
+    'transport . train': {
+      titre: 'Train',
+      icônes: '🚋',
+      formule: 'km * impact par km',
+    },
+    'transport . train . impact par km': {
+      formule: '(TER + TGV) / 2',
+      unité: 'kgCO2e/km',
+    },
+    'transport . train . TER': {
+      formule: 0.0296,
+      unité: 'kgCO2e/km',
+    },
+    'transport . train . TGV': {
+      formule: 0.00236,
+      unité: 'kgCO2e/km',
+    },
+    'transport . train . km': {
+      question: 'Combien de kilomètres parcourez-vous en train par an ?',
+      suggestions: {
+        "traversée d'une région": 300,
+        'Paris↔Lyon': 800,
+        'Brest↔Nice': 2400,
+        '💳 grand voyageur plus ultra': 10000,
+      },
+      unité: 'km/an',
+      'par défaut': '1000 km/an',
+    },
+    'transport . métro ou tram': {
+      titre: 'Métro ou tramway',
+      icônes: '🚊',
+      formule: 'heures par semaine * impact par heure * nombre de semaines',
+    },
+    'transport . métro ou tram . impact par heure': {
+      formule: 'impact par km * vitesse',
+      unité: 'kgCO2e/h',
+    },
+    'transport . métro ou tram . impact par km': {
+      formule: 0.00329,
+      unité: 'kgCO2e/km',
+    },
+    'transport . métro ou tram . vitesse': {
+      formule: 25,
+      unité: 'km/h',
+    },
+    'transport . métro ou tram . heures par semaine': {
+      question: "Combien d'heures passez-vous par semaine en métro ou en tram ?",
+      suggestions: {
+        zéro: 0,
+        '1h / jour': 7,
+        '2h / jour': 14,
+      },
+      unité: 'h/semaine',
+      'par défaut': '3 h/semaine',
+    },
+    'transport . bus': {
+      titre: 'Bus',
+      icônes: '🚌',
+      formule: 'heures par semaine * impact par heure * nombre de semaines',
+    },
+    'nombre de semaines': {
+      formule: 52,
+      unité: 'semaine',
+    },
+    'transport . bus . impact par heure': {
+      formule: 'impact par km * vitesse',
+      unité: 'kgCO2e/h',
+    },
+    'transport . bus . impact par km': {
+      formule: 0.113,
+      unité: 'kgCO2e/km',
+    },
+    'transport . bus . vitesse': {
+      formule: 12,
+      unité: 'km/h',
+    },
+    'transport . bus . heures par semaine': {
+      question: "Combien d'heures passez-vous dans un bus par semaine ?",
+      suggestions: {
+        zéro: 0,
+        '1h / jour': 7,
+        '2h / jour': 14,
+      },
+      unité: 'h/semaine',
+      'par défaut': '3 h/semaine',
+    },
+    'transport . vélo': {
+      titre: 'Vélo',
+      'applicable si': 'km',
+      icônes: '🚲',
+      formule: 'empreinte * km',
+    },
+    'transport . vélo . empreinte': {
+      formule: 0,
+      unité: 'kgCO2e/km',
+    },
+    'transport . vélo . km': {
+      titre: 'Kilomètres à vélo',
+      question: 'Combien de kilomètres de vélo ou marche faites-vous par semaine ?',
+      suggestions: {
+        'zéro ou presque': '0 km',
+        '5km par jour': '35 km',
+        '10km par jour': '70 km',
+      },
+      'par défaut': '5 km',
+    },
+    'transport . deux roues thermique': {
+      icônes: '🛵',
+      'applicable si': 'usager',
+      formule: 'empreinte * km',
+    },
+    'transport . deux roues thermique . usager': {
+      question: 'Utilisez-vous un scooter ou une moto ?',
+      'par défaut': 'non',
+    },
+    'transport . deux roues thermique . km': {
+      question: "Combien de km faites-vous à l'année avec votre scooter ou moto ?",
+      'par défaut': '1000 km',
+    },
+    'transport . deux roues thermique . type': {
+      question: 'Quel type de deux roues thermique utilisez-vous ?',
+      'applicable si': 'usager',
+      'par défaut': "'scooter'",
+      formule: {
+        'une possibilité': {
+          'choix obligatoire': 'oui',
+          possibilités: ['scooter', 'moto inf 250', 'moto sup 250'],
+        },
+      },
+    },
+    'transport . deux roues thermique . type . scooter': {
+      titre: 'Scooter',
+    },
+    'transport . deux roues thermique . type . moto inf 250': {
+      titre: 'Moto moins de 250 cm3',
+    },
+    'transport . deux roues thermique . type . moto sup 250': {
+      titre: 'Moto plus de 250 cm3',
+    },
+    'transport . deux roues thermique . empreinte': {
+      formule: {
+        variations: [
+          {
+            si: "type = 'scooter'",
+            alors: '0.0763 kgCO2e/km',
+          },
+          {
+            si: "type = 'moto inf 250'",
+            alors: '0.0763 kgCO2e/km',
+          },
+          {
+            si: "type = 'moto sup 250'",
+            alors: '0.191 kgCO2e/km',
+          },
+        ],
+      },
+    },
+    'transport . deux roues thermique . conso': {
+      formule: {
+        variations: [
+          {
+            si: "type = 'scooter'",
+            alors: '2.3 / 100 l/km',
+          },
+          {
+            si: "type = 'moto inf 250'",
+            alors: '2.2 / 100 l/km',
+          },
+          {
+            si: "type = 'moto sup 250'",
+            alors: '6 / 100 l/km',
+          },
+        ],
+      },
+    },
+    'transport . voiture': {
+      formule: 'oui',
+      icônes: '🚘️',
+    },
+    'transport . voiture . empreinte': {
+      résumé: "Le premier poste moyen d'empreinte, l'incontournable **voiture individuelle**",
+      titre: 'voiture',
+      icônes: '🚘️',
+      'non applicable si': 'km = 0',
+      formule: {
+        variations: [
+          {
+            si: 'voiture . aide km',
+            alors: 'construction amortie / ratio voyageurs + usage',
+          },
+          {
+            sinon: '(construction amortie + usage) / voyageurs',
+          },
+        ],
+      },
+      unité: 'kgCO2e',
+    },
+    'transport . voiture . voyageurs': {
+      question: 'Quel est le nombre moyen de voyageurs dans la voiture ?',
+      'par défaut': '1.2 voyageurs',
+      unité: 'voyageurs',
+      suggestions: {
+        'un seul': 1,
+        deux: 2,
+        cinq: 5,
+      },
+    },
+    'transport . voiture . notif minimum voyageurs': {
+      type: 'notification',
+      sévérité: 'invalide',
+      formule: 'voyageurs = 0',
+    },
+    'transport . voiture . aide km': {
+      question:
+        "L'utilisateur a-t-il été assisté pour remplir son nombre de kilomètres en voiture, ce nombre étant alors déjà proratisé par le nombre de voyageur pour chaque trajet ?",
+      'par défaut': 'non',
+    },
+    'transport . voiture . ratio voyageurs': {
+      question:
+        "Si l'utilisateur a été assisté pour remplir son nombre de kilomètres, quel est le rapport entre la somme brute des kilomètres, et la somme des kilomètres divisés par le nombre de voyageur du trajet ?",
+      'par défaut': 1,
+    },
+    'transport . voiture . km': {
+      titre: 'Km en voiture',
+      question: "Quelle distance parcourez-vous à l'année en voiture ?",
+      'par défaut': '12200 km/an',
+      suggestions: {
+        zéro: '0 km/an',
+        vacances: '2000 km/an',
+        '10km / jour': '3600 km/an',
+        '1000km / mois': '12000 km/an',
+        '20 000km / an': '20000 km/an',
+      },
+    },
+    'transport . voiture . motorisation': {
+      question: 'Quel type de voiture utilisez-vous ?',
+      'par défaut': "'thermique'",
+      formule: {
+        'une possibilité': {
+          'choix obligatoire': 'oui',
+          possibilités: ['thermique', 'hybride', 'électrique'],
+        },
+      },
+    },
+    'transport . voiture . motorisation . thermique': {
+      titre: 'Thermique (diesel/essence)',
+    },
+    'transport . voiture . motorisation . électrique': {
+      titre: 'Électrique',
+    },
+    'transport . voiture . motorisation . hybride': {
+      titre: 'Hybride',
+    },
+    'transport . voiture . thermique': 'oui',
+    'transport . voiture . gabarit': {
+      'applicable si': 'km > 0',
+      question: 'Quel est le gabarit de la voiture ?',
+      'par défaut': "'moyenne'",
+      formule: {
+        'une possibilité': {
+          'choix obligatoire': 'oui',
+          possibilités: ['petite', 'moyenne', 'berline', 'SUV'],
+        },
+      },
+    },
+    'transport . voiture . gabarit . petite': {
+      titre: 'Petite',
+    },
+    'transport . voiture . gabarit . moyenne': {
+      titre: 'Moyenne',
+    },
+    'transport . voiture . gabarit . berline': {
+      titre: 'Berline',
+    },
+    'transport . voiture . gabarit . SUV': {
+      titre: 'SUV',
+    },
+    'transport . voiture . thermique . consommation aux 100': {
+      question: 'Connaissez-vous la consommation moyenne de la voiture ?',
+      'par défaut': 'consommation estimée',
+      unité: 'l/centkm',
+    },
+    'transport . voiture . consommation estimée': {
+      formule: {
+        variations: [
+          {
+            si: "gabarit = 'petite'",
+            alors: '5 l/centkm',
+          },
+          {
+            si: "gabarit = 'moyenne'",
+            alors: '6 l/centkm',
+          },
+          {
+            si: "gabarit = 'berline'",
+            alors: '7 l/centkm',
+          },
+          {
+            si: "gabarit = 'SUV'",
+            alors: '8 l/centkm',
+          },
+        ],
+      },
+    },
+    'transport . voiture . thermique . consommation au kilomètre': {
+      formule: 'consommation aux 100 / 100',
+      unité: 'l/km',
+    },
+    'transport . voiture . thermique . empreinte au kilomètre': {
+      titre: 'empreinte au km thermique',
+      formule: 'consommation au kilomètre * empreinte au litre',
+    },
+    'transport . voiture . électrique': 'oui',
+    'transport . voiture . électrique . empreinte au kilomètre': {
+      titre: 'empreinte au km électrique',
+      unité: 'kgCO2e/km',
+      formule: {
+        variations: [
+          {
+            si: "gabarit = 'petite'",
+            alors: 0.0159,
+          },
+          {
+            si: "gabarit = 'moyenne'",
+            alors: 0.0198,
+          },
+          {
+            sinon: 0.0273,
+          },
+        ],
+      },
+    },
+    'transport . voiture . empreinte . usage': {
+      formule: 'km * au kilomètre',
+      unité: 'kgCO2e',
+    },
+    'transport . voiture . empreinte . par km personne': {
+      formule: 'au kilomètre / voyageurs',
+    },
+    'transport . voiture . empreinte . au kilomètre': {
+      formule: {
+        variations: [
+          {
+            si: "motorisation = 'thermique'",
+            alors: 'thermique . empreinte au kilomètre',
+          },
+          {
+            si: "motorisation = 'hybride'",
+            alors: 'thermique . empreinte au kilomètre * 0.85',
+          },
+          {
+            sinon: 'électrique . empreinte au kilomètre',
+          },
+        ],
+      },
+    },
+    'transport . voiture . thermique . empreinte au litre': {
+      formule: {
+        variations: [
+          {
+            si: "carburant = 'gazole B7 ou B10'",
+            alors: '(3.1 + 3.04) / 2',
+          },
+          {
+            si: "carburant = 'essence E5 ou E10'",
+            alors: 2.7,
+          },
+          {
+            si: "carburant = 'essence E85'",
+            alors: 1.11,
+          },
+        ],
+      },
+      unité: 'kgCO2e/l',
+    },
+    'transport . voiture . thermique . carburant': {
+      question: 'Quel type de carburant votre voiture consomme-t-elle ?',
+      'par défaut': "'essence E5 ou E10'",
+      formule: {
+        'une possibilité': {
+          'choix obligatoire': 'oui',
+          possibilités: ['gazole B7 ou B10', 'essence E5 ou E10', 'essence E85'],
+        },
+      },
+    },
+    'transport . voiture . thermique . carburant . gazole B7 ou B10': {
+      titre: 'Gazole (B7 ou B10)',
+    },
+    'transport . voiture . thermique . carburant . essence E5 ou E10': {
+      titre: 'Essence (E5 ou E10)',
+    },
+    'transport . voiture . thermique . carburant . essence E85': {
+      titre: 'Essence E85 (biocarburants)',
+    },
+    'transport . voiture . notif carburant': {
+      type: 'notification',
+      formule: "thermique . carburant = 'essence E85'",
+    },
+    'transport . voiture . empreinte . construction': {
+      formule: {
+        variations: [
+          {
+            si: "motorisation = 'thermique'",
+            alors: 'barème thermique',
+          },
+          {
+            si: "motorisation = 'électrique'",
+            alors: 'barème électrique',
+          },
+          {
+            sinon: 'barème hybride',
+          },
+        ],
+      },
+      unité: 'kgCO2e',
+    },
+    'transport . voiture . empreinte . construction . barème thermique': {
+      formule: {
+        variations: [
+          {
+            si: {
+              'une de ces conditions': ["gabarit = 'petite'", "gabarit = 'moyenne'"],
+            },
+            alors: '6700 - 1100',
+          },
+          {
+            si: {
+              'une de ces conditions': ["gabarit = 'berline'", "gabarit = 'SUV'"],
+            },
+            alors: '7600 - 1300',
+          },
+        ],
+      },
+      unité: 'kgCO2e',
+    },
+    'transport . voiture . empreinte . construction . barème électrique': {
+      formule: {
+        variations: [
+          {
+            si: {
+              'une de ces conditions': ["gabarit = 'petite'", "gabarit = 'moyenne'"],
+            },
+            alors: '10200 - 2200',
+          },
+          {
+            si: {
+              'une de ces conditions': ["gabarit = 'berline'", "gabarit = 'SUV'"],
+            },
+            alors: '20200 - 6600',
+          },
+        ],
+      },
+      unité: 'kgCO2e',
+    },
+    'transport . voiture . empreinte . construction . barème hybride': {
+      formule: {
+        variations: [
+          {
+            si: {
+              'une de ces conditions': ["gabarit = 'petite'", "gabarit = 'moyenne'"],
+            },
+            alors: '9600 - 2000',
+          },
+          {
+            si: {
+              'une de ces conditions': ["gabarit = 'berline'", "gabarit = 'SUV'"],
+            },
+            alors: '6900 - 2400',
+          },
+        ],
+      },
+      unité: 'kgCO2e',
+    },
+    'transport . voiture . gabarit . petite . poids': {
+      formule: 1138,
+      unité: 'kg',
+    },
+    'transport . voiture . gabarit . petite . empreinte': {
+      formule: 5600,
+      unité: 'kgCO2e',
+    },
+    'transport . voiture . gabarit . berline . poids': {
+      formule: 1500,
+      unité: 'kg',
+    },
+    'transport . voiture . gabarit . berline . empreinte': {
+      formule: 6300,
+      unité: 'kgCO2e',
+    },
+    'transport . voiture . âge': {
+      'applicable si': {
+        'toutes ces conditions': ['km > 0', 'propriétaire'],
+      },
+      question: "Quel est l'âge de votre voiture ?",
+      unité: 'années',
+      'par défaut': '9 années',
+      suggestions: {
+        '6 mois': 0.5,
+        '1 an et demi': 1.5,
+        '5 ans': 5,
+        '10 ans': 10,
+      },
+    },
+    'transport . voiture . empreinte . construction amortie': {
+      formule: {
+        variations: [
+          {
+            si: 'propriétaire',
+            alors: 'construction * amortissement particulier',
+          },
+          {
+            sinon: '(construction / durée de vie) * facteur location',
+          },
+        ],
+      },
+      unité: 'kgCO2e',
+    },
+    'transport . voiture . amortissement particulier': {
+      formule: {
+        variations: [
+          {
+            si: 'âge < 1',
+            alors: '40%',
+          },
+          {
+            si: 'âge < 2',
+            alors: '20%',
+          },
+          {
+            si: 'âge < 3',
+            alors: '10%',
+          },
+          {
+            si: 'âge < 10',
+            alors: '5%',
+          },
+          {
+            sinon: '0%',
+          },
+        ],
+      },
+    },
+    'transport . voiture . durée de vie': {
+      formule: 19,
+    },
+    'transport . voiture . facteur location': {
+      formule: 'km / 16300',
+    },
+    'transport . voiture . propriétaire': {
+      question: 'Avez-vous votre propre voiture individuelle ?',
+      'par défaut': 'oui',
+    },
+    'transport . voiture . notif proprio': {
+      type: 'notification',
+      formule: {
+        'toutes ces conditions': ['propriétaire = non', 'km > 0'],
+      },
+    },
+  };
+
   readonly #dataToIgnore: DataRecord = {
     'alimentation . boisson . tasse de café . quantité café par tasse': {
       formule: 'a string formula',
@@ -555,6 +1155,6 @@ export class InMemorySimulationDataSourceRepository implements SimulationDataSou
   };
 
   async getBySector(): Promise<DataRecord> {
-    return this.returnIncorrectData ? this.#dataToIgnore : this.#dataToImport;
+    return this.returnIncorrectData ? this.#dataToIgnore : { ...this.#alimentationDataToImport, ...this.#transportDataToImport };
   }
 }

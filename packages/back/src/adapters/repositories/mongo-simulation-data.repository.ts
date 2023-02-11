@@ -1,26 +1,26 @@
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
 import { SimulationDataRepository } from '../../domain/ports/repositories/simulation-data.repository';
-import { AlimentationData } from '../../domain/types/alimentation-types';
+import { SimulationData } from '../../domain/types/simulation-data';
 import {
-  AlimentationCollectionName,
-  AlimentationDataDocument,
-  AlimentationModelName,
-} from '../../infrastructure/mongo-models/alimentation-data.schema';
+  SimulationCollectionName,
+  SimulationDataDocument,
+  SimulationModelName,
+} from '../../infrastructure/mongo-models/simulation-data.schema';
 
 export class MongoSimulationDataRepository implements SimulationDataRepository {
   constructor(
     @InjectConnection() private connection: Connection,
-    @InjectModel(AlimentationModelName) private alimentationDataModel: Model<AlimentationDataDocument>,
+    @InjectModel(SimulationModelName) private alimentationDataModel: Model<SimulationDataDocument>,
   ) {}
 
-  async insert(simulationData: AlimentationData): Promise<void> {
-    await this.connection.collection(AlimentationCollectionName).deleteMany({});
+  async insert(simulationData: SimulationData): Promise<void> {
+    await this.connection.collection(SimulationCollectionName).deleteMany({});
     const createdAlimentationData = new this.alimentationDataModel(simulationData);
     await createdAlimentationData.save();
   }
 
-  async get(): Promise<AlimentationData> {
+  async get(): Promise<SimulationData> {
     return this.alimentationDataModel.findOne();
   }
 }

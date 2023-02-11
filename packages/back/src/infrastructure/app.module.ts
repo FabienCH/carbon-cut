@@ -8,12 +8,12 @@ import { SimulationDataRepositoryToken } from '../domain/ports/repositories/simu
 import { SimulationDataSourceRepositoryToken } from '../domain/ports/repositories/simulation-datasource.repository';
 import { CalculateCarbonFootprintUseCase } from '../domain/usecases/calculate-carbon-footprint.usecase';
 import { SimulationDataImportUseCase } from '../domain/usecases/simulation-data-import.usecase';
-import { AlimentationDataSchema, AlimentationModelName } from './mongo-models/alimentation-data.schema';
+import { SimulationDataSchema, SimulationModelName } from './mongo-models/simulation-data.schema';
 
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://127.0.0.1:27017/carbon_cut'),
-    MongooseModule.forFeature([{ name: AlimentationModelName, schema: AlimentationDataSchema }]),
+    MongooseModule.forFeature([{ name: SimulationModelName, schema: SimulationDataSchema }]),
   ],
   controllers: [NestCarbonFootprintController],
   providers: [

@@ -15,7 +15,12 @@ export class SimulationDataImportUseCase {
 
   async execute(): Promise<void> {
     const alimentation = await this.simulationDataSourceRepository.getBySector('alimentation');
+    const transport = await this.simulationDataSourceRepository.getBySector('transport');
     const alimentationData = this.simulationDataMapper.mapAlimentationData(alimentation);
-    await this.simulationDataRepository.insert({ alimentationData });
+    const transportData = this.simulationDataMapper.mapTransportData(transport);
+    await this.simulationDataRepository.insert({
+      alimentationData,
+      transportData,
+    });
   }
 }

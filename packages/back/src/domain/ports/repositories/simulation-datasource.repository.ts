@@ -1,6 +1,6 @@
 import { DataRecord } from '../../types/data-record';
 
-export type SimulationSectors = 'alimentation';
+export type SimulationSectors = 'alimentation' | 'transport';
 
 export const SimulationDataSourceRepositoryToken = 'SimulationDataSourceRepository';
 
