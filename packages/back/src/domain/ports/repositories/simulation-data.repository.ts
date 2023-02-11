@@ -1,8 +1,8 @@
-import { AlimentationData } from '../../types/alimentation-types';
+import { SimulationData } from '../../../domain/types/simulation-data';
 
 export const SimulationDataRepositoryToken = 'SimulationDataRepository';
 
 export interface SimulationDataRepository {
-  insert(simulationData: AlimentationData): Promise<void>;
-  get(): Promise<AlimentationData>;
+  insert(simulationData: SimulationData): Promise<void>;
+  get(): Promise<SimulationData>;
 }

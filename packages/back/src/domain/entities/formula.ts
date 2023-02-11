@@ -1,4 +1,4 @@
-import { NumberFormatter } from 'carbon-cut-commons';
+import { getTypedObjectKeys, NumberFormatter } from 'carbon-cut-commons';
 
 interface Variation {
   si: string;
@@ -31,40 +31,37 @@ export class Formula {
       return { [key]: this.value };
     }
 
-    const percentage = this.getPercentageFromString(this.value);
+    const percentage = this.#getPercentageFromString(this.value);
     if (percentage) {
       return { [key]: percentage };
     }
 
-    const percentages = this.getPercentagesFromObject();
-    if (percentages) {
-      return { [key]: percentages };
+    const objectValues = this.#getObjectValues();
+    if (objectValues) {
+      return { [key]: this.#getPercentagesFromObject(objectValues) };
     }
   }
 
-  private getPercentageFromString(formulaValue: FormulaValue): number {
+  #getPercentageFromString(formulaValue: FormulaValue): number {
     const percentageFormulaMatches = typeof formulaValue === 'string' ? formulaValue.match(/([0-9]{1,2}[,.]?[0-9]{0,2}|100)%/) : undefined;
     const percentageFormula = parseFloat(percentageFormulaMatches?.at(1));
 
     return NumberFormatter.roundNumber(percentageFormula / 100, 3);
   }
 
-  private getPercentagesFromObject(): Record<string, number> {
-    const objectValues = this.getObjectValues();
-    if (objectValues) {
-      return objectValues.reduce((acc: Record<string, number>, value) => {
-        const key = this.getKey(value);
-        const percentage = this.getPercentage(value);
+  #getPercentagesFromObject(objectValues: Array<Variation | string>): Record<string, number> {
+    return objectValues.reduce((acc: Record<string, number>, value) => {
+      const key = this.#getKey(value);
+      const percentage = this.#getPercentage(value);
 
-        if (key && !isNaN(percentage)) {
-          acc = { ...(acc ?? {}), [key]: percentage };
-        }
-        return acc;
-      }, undefined);
-    }
+      if (key && !isNaN(percentage)) {
+        acc = { ...(acc ?? {}), [key]: percentage };
+      }
+      return acc;
+    }, undefined);
   }
 
-  private getObjectValues(): readonly (Variation | string)[] {
+  #getObjectValues(): Array<Variation | string> {
     if (typeof this.value === 'object') {
       if ('variations' in this.value) {
         return this.value.variations;
@@ -75,19 +72,19 @@ export class Formula {
     }
   }
 
-  private getKey(formulaValue: string | Variation): string | void {
+  #getKey(formulaValue: string | Variation): string | void {
     return typeof formulaValue === 'string'
-      ? this.getKeyFromString(formulaValue, SumKeys)
-      : this.getKeyFromString(formulaValue.si, VariationKeys);
+      ? this.#getKeyFromString(formulaValue, SumKeys)
+      : this.#getKeyFromString(formulaValue.si, VariationKeys);
   }
 
-  private getPercentage(formulaValue: string | Variation): number {
+  #getPercentage(formulaValue: string | Variation): number {
     const value = typeof formulaValue === 'string' ? formulaValue : formulaValue.alors;
-    return this.getPercentageFromString(value);
+    return this.#getPercentageFromString(value);
   }
 
-  private getKeyFromString(sourceKey: string, keys: typeof VariationKeys | typeof SumKeys): string | void {
-    const key = Object.keys(keys).find((variationKey) => sourceKey.includes(variationKey)) as keyof typeof keys;
+  #getKeyFromString(sourceKey: string, keys: typeof VariationKeys | typeof SumKeys): string | void {
+    const key = getTypedObjectKeys(keys).find((variationKey) => sourceKey.includes(variationKey));
 
     return keys[key];
   }

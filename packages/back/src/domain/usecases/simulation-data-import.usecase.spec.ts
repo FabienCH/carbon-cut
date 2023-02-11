@@ -21,7 +21,7 @@ describe('Simulation data importer use case', () => {
   describe('If "formule" is a number, it should import ', () => {
     beforeEach(async () => {
       await simulationDataImportUseCase.execute();
-      alimentationData = simulationDataRepository.simulationData;
+      alimentationData = simulationDataRepository.simulationData.alimentationData;
     });
 
     it('grounded coffee footprint', async () => {
@@ -70,7 +70,7 @@ describe('Simulation data importer use case', () => {
       );
 
       await simulationDataImportUseCase.execute();
-      alimentationData = simulationDataRepository.simulationData;
+      alimentationData = simulationDataRepository.simulationData.alimentationData;
     });
 
     it('missing grounded coffee footprint', async () => {
