@@ -211,6 +211,57 @@ fdescribe('Carbon footprint calculation use case', () => {
         },
       });
     });
+
+    it('for a small electrical car and 9 thousand km per year', async () => {
+      const footprint = await calculateCarbonFootprintUseCase.execute({
+        ...defaultSimulationAnswers,
+        transport: {
+          car: { km: 9000, engineType: 'electric', carSize: 'small' },
+        },
+      });
+
+      expect(footprint).toEqual({
+        ...defaultCarbonFootprint,
+        transport: {
+          car: 143.1,
+          total: 143.1,
+        },
+      });
+    });
+
+    it('for a SUV electrical car and 11 thousand km per year', async () => {
+      const footprint = await calculateCarbonFootprintUseCase.execute({
+        ...defaultSimulationAnswers,
+        transport: {
+          car: { km: 11000, engineType: 'electric', carSize: 'SUV' },
+        },
+      });
+
+      expect(footprint).toEqual({
+        ...defaultCarbonFootprint,
+        transport: {
+          car: 300.3,
+          total: 300.3,
+        },
+      });
+    });
+
+    it('for a medium electrical car and 11 thousand km per year', async () => {
+      const footprint = await calculateCarbonFootprintUseCase.execute({
+        ...defaultSimulationAnswers,
+        transport: {
+          car: { km: 11000, engineType: 'electric', carSize: 'medium' },
+        },
+      });
+
+      expect(footprint).toEqual({
+        ...defaultCarbonFootprint,
+        transport: {
+          car: 217.8,
+          total: 217.8,
+        },
+      });
+    });
   });
 
   xdescribe('Simulation validation', () => {

@@ -4,13 +4,19 @@ export enum FuelTypeData {
   carEssenceE85byLiter = 'carEssenceE85ByLiter',
 }
 
+export enum ElectricTypeData {
+  smallElectricalCarByKm = 'smallElectricalCarByKm',
+  mediumElectricalCarByKm = 'mediumElectricalCarByKm',
+  largeElectricalCarByKm = 'largeElectricalCarByKm',
+}
+
 export type TransportDataFootprints = {
   [FuelTypeData.carDieselByLiter]: number;
   [FuelTypeData.carEssenceE10ByLiter]: number;
   [FuelTypeData.carEssenceE85byLiter]: number;
-  smallElectricalCarByKm: number;
-  mediumElectricalCarByKm: number;
-  largeElectricalCarByKm: number;
+  [ElectricTypeData.smallElectricalCarByKm]: number;
+  [ElectricTypeData.mediumElectricalCarByKm]: number;
+  [ElectricTypeData.largeElectricalCarByKm]: number;
 };
 
 export type TransportDataMultipliers = {
