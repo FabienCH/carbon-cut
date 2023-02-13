@@ -1,7 +1,7 @@
 import { BreakfastTypes, MilkTypes } from 'carbon-cut-commons';
 import { defaultCarbonFootprint, defaultMealsFootprint } from '../../tests/carbon-footprints';
 import { InMemorySimulationDataRepository } from '../../tests/repositories/in-memory-simulation-data.repository';
-import { defaultAlimentationAnswers, defaultSimulationAnswers } from '../../tests/simulation-answers';
+import { defaultAlimentationAnswers, defaultSimulationAnswers, defaultTransportAnswers } from '../../tests/simulation-answers';
 import { ValidationError } from '../entities/validation-error';
 import { CalculateCarbonFootprintUseCase } from './calculate-carbon-footprint.usecase';
 
@@ -165,7 +165,7 @@ fdescribe('Carbon footprint calculation use case', () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         ...defaultSimulationAnswers,
         transport: {
-          car: { km: 10000, fuelType: 'Diesel', fuelConsumption: 6 },
+          car: { ...defaultTransportAnswers.car, km: 10000, fuelType: 'Diesel', fuelConsumption: 6 },
         },
       });
 
@@ -182,7 +182,7 @@ fdescribe('Carbon footprint calculation use case', () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         ...defaultSimulationAnswers,
         transport: {
-          car: { km: 8000, fuelType: 'EssenceE85', fuelConsumption: 7.5 },
+          car: { ...defaultTransportAnswers.car, km: 8000, fuelType: 'EssenceE85', fuelConsumption: 7.5 },
         },
       });
 
@@ -191,6 +191,23 @@ fdescribe('Carbon footprint calculation use case', () => {
         transport: {
           car: 666,
           total: 666,
+        },
+      });
+    });
+
+    it('for an hybride car with 8l/100km E10 essence car and 7 thousand km per year', async () => {
+      const footprint = await calculateCarbonFootprintUseCase.execute({
+        ...defaultSimulationAnswers,
+        transport: {
+          car: { km: 7000, engineType: 'hybrid', fuelType: 'EssenceE10', fuelConsumption: 8 },
+        },
+      });
+
+      expect(footprint).toEqual({
+        ...defaultCarbonFootprint,
+        transport: {
+          car: 1285.2,
+          total: 1285.2,
         },
       });
     });

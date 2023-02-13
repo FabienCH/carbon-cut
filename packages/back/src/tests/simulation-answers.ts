@@ -8,7 +8,7 @@ export const defaultAlimentationAnswers: AlimentationDto = {
 };
 
 export const defaultTransportAnswers: TransportDto = {
-  car: { km: 0 },
+  car: { km: 0, engineType: 'thermal' },
 };
 
 export const defaultSimulationAnswers: SimulationDto = {

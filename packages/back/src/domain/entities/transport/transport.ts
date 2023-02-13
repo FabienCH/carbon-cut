@@ -15,10 +15,8 @@ export class Transport {
   calculateYearlyFootprint(): TransportFootprintDto {
     const fuelConsumptionPerLiter = (this.#car.fuelConsumption ?? 0) / 100;
     const fuelTypeKey = `car${this.#car.fuelType ?? 'Diesel'}ByLiter` as FuelTypeData;
-    console.log('this.#transportData.footprints[fuelTypeKey]', this.#transportData.footprints[fuelTypeKey]);
-    console.log('this.#car.km', this.#car.km);
-    const car = this.#car.km * this.#transportData.footprints[fuelTypeKey] * fuelConsumptionPerLiter;
-    console.log('car FOOTPRINT', car);
+    const multiplier = this.#car.engineType === 'hybrid' ? this.#transportData.multipliers.carHybridReduction : 1;
+    const car = this.#car.km * this.#transportData.footprints[fuelTypeKey] * fuelConsumptionPerLiter * multiplier;
 
     return { ...FootprintHelper.removeNullishFootprints({ car }), total: car };
   }
