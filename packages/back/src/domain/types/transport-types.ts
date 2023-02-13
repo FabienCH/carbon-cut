@@ -1,7 +1,13 @@
+export enum FuelTypeData {
+  carDieselByLiter = 'carDieselByLiter',
+  carEssenceE10ByLiter = 'carEssenceE10ByLiter',
+  carEssenceE85byLiter = 'carEssenceE85ByLiter',
+}
+
 export type TransportDataFootprints = {
-  carDieselByLiter: number;
-  carEssenceE10ByLiter: number;
-  essenceE85byLiter: number;
+  [FuelTypeData.carDieselByLiter]: number;
+  [FuelTypeData.carEssenceE10ByLiter]: number;
+  [FuelTypeData.carEssenceE85byLiter]: number;
   smallElectricalCarByKm: number;
   mediumElectricalCarByKm: number;
   largeElectricalCarByKm: number;

@@ -9,6 +9,12 @@ export interface AlimentationFootprintDto {
   total: number;
 }
 
+export interface TransportFootprintDto {
+  car?: number;
+  total: number;
+}
+
 export interface CarbonFootprintDto {
   alimentation: AlimentationFootprintDto;
+  transport: TransportFootprintDto;
 }

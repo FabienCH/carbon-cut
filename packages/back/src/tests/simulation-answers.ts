@@ -1,4 +1,4 @@
-import { AlimentationDto, BreakfastTypes, SimulationDto } from 'carbon-cut-commons';
+import { AlimentationDto, BreakfastTypes, SimulationDto, TransportDto } from 'carbon-cut-commons';
 
 export const defaultAlimentationAnswers: AlimentationDto = {
   breakfast: BreakfastTypes.noBreakfast,
@@ -7,6 +7,11 @@ export const defaultAlimentationAnswers: AlimentationDto = {
   meals: { vegan: 4, vegetarian: 3, whiteMeat: 3, redMeat: 1, whiteFish: 1, fish: 2 },
 };
 
+export const defaultTransportAnswers: TransportDto = {
+  car: { km: 0 },
+};
+
 export const defaultSimulationAnswers: SimulationDto = {
   alimentation: defaultAlimentationAnswers,
+  transport: defaultTransportAnswers,
 };
