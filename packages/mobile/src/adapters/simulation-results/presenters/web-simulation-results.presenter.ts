@@ -62,9 +62,9 @@ export class WebSimulationResultsPresenter implements SimulationResultsPresenter
       coldBeverages: 'Boissons froides',
       meals: 'Repas',
     };
-    const { total, breakfast, hotBeverages, coldBeverages } = carbonFootprintDto;
+    const { total, breakfast, hotBeverages, coldBeverages, meals } = carbonFootprintDto;
 
-    const categories = getTypedObjectKeys({ breakfast, hotBeverages, coldBeverages }).map((carbonFootprintKey) => {
+    const categories = getTypedObjectKeys({ breakfast, hotBeverages, coldBeverages, meals }).map((carbonFootprintKey) => {
       const footprintItem = carbonFootprintDto[carbonFootprintKey];
       if (footprintItem) {
         const footprintValue = typeof footprintItem === 'number' ? footprintItem : footprintItem.total;

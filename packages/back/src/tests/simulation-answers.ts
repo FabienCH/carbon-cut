@@ -4,5 +4,5 @@ export const defaultSimulationAnswers: SimulationDto = {
   breakfast: BreakfastTypes.noBreakfast,
   hotBeverages: { coffee: 0, tea: 0, hotChocolate: 0 },
   coldBeverages: { sweet: 0, alcohol: 0 },
-  meals: { vegan: 3, vegetarian: 4, whiteMeat: 2, redMeat: 1, whiteFish: 2, fish: 2 },
+  meals: { vegan: 4, vegetarian: 3, whiteMeat: 3, redMeat: 1, whiteFish: 1, fish: 2 },
 };

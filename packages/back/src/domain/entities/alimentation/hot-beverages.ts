@@ -7,8 +7,6 @@ import { ValidationError } from '../validation-error';
 import { AlimentationFootprintData, AlimentationFootprints } from './alimentation-footprints';
 
 export class HotBeverages extends FootprintCategory<HotBeveragesFootprints> {
-  protected readonly hasWeeklyFootprint = true;
-
   readonly #hotChocolateFootprintData: AlimentationFootprintData[] = [
     {
       footprintValue: this.footprintsData.cacaoPowder,
@@ -28,8 +26,6 @@ export class HotBeverages extends FootprintCategory<HotBeveragesFootprints> {
   ) {
     super(alimentationData);
     this.#validate();
-    console.log('this.milkType', this.milkType);
-    console.log('this.#hotChocolateFootprintData[1]', this.#hotChocolateFootprintData[1]);
   }
 
   calculateYearlyFootprint(): HotBeveragesFootprints {

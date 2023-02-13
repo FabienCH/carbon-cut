@@ -124,7 +124,7 @@ describe('Carbon footprint calculation use case', () => {
         meals: { vegan: 2, vegetarian: 2, whiteMeat: 2, redMeat: 2, whiteFish: 2, fish: 3 },
       });
 
-      expectBadRequestError(response, ['The number of meals must be 14']);
+      expectBadRequestError(response, ['The number of meals must be 14, 13 given']);
     });
   });
 });

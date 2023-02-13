@@ -1,9 +1,10 @@
-import { PositiveNumberError } from '../../entites/answer-validator';
+import { NumberEqualError, PositiveNumberError } from '../../entites/answer-validator';
 
 export const BreakfastQuestionPresenterToken = Symbol.for('BreakfastQuestionPresenter');
 export const HotBeveragesQuestionPresenterToken = Symbol.for('HotBeveragesQuestionPresenter');
 export const MilkTypeQuestionPresenterToken = Symbol.for('MilkTypeQuestionPresenter');
 export const ColdBeveragesQuestionPresenterToken = Symbol.for('ColdBeveragesQuestionPresenter');
+export const MealsQuestionPresenterToken = Symbol.for('MealsQuestionPresenterToken');
 
 export interface Answer<T> {
   label: string;
@@ -35,13 +36,18 @@ export interface QuestionPresenter {
   onViewModelChanges(updateViewFn: (viewModel: QuestionPresenterViewModel) => void): void;
 }
 
+export interface WithFormValidation<ViewModel extends QuestionPresenterViewModel> {
+  viewModel: ViewModel & { formError: string | null };
+  updateFormError(formError: NumberEqualError): void;
+}
+
 export type InputAnswerValue<IdType> = { id: IdType; value: string | undefined };
 
 export interface InputQuestionPresenter<AnswerValues extends Record<string, number | undefined>> extends QuestionPresenter {
   answerValues: AnswerValues;
   setAnswer(
     answerValue: InputAnswerValue<keyof AnswerValues>,
-    error: PositiveNumberError,
+    errors: PositiveNumberError,
     canSubmit: boolean,
     questionIndex?: number,
   ): void;

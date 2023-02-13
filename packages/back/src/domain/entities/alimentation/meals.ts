@@ -48,7 +48,7 @@ export class Meals extends FootprintCategory<MealsFootprints> {
     const mealsInAWeek = 14;
     const numberOfMeals = Object.values(this.mealsAnswer).reduce((count, meal) => (count += meal), 0);
     if (numberOfMeals !== mealsInAWeek) {
-      throw new ValidationError(['The number of meals must be 14']);
+      throw new ValidationError([`The number of meals must be 14, ${numberOfMeals} given`]);
     }
   }
 }
