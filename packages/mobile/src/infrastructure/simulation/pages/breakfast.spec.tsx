@@ -91,7 +91,7 @@ describe('Breakfast component', () => {
 
     await waitFor(() => {
       const simulationAnswers = selectSimulationAnswers();
-      expect(simulationAnswers?.breakfast).toEqual(BreakfastTypes.milkCerealBreakfast);
+      expect(simulationAnswers?.alimentation.breakfast).toEqual(BreakfastTypes.milkCerealBreakfast);
     });
   });
 });

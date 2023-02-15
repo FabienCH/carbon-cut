@@ -79,7 +79,7 @@ describe('MilkType component', () => {
 
     await waitFor(() => {
       const simulationAnswers = selectSimulationAnswers();
-      expect(simulationAnswers?.milkType).toEqual(MilkTypes.oatsMilk);
+      expect(simulationAnswers?.alimentation.milkType).toEqual(MilkTypes.oatsMilk);
     });
   });
 });

@@ -38,7 +38,7 @@ export default function Breakfast({ navigation, containerStyle }: BreakfastProps
   };
 
   const saveAnswer = (): void => {
-    saveSimulationAnswerUseCase.execute({ answerKey: 'breakfast', answer: presenter.selectedAnswer });
+    saveSimulationAnswerUseCase.execute({ sector: 'alimentation', answerKey: 'breakfast', answer: presenter.selectedAnswer });
     navigation.navigate(Routes.HotBeverages, { containerStyle });
   };
 

@@ -48,7 +48,7 @@ export default function ColdBeverages({ navigation, containerStyle }: ColdBevera
   };
 
   const saveAnswer = (): void => {
-    saveSimulationAnswerUseCase.execute({ answerKey: 'coldBeverages', answer: presenter.answerValues });
+    saveSimulationAnswerUseCase.execute({ sector: 'alimentation', answerKey: 'coldBeverages', answer: presenter.answerValues });
     navigation.navigate(Routes.Meals, { containerStyle });
   };
 

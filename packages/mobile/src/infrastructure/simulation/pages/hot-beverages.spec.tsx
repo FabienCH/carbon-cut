@@ -111,7 +111,7 @@ describe('HotBeverages component', () => {
 
     await waitFor(() => {
       const simulationAnswers = selectSimulationAnswers();
-      expect(simulationAnswers?.hotBeverages).toEqual({
+      expect(simulationAnswers?.alimentation.hotBeverages).toEqual({
         coffee: 7,
         tea: 7,
         hotChocolate: 7,

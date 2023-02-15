@@ -52,7 +52,7 @@ export default function Meals({ containerStyle }: { containerStyle: StyleProp<Vi
   };
 
   const runCalculation = (): void => {
-    saveSimulationAnswerUseCase.execute({ answerKey: 'meals', answer: presenter.answerValues });
+    saveSimulationAnswerUseCase.execute({ sector: 'alimentation', answerKey: 'meals', answer: presenter.answerValues });
     carbonFootprintSimulationUseCase.execute();
   };
 
