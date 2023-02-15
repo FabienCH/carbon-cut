@@ -1,5 +1,5 @@
 import { CarbonFootprintDto, SimulationDto } from 'carbon-cut-commons';
-import { SimulationData } from 'src/domain/types/simulation-data';
+import { SimulationData } from '../types/simulation-data';
 import { Alimentation } from './alimentation/alimentation';
 import { Transport } from './transport/transport';
 

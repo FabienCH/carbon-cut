@@ -1,8 +1,8 @@
-import { TransportData } from 'src/domain/types/transport-types';
 import { InMemorySimulationDataSourceRepository } from '../../tests/repositories/in-memory-simulation-data-source.repository';
 import { InMemorySimulationDataRepository } from '../../tests/repositories/in-memory-simulation-data.repository';
 import { SimulationDataSourceMapper } from '../entities/simulation-datasource-mapper';
 import { AlimentationData } from '../types/alimentation-types';
+import { TransportData } from '../types/transport-types';
 import { SimulationDataImportUseCase } from './simulation-data-import.usecase';
 
 describe('Simulation data importer use case', () => {

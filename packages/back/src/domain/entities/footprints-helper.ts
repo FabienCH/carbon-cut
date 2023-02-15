@@ -12,16 +12,6 @@ export class FootprintHelper {
     }, undefined);
   }
 
-  static getTotalFromObject(object: Record<string, number>): number {
-    if (!object) {
-      return 0;
-    }
-    return NumberFormatter.roundNumber(
-      Object.values(object).reduce((acc, val) => acc + val, 0),
-      3,
-    );
-  }
-
   static getYearlyFootprint(dailyFootprint: number): number {
     return NumberFormatter.roundNumber(dailyFootprint * 365, 3);
   }

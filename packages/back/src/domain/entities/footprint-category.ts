@@ -1,34 +1,30 @@
-import { getTypedObjectKeys, NumberFormatter } from 'carbon-cut-commons';
-import { AlimentationData, AlimentationDataFootprints, AlimentationDataQuantities } from '../types/alimentation-types';
-import { FootprintHelper } from './footprints-helper';
+import { NumberFormatter } from 'carbon-cut-commons';
+import { AlimentationData, AlimentationDataQuantities } from '../types/alimentation-types';
+import { TransportData } from '../types/transport-types';
 
 export type WithoutTotal<T extends Record<string, number> & { total?: number }> = Omit<T, 'total'>;
 
-export abstract class FootprintCategory<T extends Record<string, number> & { total?: number }> {
-  protected readonly footprintsData: AlimentationDataFootprints;
+export abstract class FootprintsCategory<
+  Footprints extends Record<string, number> & { total?: number },
+  Data extends AlimentationData | TransportData,
+> {
+  protected readonly footprintsData: Data['footprints'];
   protected readonly quantitiesData: AlimentationDataQuantities;
 
-  protected footprint: WithoutTotal<T>;
+  protected footprint: WithoutTotal<Footprints>;
 
-  constructor(alimentationData: AlimentationData) {
-    this.footprintsData = alimentationData.footprints;
-    this.quantitiesData = alimentationData.quantities;
+  constructor(footprintData: Data) {
+    this.footprintsData = footprintData.footprints;
+    if ('quantities' in footprintData) {
+      this.quantitiesData = footprintData.quantities;
+    }
   }
 
-  protected calculateYearlyFootprintWithTotal(): WithoutTotal<T> & { total: number } {
+  protected calculateYearlyFootprintWithTotal(): WithoutTotal<Footprints> & { total: number } {
     const footprints = this.getYearlyFootprints();
     const totalFootprints = this.#getTotal(footprints);
 
     return { ...footprints, total: totalFootprints };
-  }
-
-  protected getYearlyNonNullFootprint(footprint: WithoutTotal<T>): WithoutTotal<T> {
-    const yearlyFootprint = getTypedObjectKeys(footprint).reduce((footprintAcc, footprintKey) => {
-      const footprintValue = footprint[footprintKey];
-      const dailyFootprint = footprintValue / 7;
-      return { ...footprintAcc, [footprintKey]: FootprintHelper.getYearlyFootprint(dailyFootprint) };
-    }, footprint);
-    return yearlyFootprint;
   }
 
   #getTotal(object: Record<string, number | undefined | never>): number {
@@ -41,6 +37,6 @@ export abstract class FootprintCategory<T extends Record<string, number> & { tot
     );
   }
 
-  abstract calculateYearlyFootprint(): T;
-  protected abstract getYearlyFootprints(): WithoutTotal<T>;
+  abstract calculateYearlyFootprint(): Footprints;
+  protected abstract getYearlyFootprints(): WithoutTotal<Footprints>;
 }

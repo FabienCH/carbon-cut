@@ -1,12 +1,11 @@
 import { ColdBeveragesAnswer, ColdBeveragesFootprints } from 'carbon-cut-commons';
 import { AlimentationData } from '../../types/alimentation-types';
 import { AnswerValidator } from '../answer-validator';
-import { FootprintCategory, WithoutTotal } from '../footprint-category';
+import { FootprintsCategory, WithoutTotal } from '../footprint-category';
 import { FootprintHelper } from '../footprints-helper';
 import { AlimentationFootprints } from './alimentation-footprints';
 
-export class ColdBeverages extends FootprintCategory<ColdBeveragesFootprints> {
-  protected readonly hasWeeklyFootprint = true;
+export class ColdBeverages extends FootprintsCategory<ColdBeveragesFootprints, AlimentationData> {
   readonly #sweetFootprintValues: number[];
   readonly #alcoholFootprintValues: number[];
 
@@ -26,7 +25,7 @@ export class ColdBeverages extends FootprintCategory<ColdBeveragesFootprints> {
     return FootprintHelper.removeNullishFootprints(this.calculateYearlyFootprintWithTotal());
   }
 
-  protected getYearlyFootprints(): Partial<WithoutTotal<ColdBeveragesFootprints>> {
+  protected getYearlyFootprints(): WithoutTotal<ColdBeveragesFootprints> {
     const sweetBeveragesFootprint = this.alimentationFootprints.calculateAveragedFootprint(
       this.coldBeveragesAnswer.sweet,
       this.#sweetFootprintValues,
@@ -36,6 +35,6 @@ export class ColdBeverages extends FootprintCategory<ColdBeveragesFootprints> {
       this.#alcoholFootprintValues,
     );
 
-    return this.getYearlyNonNullFootprint({ sweet: sweetBeveragesFootprint, alcohol: alcoholBeveragesFootprint });
+    return { sweet: sweetBeveragesFootprint, alcohol: alcoholBeveragesFootprint };
   }
 }

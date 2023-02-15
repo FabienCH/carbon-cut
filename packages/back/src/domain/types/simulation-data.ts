@@ -1,5 +1,5 @@
-import { TransportData } from 'src/domain/types/transport-types';
 import { AlimentationData } from './alimentation-types';
+import { TransportData } from './transport-types';
 
 export interface SimulationData {
   alimentationData: AlimentationData;

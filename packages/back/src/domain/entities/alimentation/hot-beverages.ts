@@ -1,12 +1,12 @@
 import { HotBeveragesAnswer, HotBeveragesFootprints, MilkTypes } from 'carbon-cut-commons';
 import { AlimentationData } from '../../types/alimentation-types';
 import { AnswerValidator } from '../answer-validator';
-import { FootprintCategory } from '../footprint-category';
+import { FootprintsCategory } from '../footprint-category';
 import { FootprintHelper } from '../footprints-helper';
 import { ValidationError } from '../validation-error';
 import { AlimentationFootprintData, AlimentationFootprints } from './alimentation-footprints';
 
-export class HotBeverages extends FootprintCategory<HotBeveragesFootprints> {
+export class HotBeverages extends FootprintsCategory<HotBeveragesFootprints, AlimentationData> {
   readonly #hotChocolateFootprintData: AlimentationFootprintData[] = [
     {
       footprintValue: this.footprintsData.cacaoPowder,
@@ -42,7 +42,7 @@ export class HotBeverages extends FootprintCategory<HotBeveragesFootprints> {
       this.#hotChocolateFootprintData,
     );
 
-    return this.getYearlyNonNullFootprint({ coffee: coffeeFootprint, tea: teaFootprint, hotChocolate: hotChocolateFootprint });
+    return { coffee: coffeeFootprint, tea: teaFootprint, hotChocolate: hotChocolateFootprint };
   }
 
   #validate(): void {

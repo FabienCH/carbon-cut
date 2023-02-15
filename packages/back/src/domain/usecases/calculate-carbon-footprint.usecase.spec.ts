@@ -1,4 +1,4 @@
-import { BreakfastTypes, MilkTypes } from 'carbon-cut-commons';
+import { BreakfastTypes, CarSize, EngineType, FuelType, MilkTypes } from 'carbon-cut-commons';
 import { defaultCarbonFootprint, defaultMealsFootprint } from '../../tests/carbon-footprints';
 import { InMemorySimulationDataRepository } from '../../tests/repositories/in-memory-simulation-data.repository';
 import { defaultAlimentationAnswers, defaultSimulationAnswers, defaultTransportAnswers } from '../../tests/simulation-answers';
@@ -165,7 +165,7 @@ fdescribe('Carbon footprint calculation use case', () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         ...defaultSimulationAnswers,
         transport: {
-          car: { ...defaultTransportAnswers.car, km: 10000, fuelType: 'Diesel', fuelConsumption: 6 },
+          car: { ...defaultTransportAnswers.car, km: 10000, fuelType: FuelType.diesel, fuelConsumption: 6 },
         },
       });
 
@@ -182,7 +182,7 @@ fdescribe('Carbon footprint calculation use case', () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         ...defaultSimulationAnswers,
         transport: {
-          car: { ...defaultTransportAnswers.car, km: 8000, fuelType: 'EssenceE85', fuelConsumption: 7.5 },
+          car: { ...defaultTransportAnswers.car, km: 8000, fuelType: FuelType.essenceE85, fuelConsumption: 7.5 },
         },
       });
 
@@ -199,7 +199,7 @@ fdescribe('Carbon footprint calculation use case', () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         ...defaultSimulationAnswers,
         transport: {
-          car: { km: 7000, engineType: 'hybrid', fuelType: 'EssenceE10', fuelConsumption: 8 },
+          car: { km: 7000, engineType: EngineType.hybrid, fuelType: FuelType.essenceE10, fuelConsumption: 8 },
         },
       });
 
@@ -216,7 +216,7 @@ fdescribe('Carbon footprint calculation use case', () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         ...defaultSimulationAnswers,
         transport: {
-          car: { km: 9000, engineType: 'electric', carSize: 'small' },
+          car: { km: 9000, engineType: EngineType.electric, carSize: CarSize.small },
         },
       });
 
@@ -233,7 +233,7 @@ fdescribe('Carbon footprint calculation use case', () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         ...defaultSimulationAnswers,
         transport: {
-          car: { km: 11000, engineType: 'electric', carSize: 'SUV' },
+          car: { km: 11000, engineType: EngineType.electric, carSize: CarSize.SUV },
         },
       });
 
@@ -250,7 +250,7 @@ fdescribe('Carbon footprint calculation use case', () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         ...defaultSimulationAnswers,
         transport: {
-          car: { km: 11000, engineType: 'electric', carSize: 'medium' },
+          car: { km: 11000, engineType: EngineType.electric, carSize: CarSize.medium },
         },
       });
 
@@ -264,7 +264,7 @@ fdescribe('Carbon footprint calculation use case', () => {
     });
   });
 
-  xdescribe('Simulation validation', () => {
+  describe('Simulation validation', () => {
     it('should have a milk type if it has cereal with milk breakfast', async () => {
       await expect(
         calculateCarbonFootprintUseCase.execute({

@@ -6,5 +6,6 @@ export { AlimentationFootprintDto, CarbonFootprintDto, TransportFootprintDto } f
 export { MealsFootprints } from './types/dtos/meals-dto';
 export { AlimentationDto, SimulationDto, TransportDto } from './types/dtos/simulation-dto';
 export { MealsAnswer } from './types/meals';
+export { CarSize, EngineType, FuelType } from './types/transport-enums';
 export { NumberFormatter } from './utils/number-formatter';
 export { getTypedObjectKeys } from './utils/typed-object-keys';

@@ -1,3 +1,5 @@
+import { FootprintHelper } from '../footprints-helper';
+
 export interface AlimentationFootprintData {
   footprintValue: number;
   quantityMultiplier?: number;
@@ -5,23 +7,23 @@ export interface AlimentationFootprintData {
 
 export class AlimentationFootprints {
   calculateFootprint(quantitiesPerWeek: number, footprintDataValue: number, quantityDataMultiplier?: number): number {
-    return this.#computeFootprint(quantitiesPerWeek, footprintDataValue, quantityDataMultiplier);
+    return this.#computeDailyFootprint(quantitiesPerWeek, footprintDataValue, quantityDataMultiplier);
   }
 
   calculateMultipleIngredientsFootprint(quantitiesPerWeek: number, alimentationFootprintDataKeys: AlimentationFootprintData[]): number {
     return alimentationFootprintDataKeys.reduce((footprintAcc, alimentationFootprintDataKey) => {
       const { footprintValue, quantityMultiplier } = alimentationFootprintDataKey;
-      return (footprintAcc += this.#computeFootprint(quantitiesPerWeek, footprintValue, quantityMultiplier));
+      return (footprintAcc += this.#computeDailyFootprint(quantitiesPerWeek, footprintValue, quantityMultiplier));
     }, 0);
   }
 
   calculateAveragedFootprint(quantitiesPerWeek: number, footprintsValues: number[]): number {
-    return quantitiesPerWeek * this.#averageFootprint(footprintsValues);
+    return this.#computeDailyFootprint(quantitiesPerWeek, this.#averageFootprint(footprintsValues));
   }
 
-  #computeFootprint(quantitiesPerWeek: number, footprintDataValue: number, quantityDataMultiplier: number | undefined) {
+  #computeDailyFootprint(quantitiesPerWeek: number, footprintDataValue: number, quantityDataMultiplier?: number) {
     const footprint = footprintDataValue * (quantityDataMultiplier ?? 1);
-    return quantitiesPerWeek * footprint;
+    return FootprintHelper.getYearlyFootprint((quantitiesPerWeek / 7) * footprint);
   }
 
   #averageFootprint(footprints: number[]): number {
