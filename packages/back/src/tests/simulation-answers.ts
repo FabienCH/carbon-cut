@@ -1,4 +1,4 @@
-import { AlimentationDto, BreakfastTypes, EngineType, SimulationDto, TransportDto } from 'carbon-cut-commons';
+import { AlimentationDto, BreakfastTypes, EngineType, FuelType, SimulationDto, TransportDto } from 'carbon-cut-commons';
 
 export const defaultAlimentationAnswers: AlimentationDto = {
   breakfast: BreakfastTypes.noBreakfast,
@@ -8,7 +8,7 @@ export const defaultAlimentationAnswers: AlimentationDto = {
 };
 
 export const defaultTransportAnswers: TransportDto = {
-  car: { km: 0, engineType: EngineType.thermal },
+  car: { km: 0, engineType: EngineType.thermal, fuelType: FuelType.diesel, fuelConsumption: 6 },
 };
 
 export const defaultSimulationAnswers: SimulationDto = {

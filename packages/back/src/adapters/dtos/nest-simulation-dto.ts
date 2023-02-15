@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { AlimentationDto, BreakfastTypes, MilkTypes, SimulationDto } from 'carbon-cut-commons';
+import { AlimentationDto, BreakfastTypes, CarAnswer, MilkTypes, SimulationDto, TransportDto } from 'carbon-cut-commons';
 import { Type } from 'class-transformer';
 import { IsEnum, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
+import { NestCarAnswer } from './nest-car-dto';
 import { NestColdBeveragesAnswer } from './nest-cold-beverage-dto';
 import { NestHotBeveragesAnswer } from './nest-hot-beverages-dto';
 import { NestMealsAnswer } from './nest-meals-dto';
@@ -36,10 +37,24 @@ export class NestAlimentationDto implements AlimentationDto {
   meals: NestMealsAnswer;
 }
 
+export class NestTransportDto implements TransportDto {
+  @ApiProperty({ type: NestCarAnswer })
+  @IsNotEmpty()
+  @ValidateNested()
+  @Type(() => NestCarAnswer)
+  car: CarAnswer;
+}
+
 export class NestSimulationDto implements SimulationDto {
   @ApiProperty({ type: NestAlimentationDto })
   @IsNotEmpty()
   @ValidateNested()
   @Type(() => NestAlimentationDto)
   alimentation: NestAlimentationDto;
+
+  @ApiProperty({ type: NestTransportDto })
+  @IsNotEmpty()
+  @ValidateNested()
+  @Type(() => NestTransportDto)
+  transport: NestTransportDto;
 }

@@ -5,6 +5,7 @@ import {
   ColdBeveragesFootprints,
   HotBeveragesFootprints,
   MealsFootprints,
+  TransportFootprintDto,
 } from 'carbon-cut-commons';
 import { Type } from 'class-transformer';
 import { IsNotEmpty, ValidateNested } from 'class-validator';
@@ -25,10 +26,22 @@ export class NestAlimentationFootprintDto implements AlimentationFootprintDto {
   total: number;
 }
 
+export class NestTransportFootprintDto implements TransportFootprintDto {
+  @ApiProperty({ required: false })
+  car?: number;
+  @ApiProperty()
+  total: number;
+}
+
 export class NestCarbonFootprintDto implements CarbonFootprintDto {
   @ApiProperty({ type: NestAlimentationFootprintDto })
   @IsNotEmpty()
   @ValidateNested()
   @Type(() => NestAlimentationFootprintDto)
   alimentation: NestAlimentationFootprintDto;
+  @ApiProperty({ type: NestTransportFootprintDto })
+  @IsNotEmpty()
+  @ValidateNested()
+  @Type(() => NestTransportFootprintDto)
+  transport: NestTransportFootprintDto;
 }

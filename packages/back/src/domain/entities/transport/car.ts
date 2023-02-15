@@ -1,8 +1,9 @@
-import { CarAnswer, TransportFootprintDto } from 'carbon-cut-commons';
+import { CarAnswer, EngineType, TransportFootprintDto } from 'carbon-cut-commons';
 import { ElectricTypeData, FuelTypeData, TransportData } from '../../types/transport-types';
 import { AnswerValidator } from '../answer-validator';
 import { FootprintsCategory } from '../footprint-category';
 import { FootprintHelper } from '../footprints-helper';
+import { ValidationError } from '../validation-error';
 
 export class Car extends FootprintsCategory<
   {
@@ -13,6 +14,7 @@ export class Car extends FootprintsCategory<
 > {
   #footprintDataKey: FuelTypeData | ElectricTypeData;
   #footprintMultiplier = 1;
+  readonly #validationErrors: string[] = [];
 
   constructor(protected readonly transportData: TransportData, private readonly carAnswer: CarAnswer) {
     super(transportData);
@@ -50,5 +52,33 @@ export class Car extends FootprintsCategory<
 
   #validate(): void {
     AnswerValidator.validatePositiveValues({ km: this.carAnswer.km }, 'car');
+    if (this.carAnswer.engineType === EngineType.electric) {
+      this.#validateElectricalCar();
+    } else {
+      this.#validateFuelEngineCar();
+    }
+    if (this.#validationErrors.length) {
+      throw new ValidationError(this.#validationErrors);
+    }
+  }
+
+  #validateFuelEngineCar() {
+    if (!this.carAnswer.fuelType) {
+      this.#addValidationError('Fuel type');
+    }
+    if (!this.carAnswer.fuelConsumption) {
+      this.#addValidationError('Fuel consumption');
+    }
+    AnswerValidator.validatePositiveValues({ fuelConsumption: this.carAnswer.fuelConsumption }, 'car');
+  }
+
+  #validateElectricalCar() {
+    if (!this.carAnswer.carSize) {
+      this.#addValidationError('Car size');
+    }
+  }
+
+  #addValidationError(valueInError: string) {
+    this.#validationErrors.push(`${valueInError} should not be empty with ${this.carAnswer.engineType} engine type`);
   }
 }

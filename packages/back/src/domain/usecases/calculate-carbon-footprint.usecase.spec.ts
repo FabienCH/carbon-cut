@@ -290,6 +290,43 @@ fdescribe('Carbon footprint calculation use case', () => {
       ).rejects.toThrowError(new ValidationError(['Milk type should not be empty with hot chocolate beverage']));
     });
 
+    it('should have a fuel type and fuel consumption if engine type is thermal', async () => {
+      await expect(
+        calculateCarbonFootprintUseCase.execute({
+          ...defaultSimulationAnswers,
+          transport: { car: { km: 1000, engineType: EngineType.thermal } },
+        }),
+      ).rejects.toThrowError(
+        new ValidationError([
+          'Fuel type should not be empty with thermal engine type',
+          'Fuel consumption should not be empty with thermal engine type',
+        ]),
+      );
+    });
+
+    it('should have a fuel type and fuel consumption if engine type is hybrid', async () => {
+      await expect(
+        calculateCarbonFootprintUseCase.execute({
+          ...defaultSimulationAnswers,
+          transport: { car: { km: 1000, engineType: EngineType.hybrid } },
+        }),
+      ).rejects.toThrowError(
+        new ValidationError([
+          'Fuel type should not be empty with hybrid engine type',
+          'Fuel consumption should not be empty with hybrid engine type',
+        ]),
+      );
+    });
+
+    it('should have a car size if engine type is electric', async () => {
+      await expect(
+        calculateCarbonFootprintUseCase.execute({
+          ...defaultSimulationAnswers,
+          transport: { car: { km: 1000, engineType: EngineType.electric } },
+        }),
+      ).rejects.toThrowError(new ValidationError(['Car size should not be empty with electric engine type']));
+    });
+
     it('should not have negatives values in hot beverages', async () => {
       await expect(
         calculateCarbonFootprintUseCase.execute({
@@ -324,6 +361,25 @@ fdescribe('Carbon footprint calculation use case', () => {
       );
     });
 
+    it('should not have negatives values in meals', async () => {
+      await expect(
+        calculateCarbonFootprintUseCase.execute({
+          ...defaultSimulationAnswers,
+          alimentation: {
+            ...defaultAlimentationAnswers,
+            breakfast: BreakfastTypes.britishBreakfast,
+            meals: { vegan: 2, vegetarian: -2, whiteMeat: 2, redMeat: -2, whiteFish: 2, fish: -3 },
+          },
+        }),
+      ).rejects.toThrowError(
+        new ValidationError([
+          'meals.vegetarian must be positive, -2 given',
+          'meals.redMeat must be positive, -2 given',
+          'meals.fish must be positive, -3 given',
+        ]),
+      );
+    });
+
     it('should not have a number of meals lower than 14', async () => {
       await expect(
         calculateCarbonFootprintUseCase.execute({
@@ -349,5 +405,29 @@ fdescribe('Carbon footprint calculation use case', () => {
         }),
       ).rejects.toThrowError(new ValidationError(['The number of meals must be 14, 14.1 given']));
     });
+  });
+
+  it('should  have negatives values in transport car km', async () => {
+    await expect(
+      calculateCarbonFootprintUseCase.execute({
+        ...defaultSimulationAnswers,
+        transport: {
+          ...defaultTransportAnswers,
+          car: { ...defaultTransportAnswers.car, km: -100 },
+        },
+      }),
+    ).rejects.toThrowError(new ValidationError(['car.km must be positive, -100 given']));
+  });
+
+  it('should  have negatives values in transport car fuel consumption', async () => {
+    await expect(
+      calculateCarbonFootprintUseCase.execute({
+        ...defaultSimulationAnswers,
+        transport: {
+          ...defaultTransportAnswers,
+          car: { ...defaultTransportAnswers.car, fuelConsumption: -2 },
+        },
+      }),
+    ).rejects.toThrowError(new ValidationError(['car.fuelConsumption must be positive, -2 given']));
   });
 });

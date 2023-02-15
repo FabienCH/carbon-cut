@@ -5,7 +5,7 @@ import * as request from 'supertest';
 import { SimulationDataRepositoryToken } from '../../domain/ports/repositories/simulation-data.repository';
 import { CalculateCarbonFootprintUseCase } from '../../domain/usecases/calculate-carbon-footprint.usecase';
 import { InMemorySimulationDataRepository } from '../../tests/repositories/in-memory-simulation-data.repository';
-import { defaultAlimentationAnswers, defaultSimulationAnswers } from '../../tests/simulation-answers';
+import { defaultAlimentationAnswers, defaultSimulationAnswers, defaultTransportAnswers } from '../../tests/simulation-answers';
 import { NestCarbonFootprintController } from './nest-carbon-footprint.controller';
 
 describe('Carbon footprint calculation use case', () => {
@@ -46,11 +46,11 @@ describe('Carbon footprint calculation use case', () => {
     it('should not accept empty request ', async () => {
       const response = await getResponse({});
 
-      expectBadRequestError(response, ['alimentation should not be empty']);
+      expectBadRequestError(response, ['alimentation should not be empty', 'transport should not be empty']);
     });
 
-    it('should not accept request with empty alimentation', async () => {
-      const response = await getResponse({ alimentation: {} });
+    it('should not accept request with empty alimentation and transport', async () => {
+      const response = await getResponse({ alimentation: {}, transport: {} });
 
       expectBadRequestError(response, [
         'alimentation.breakfast must be one of the following values: continentalBreakfast, milkCerealBreakfast, britishBreakfast, veganBreakfast, noBreakfast',
@@ -58,6 +58,7 @@ describe('Carbon footprint calculation use case', () => {
         'alimentation.hotBeverages should not be empty',
         'alimentation.coldBeverages should not be empty',
         'alimentation.meals should not be empty',
+        'transport.car should not be empty',
       ]);
     });
 
@@ -137,6 +138,56 @@ describe('Carbon footprint calculation use case', () => {
       });
 
       expectBadRequestError(response, ['The number of meals must be 14, 13 given']);
+    });
+
+    it('should not accept request with empty transport car', async () => {
+      const response = await getResponse({
+        ...defaultSimulationAnswers,
+        transport: { car: {} },
+      });
+
+      expectBadRequestError(response, [
+        'transport.car.km must be a number conforming to the specified constraints',
+        'transport.car.km should not be empty',
+        'transport.car.engineType must be one of the following values: thermal, hybrid, electric',
+        'transport.car.engineType should not be empty',
+      ]);
+    });
+
+    it('should not accept request with negative transport car km', async () => {
+      const response = await getResponse({
+        ...defaultSimulationAnswers,
+        transport: {
+          ...defaultTransportAnswers,
+          car: {
+            ...defaultTransportAnswers.car,
+            km: -10,
+          },
+        },
+      });
+
+      expectBadRequestError(response, ['car.km must be positive, -10 given']);
+    });
+
+    it('should not accept request with invalid engine type, fuel type or car size', async () => {
+      const response = await getResponse({
+        ...defaultSimulationAnswers,
+        transport: {
+          ...defaultTransportAnswers,
+          car: {
+            ...defaultTransportAnswers.car,
+            engineType: 'invalid engine type',
+            fuelType: 'invalid fuel type',
+            carSize: 'invalid car size',
+          },
+        },
+      });
+
+      expectBadRequestError(response, [
+        'transport.car.engineType must be one of the following values: thermal, hybrid, electric',
+        'transport.car.fuelType must be one of the following values: Diesel, EssenceE10, EssenceE85',
+        'transport.car.carSize must be one of the following values: small, medium, sedan, SUV',
+      ]);
     });
   });
 });
