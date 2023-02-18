@@ -5,14 +5,14 @@ import { defaultAlimentationAnswers, defaultSimulationAnswers, defaultTransportA
 import { ValidationError } from '../entities/validation-error';
 import { CalculateCarbonFootprintUseCase } from './calculate-carbon-footprint.usecase';
 
-fdescribe('Carbon footprint calculation use case', () => {
+describe('Carbon footprint calculation use case', () => {
   let calculateCarbonFootprintUseCase: CalculateCarbonFootprintUseCase;
 
   beforeEach(() => {
     calculateCarbonFootprintUseCase = new CalculateCarbonFootprintUseCase(new InMemorySimulationDataRepository(true));
   });
 
-  fdescribe('Calculate a yearly carbon footprint', () => {
+  describe('Calculate a yearly carbon footprint', () => {
     it('for a continental breakfast with 5 coffees per week', async () => {
       const footprint = await calculateCarbonFootprintUseCase.execute({
         ...defaultSimulationAnswers,
@@ -30,6 +30,7 @@ fdescribe('Carbon footprint calculation use case', () => {
           meals: defaultMealsFootprint,
           total: 1384.153,
         },
+        total: 1384.153,
       });
     });
 
@@ -46,6 +47,7 @@ fdescribe('Carbon footprint calculation use case', () => {
       expect(footprint).toEqual({
         ...defaultCarbonFootprint,
         alimentation: { breakfast: 170.82, meals: defaultMealsFootprint, total: 1417.921 },
+        total: 1417.921,
       });
     });
 
@@ -62,6 +64,7 @@ fdescribe('Carbon footprint calculation use case', () => {
       expect(footprint).toEqual({
         ...defaultCarbonFootprint,
         alimentation: { breakfast: 106.58, meals: defaultMealsFootprint, total: 1353.681 },
+        total: 1353.681,
       });
     });
 
@@ -82,6 +85,7 @@ fdescribe('Carbon footprint calculation use case', () => {
           meals: defaultMealsFootprint,
           total: 1460.28,
         },
+        total: 1460.28,
       });
     });
 
@@ -102,6 +106,7 @@ fdescribe('Carbon footprint calculation use case', () => {
           meals: defaultMealsFootprint,
           total: 1427.743,
         },
+        total: 1427.743,
       });
     });
 
@@ -117,6 +122,7 @@ fdescribe('Carbon footprint calculation use case', () => {
       expect(footprint).toEqual({
         ...defaultCarbonFootprint,
         alimentation: { coldBeverages: { sweet: 52.838, total: 52.838 }, meals: defaultMealsFootprint, total: 1299.939 },
+        total: 1299.939,
       });
     });
 
@@ -132,6 +138,7 @@ fdescribe('Carbon footprint calculation use case', () => {
       expect(footprint).toEqual({
         ...defaultCarbonFootprint,
         alimentation: { coldBeverages: { alcohol: 45.19, total: 45.19 }, meals: defaultMealsFootprint, total: 1292.291 },
+        total: 1292.291,
       });
     });
 
@@ -158,6 +165,7 @@ fdescribe('Carbon footprint calculation use case', () => {
           },
           total: 1261.18,
         },
+        total: 1261.18,
       });
     });
 
@@ -175,6 +183,7 @@ fdescribe('Carbon footprint calculation use case', () => {
           car: 1842,
           total: 1842,
         },
+        total: 3089.101,
       });
     });
 
@@ -192,6 +201,7 @@ fdescribe('Carbon footprint calculation use case', () => {
           car: 666,
           total: 666,
         },
+        total: 1913.101,
       });
     });
 
@@ -209,6 +219,7 @@ fdescribe('Carbon footprint calculation use case', () => {
           car: 1285.2,
           total: 1285.2,
         },
+        total: 2532.301,
       });
     });
 
@@ -226,6 +237,7 @@ fdescribe('Carbon footprint calculation use case', () => {
           car: 143.1,
           total: 143.1,
         },
+        total: 1390.201,
       });
     });
 
@@ -243,6 +255,7 @@ fdescribe('Carbon footprint calculation use case', () => {
           car: 300.3,
           total: 300.3,
         },
+        total: 1547.401,
       });
     });
 
@@ -260,6 +273,7 @@ fdescribe('Carbon footprint calculation use case', () => {
           car: 217.8,
           total: 217.8,
         },
+        total: 1464.901,
       });
     });
   });

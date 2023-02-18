@@ -17,4 +17,5 @@ export interface TransportFootprintDto {
 export interface CarbonFootprintDto {
   alimentation: AlimentationFootprintDto;
   transport: TransportFootprintDto;
+  total: number;
 }

@@ -16,4 +16,5 @@ export const defaultCarbonFootprint: CarbonFootprintDto = {
     total: 1247.101,
   },
   transport: { total: 0 },
+  total: 1247.101,
 };

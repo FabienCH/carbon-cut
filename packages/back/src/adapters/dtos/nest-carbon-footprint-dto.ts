@@ -44,4 +44,6 @@ export class NestCarbonFootprintDto implements CarbonFootprintDto {
   @ValidateNested()
   @Type(() => NestTransportFootprintDto)
   transport: NestTransportFootprintDto;
+  @ApiProperty()
+  total: number;
 }

@@ -1,4 +1,4 @@
-import { CarbonFootprintDto, SimulationDto } from 'carbon-cut-commons';
+import { CarbonFootprintDto, NumberFormatter, SimulationDto } from 'carbon-cut-commons';
 import { SimulationData } from '../types/simulation-data';
 import { Alimentation } from './alimentation/alimentation';
 import { Transport } from './transport/transport';
@@ -17,6 +17,7 @@ export class Simulation {
   calculate(): CarbonFootprintDto {
     const alimentation = this.#alimentation.calculateYearlyFootprint();
     const transport = this.#transport.calculateYearlyFootprint();
-    return { alimentation, transport };
+    const total = NumberFormatter.roundNumber(alimentation.total + transport.total, 3);
+    return { alimentation, transport, total };
   }
 }

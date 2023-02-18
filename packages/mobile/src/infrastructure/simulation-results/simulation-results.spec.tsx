@@ -15,6 +15,7 @@ describe('SimulationResults component', () => {
           total: 603.354,
         },
         transport: { total: 0 },
+        total: 603.354,
       }),
     );
     render(
@@ -47,6 +48,7 @@ describe('SimulationResults component', () => {
           total: 1123.304,
         },
         transport: { total: 0 },
+        total: 1123.304,
       }),
     );
     render(
@@ -83,6 +85,7 @@ describe('SimulationResults component', () => {
           total: 1606.804,
         },
         transport: { total: 0 },
+        total: 1606.804,
       }),
     );
     render(
