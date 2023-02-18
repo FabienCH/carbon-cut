@@ -11,16 +11,16 @@ import {
 export class MongoSimulationDataRepository implements SimulationDataRepository {
   constructor(
     @InjectConnection() private connection: Connection,
-    @InjectModel(SimulationModelName) private alimentationDataModel: Model<SimulationDataDocument>,
+    @InjectModel(SimulationModelName) private simulationDataModel: Model<SimulationDataDocument>,
   ) {}
 
   async insert(simulationData: SimulationData): Promise<void> {
     await this.connection.collection(SimulationCollectionName).deleteMany({});
-    const createdAlimentationData = new this.alimentationDataModel(simulationData);
+    const createdAlimentationData = new this.simulationDataModel(simulationData);
     await createdAlimentationData.save();
   }
 
   async get(): Promise<SimulationData> {
-    return this.alimentationDataModel.findOne();
+    return this.simulationDataModel.findOne();
   }
 }

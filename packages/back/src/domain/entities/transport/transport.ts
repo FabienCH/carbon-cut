@@ -16,12 +16,4 @@ export class Transport {
 
     return { ...FootprintHelper.removeNullishFootprints({ car }), total };
   }
-
-  // #getTotal(numbers: number[], nullableNumbers: Array<number | undefined>): number {
-  //   const cleanedNullableNumbers = nullableNumbers.filter((number) => !isNaN(number));
-  //   return NumberFormatter.roundNumber(
-  //     [...numbers, ...cleanedNullableNumbers].reduce((acc, val) => acc + val, 0),
-  //     3,
-  //   );
-  // }
 }

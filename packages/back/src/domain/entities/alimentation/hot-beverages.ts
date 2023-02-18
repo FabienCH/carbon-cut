@@ -1,7 +1,7 @@
 import { HotBeveragesAnswer, HotBeveragesFootprints, MilkTypes } from 'carbon-cut-commons';
 import { AlimentationData } from '../../types/alimentation-types';
 import { AnswerValidator } from '../answer-validator';
-import { FootprintsCategory } from '../footprint-category';
+import { FootprintsCategory, WithoutTotal } from '../footprint-category';
 import { FootprintHelper } from '../footprints-helper';
 import { ValidationError } from '../validation-error';
 import { AlimentationFootprintData, AlimentationFootprints } from './alimentation-footprints';
@@ -32,7 +32,7 @@ export class HotBeverages extends FootprintsCategory<HotBeveragesFootprints, Ali
     return FootprintHelper.removeNullishFootprints(this.calculateYearlyFootprintWithTotal());
   }
 
-  protected getYearlyFootprints(): Partial<HotBeveragesFootprints> {
+  protected getYearlyFootprints(): WithoutTotal<HotBeveragesFootprints> {
     const { groundedCoffee, infusedTea } = this.footprintsData;
     const { coffeePerCup, teaPerCup } = this.quantitiesData;
     const coffeeFootprint = this.alimentationFootprints.calculateFootprint(this.hotBeveragesAnswer.coffee, groundedCoffee, coffeePerCup);
