@@ -9,8 +9,12 @@ describe('SimulationResults component', () => {
   it('should display carbon footprint simulation results with less than 1t footprint', () => {
     appStore.dispatch(
       setCarbonFootprint({
-        breakfast: 603.354,
-        meals: { total: 0 },
+        alimentation: {
+          breakfast: 603.354,
+          meals: { total: 0 },
+          total: 603.354,
+        },
+        transport: { total: 0 },
         total: 603.354,
       }),
     );
@@ -32,14 +36,18 @@ describe('SimulationResults component', () => {
   it('should display carbon footprint simulation results with more than 1t footprint', () => {
     appStore.dispatch(
       setCarbonFootprint({
-        breakfast: 603.354,
-        hotBeverages: {
-          coffee: 173.5,
-          tea: 35.45,
-          hotChocolate: 305.6,
-          total: 519.95,
+        alimentation: {
+          breakfast: 603.354,
+          hotBeverages: {
+            coffee: 173.5,
+            tea: 35.45,
+            hotChocolate: 305.6,
+            total: 519.95,
+          },
+          meals: { total: 0 },
+          total: 1123.304,
         },
-        meals: { total: 0 },
+        transport: { total: 0 },
         total: 1123.304,
       }),
     );
@@ -61,18 +69,22 @@ describe('SimulationResults component', () => {
   it('chart should have a tooltip that display footprint informations for each category', () => {
     appStore.dispatch(
       setCarbonFootprint({
-        breakfast: 1013.354,
-        hotBeverages: {
-          coffee: 173.5,
-          tea: 35.45,
-          hotChocolate: 305.6,
-          total: 519.95,
+        alimentation: {
+          breakfast: 1013.354,
+          hotBeverages: {
+            coffee: 173.5,
+            tea: 35.45,
+            hotChocolate: 305.6,
+            total: 519.95,
+          },
+          coldBeverages: {
+            sweet: 73.5,
+            total: 73.5,
+          },
+          meals: { total: 0 },
+          total: 1606.804,
         },
-        coldBeverages: {
-          sweet: 73.5,
-          total: 73.5,
-        },
-        meals: { total: 0 },
+        transport: { total: 0 },
         total: 1606.804,
       }),
     );

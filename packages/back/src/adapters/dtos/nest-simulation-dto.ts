@@ -1,70 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { BreakfastTypes, ColdBeveragesAnswer, HotBeveragesAnswer, MealsAnswer, MilkTypes, SimulationDto } from 'carbon-cut-commons';
+import { AlimentationDto, BreakfastTypes, MilkTypes, SimulationDto, TransportDto } from 'carbon-cut-commons';
 import { Type } from 'class-transformer';
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, ValidateNested } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
+import { NestCarAnswer } from './nest-car-dto';
+import { NestColdBeveragesAnswer } from './nest-cold-beverage-dto';
+import { NestHotBeveragesAnswer } from './nest-hot-beverages-dto';
+import { NestMealsAnswer } from './nest-meals-dto';
 
-class NestHotBeveragesAnswer implements HotBeveragesAnswer {
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsNumber()
-  coffee: number;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsNumber()
-  tea: number;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsNumber()
-  hotChocolate: number;
-}
-
-class NestColdBeveragesAnswer implements ColdBeveragesAnswer {
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsNumber()
-  sweet: number;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsNumber()
-  alcohol: number;
-}
-
-class NestMealsAnswer implements MealsAnswer {
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsNumber()
-  vegan: number;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsNumber()
-  vegetarian: number;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsNumber()
-  whiteMeat: number;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsNumber()
-  redMeat: number;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsNumber()
-  whiteFish: number;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsNumber()
-  fish: number;
-}
-
-export class NestSimulationDto implements SimulationDto {
+export class NestAlimentationDto implements AlimentationDto {
   @ApiProperty({ enum: BreakfastTypes })
   @IsNotEmpty()
   @IsEnum(BreakfastTypes)
@@ -92,4 +35,26 @@ export class NestSimulationDto implements SimulationDto {
   @ValidateNested()
   @Type(() => NestMealsAnswer)
   meals: NestMealsAnswer;
+}
+
+export class NestTransportDto implements TransportDto {
+  @ApiProperty({ type: NestCarAnswer })
+  @IsNotEmpty()
+  @ValidateNested()
+  @Type(() => NestCarAnswer)
+  car: NestCarAnswer;
+}
+
+export class NestSimulationDto implements SimulationDto {
+  @ApiProperty({ type: NestAlimentationDto })
+  @IsNotEmpty()
+  @ValidateNested()
+  @Type(() => NestAlimentationDto)
+  alimentation: NestAlimentationDto;
+
+  @ApiProperty({ type: NestTransportDto })
+  @IsNotEmpty()
+  @ValidateNested()
+  @Type(() => NestTransportDto)
+  transport: NestTransportDto;
 }

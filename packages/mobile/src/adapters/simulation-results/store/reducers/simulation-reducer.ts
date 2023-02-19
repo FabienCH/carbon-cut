@@ -11,6 +11,9 @@ const initialState: SimulationState = { answers: {} };
 export const simulationReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(setCarbonFootprint, (state, { payload }) => ({ ...state, simulationResults: payload }))
-    .addCase(saveAnswer, (state, { payload }) => ({ ...state, answers: { ...state.answers, ...payload } }))
+    .addCase(saveAnswer, (state, { payload }) => ({
+      ...state,
+      answers: { ...state.answers, [payload.sector]: { ...state.answers[payload.sector], ...payload.answer } },
+    }))
     .addDefaultCase((state) => state);
 });

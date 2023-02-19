@@ -126,22 +126,26 @@ describe('Meals component', () => {
 
     await waitFor(() => {
       const simulationAnswers = selectSimulationAnswers();
-      expect(simulationAnswers?.meals).toEqual({ vegan: 3, vegetarian: 3, whiteMeat: 2, redMeat: 2, whiteFish: 2, fish: 2 });
+      expect(simulationAnswers?.alimentation.meals).toEqual({ vegan: 3, vegetarian: 3, whiteMeat: 2, redMeat: 2, whiteFish: 2, fish: 2 });
       const results = selectSimulationResults();
       expect(selectIsLoading()).toBeFalsy();
       expect(results).toEqual({
-        breakfast: 171.234,
-        hotBeverages: { coffee: 124.14, tea: 32.4, hotChocolate: 80.57, total: 237.11 },
-        coldBeverages: { sweet: 34.14, alcohol: 25.34, total: 59.48 },
-        meals: {
-          vegan: 859.575,
-          vegetarian: 1220.925,
-          whiteMeat: 1531.54,
-          redMeat: 4022.3,
-          whiteFish: 1728.64,
-          fish: 1189.9,
-          total: 10552.88,
+        alimentation: {
+          breakfast: 171.234,
+          hotBeverages: { coffee: 124.14, tea: 32.4, hotChocolate: 80.57, total: 237.11 },
+          coldBeverages: { sweet: 34.14, alcohol: 25.34, total: 59.48 },
+          meals: {
+            vegan: 859.575,
+            vegetarian: 1220.925,
+            whiteMeat: 1531.54,
+            redMeat: 4022.3,
+            whiteFish: 1728.64,
+            fish: 1189.9,
+            total: 10552.88,
+          },
+          total: 467.824,
         },
+        transport: { total: 0 },
         total: 467.824,
       });
     });

@@ -50,7 +50,7 @@ export class WebHotBeveragesQuestionPresenter extends WebInputNumberQuestionPres
   }
 
   nextNavigateRoute(): Routes {
-    const isBreakFastWithoutMilk = selectSimulationAnswers()?.breakfast !== BreakfastTypes.milkCerealBreakfast;
+    const isBreakFastWithoutMilk = selectSimulationAnswers()?.alimentation?.breakfast !== BreakfastTypes.milkCerealBreakfast;
     const noHotChocolate = this.#noHotChocolate();
     return isBreakFastWithoutMilk && noHotChocolate ? Routes.ColdBeverages : Routes.MilkType;
   }

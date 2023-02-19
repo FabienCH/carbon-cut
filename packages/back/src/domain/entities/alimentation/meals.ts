@@ -1,14 +1,12 @@
 import { MealsAnswer, MealsFootprints } from 'carbon-cut-commons';
 import { AlimentationData } from '../../types/alimentation-types';
 import { AnswerValidator } from '../answer-validator';
-import { FootprintCategory } from '../footprint-category';
+import { FootprintsCategory, WithoutTotal } from '../footprint-category';
 import { FootprintHelper } from '../footprints-helper';
 import { ValidationError } from '../validation-error';
 import { AlimentationFootprints } from './alimentation-footprints';
 
-export class Meals extends FootprintCategory<MealsFootprints> {
-  protected readonly hasWeeklyFootprint = false;
-
+export class Meals extends FootprintsCategory<MealsFootprints, AlimentationData> {
   constructor(
     private readonly alimentationFootprints: AlimentationFootprints,
     readonly alimentationData: AlimentationData,
@@ -23,7 +21,7 @@ export class Meals extends FootprintCategory<MealsFootprints> {
     return { ...FootprintHelper.removeNullishFootprints(footprints), total };
   }
 
-  protected getYearlyFootprints(): Partial<MealsFootprints> {
+  protected getYearlyFootprints(): WithoutTotal<MealsFootprints> {
     const { veganMeal, vegetarianMeal, whiteMeatMeal, redMeatMeal, whiteFishMeal, fishMeal } = this.footprintsData;
     const veganFootprint = this.alimentationFootprints.calculateFootprint(this.mealsAnswer.vegan, veganMeal);
     const vegetarianFootprint = this.alimentationFootprints.calculateFootprint(this.mealsAnswer.vegetarian, vegetarianMeal);
@@ -32,14 +30,14 @@ export class Meals extends FootprintCategory<MealsFootprints> {
     const whiteFishFootprint = this.alimentationFootprints.calculateFootprint(this.mealsAnswer.whiteFish, whiteFishMeal);
     const fishFootprint = this.alimentationFootprints.calculateFootprint(this.mealsAnswer.fish, fishMeal);
 
-    return this.getYearlyNonNullFootprint({
+    return {
       vegan: veganFootprint,
       vegetarian: vegetarianFootprint,
       whiteMeat: whiteMeatFootprint,
       redMeat: redMeatFootprint,
       whiteFish: whiteFishFootprint,
       fish: fishFootprint,
-    });
+    };
   }
 
   #validate(): void {

@@ -3,20 +3,12 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react-nativ
 import { Provider } from 'react-redux';
 import ColdBeverages from './cold-beverages';
 import { selectSimulationAnswers } from '../../../adapters/simulation-results/store/selectors/simulation-selectors';
-import { CarbonFootprintGatewayToken } from '../../../domain/ports/gateways/carbon-footprint.gateway';
-import { InMemoryCarbonFootprintGateway } from '../../../tests/in-memory-carbon-footprint.gateway';
 import { appStore } from '../../../adapters/commons/store/app-store';
-import { diContainer } from '../../inversify.config';
 import { RootStackParamList, Routes } from '../../root-navigation';
 import { NavigationProp } from '@react-navigation/native';
 import MockTheme from '../../../tests/theme-mock';
 
 describe('ColdBeverages component', () => {
-  beforeAll(() => {
-    diContainer.unbind(CarbonFootprintGatewayToken);
-    diContainer.bind(CarbonFootprintGatewayToken).to(InMemoryCarbonFootprintGateway);
-  });
-
   beforeEach(() => {
     render(
       <Provider store={appStore}>
@@ -128,7 +120,7 @@ describe('ColdBeverages component', () => {
 
     await waitFor(() => {
       const simulationAnswers = selectSimulationAnswers();
-      expect(simulationAnswers?.coldBeverages).toEqual({ sweet: 2, alcohol: 2 });
+      expect(simulationAnswers?.alimentation.coldBeverages).toEqual({ sweet: 2, alcohol: 2 });
     });
   });
 });

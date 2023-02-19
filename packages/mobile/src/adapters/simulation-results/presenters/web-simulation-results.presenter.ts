@@ -1,16 +1,16 @@
-import { CarbonFootprintDto, getTypedObjectKeys, NumberFormatter } from 'carbon-cut-commons';
+import { AlimentationFootprintDto, getTypedObjectKeys, NumberFormatter } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
 import { SimulationResultsPresenter, SimulationResultsViewModel } from '../../../domain/ports/presenters/simulation-results.presenter';
 import { selectSimulationResults } from '../store/selectors/simulation-selectors';
 
-type KeyLabelMapperKeys = keyof Omit<CarbonFootprintDto, 'total'>;
+type KeyLabelMapperKeys = keyof Omit<AlimentationFootprintDto, 'total'>;
 
 @injectable()
 export class WebSimulationResultsPresenter implements SimulationResultsPresenter {
   get viewModel(): SimulationResultsViewModel {
     const results = selectSimulationResults();
-    const total = this.#formatFootprintValue(results?.total);
-    const weightUnit = this.#getWeightUnit(results?.total);
+    const total = this.#formatFootprintValue(results?.alimentation.total);
+    const weightUnit = this.#getWeightUnit(results?.alimentation.total);
     return {
       carbonFootprint: `${total.toLocaleString('fr-FR')} ${weightUnit}CO2e / an` ?? '',
       chartOption: {
@@ -23,7 +23,7 @@ export class WebSimulationResultsPresenter implements SimulationResultsPresenter
         },
         tooltip: {
           trigger: 'item',
-          formatter: this.#tooltipFormatter(results),
+          formatter: this.#tooltipFormatter(results?.alimentation),
         },
         series: [
           {
@@ -52,8 +52,8 @@ export class WebSimulationResultsPresenter implements SimulationResultsPresenter
     };
   }
 
-  #tooltipFormatter(carbonFootprintDto: CarbonFootprintDto | undefined): string {
-    if (!carbonFootprintDto) {
+  #tooltipFormatter(alimentationFootprintDto: AlimentationFootprintDto | undefined): string {
+    if (!alimentationFootprintDto) {
       return '';
     }
     const keyLabelMapper: Record<KeyLabelMapperKeys, string> = {
@@ -62,10 +62,10 @@ export class WebSimulationResultsPresenter implements SimulationResultsPresenter
       coldBeverages: 'Boissons froides',
       meals: 'Repas',
     };
-    const { total, breakfast, hotBeverages, coldBeverages, meals } = carbonFootprintDto;
+    const { total, breakfast, hotBeverages, coldBeverages, meals } = alimentationFootprintDto;
 
     const categories = getTypedObjectKeys({ breakfast, hotBeverages, coldBeverages, meals }).map((carbonFootprintKey) => {
-      const footprintItem = carbonFootprintDto[carbonFootprintKey];
+      const footprintItem = alimentationFootprintDto[carbonFootprintKey];
       if (footprintItem) {
         const footprintValue = typeof footprintItem === 'number' ? footprintItem : footprintItem.total;
         if (footprintValue) {
