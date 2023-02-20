@@ -5,16 +5,16 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import {
   ColdBeveragesViewModel,
   WebColdBeveragesQuestionPresenter,
-} from '../../../adapters/simulation/presenters/web-cold-beverages-question.presenter';
-import { AnswerValidator } from '../../../domain/entites/answer-validator';
-import { ColdBeveragesQuestionPresenterToken } from '../../../domain/ports/presenters/question.presenter';
-import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
-import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '../../../domain/usecases/set-input-answer.usecase';
-import { diContainer } from '../../inversify.config';
-import { RootStackParamList, Routes } from '../../root-navigation';
-import InputAnswers from '../components/input-answers';
-import Question from '../components/question';
-import SubmitButton from '../components/submit-button';
+} from '../../../../adapters/simulation/presenters/alimentation/web-cold-beverages-question.presenter';
+import { AnswerValidator } from '../../../../domain/entites/answer-validator';
+import { ColdBeveragesQuestionPresenterToken } from '../../../../domain/ports/presenters/question.presenter';
+import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../../domain/usecases/save-simulation-answer.usecase';
+import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '../../../../domain/usecases/set-input-answer.usecase';
+import { diContainer } from '../../../inversify.config';
+import { RootStackParamList, Routes } from '../../../root-navigation';
+import InputAnswers from '../../components/input-answers';
+import Question from '../../components/question';
+import SubmitButton from '../../components/submit-button';
 
 export type ColdBeveragesKeys = keyof ColdBeveragesAnswer;
 type ColdBeveragesNavigationProp = NavigationProp<RootStackParamList, Routes.ColdBeverages>;

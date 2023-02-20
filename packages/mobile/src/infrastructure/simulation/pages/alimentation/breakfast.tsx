@@ -5,14 +5,14 @@ import {
   BreakfastAnswer,
   BreakfastViewModel,
   WebBreakfastQuestionPresenter,
-} from '../../../adapters/simulation/presenters/web-breakfast-question.presenter';
-import { BreakfastQuestionPresenterToken } from '../../../domain/ports/presenters/question.presenter';
-import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
-import { diContainer } from '../../inversify.config';
-import { RootStackParamList, Routes } from '../../root-navigation';
-import Question from '../components/question';
-import SelectableAnswers from '../components/selectable-answers';
-import SubmitButton from '../components/submit-button';
+} from '../../../../adapters/simulation/presenters/alimentation/web-breakfast-question.presenter';
+import { BreakfastQuestionPresenterToken } from '../../../../domain/ports/presenters/question.presenter';
+import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../../domain/usecases/save-simulation-answer.usecase';
+import { diContainer } from '../../../inversify.config';
+import { RootStackParamList, Routes } from '../../../root-navigation';
+import Question from '../../components/question';
+import SelectableAnswers from '../../components/selectable-answers';
+import SubmitButton from '../../components/submit-button';
 
 type BreakfastNavigationProp = NavigationProp<RootStackParamList, Routes.Breakfast>;
 type BreakfastProps = {
@@ -34,7 +34,7 @@ export default function Breakfast({ navigation, containerStyle }: BreakfastProps
   }, [presenter, presenter.viewModel]);
 
   const setSelectedBreakfast = (answer: BreakfastAnswer): void => {
-    presenter.setAnswer(answer.value);
+    presenter.setSelectedAnswer(answer.value);
   };
 
   const saveAnswer = (): void => {

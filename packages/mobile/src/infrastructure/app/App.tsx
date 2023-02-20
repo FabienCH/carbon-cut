@@ -10,11 +10,12 @@ import { styles } from './style';
 import { Provider } from 'react-redux';
 import { appStore } from '../../adapters/commons/store/app-store';
 import SimulationResults from '../simulation-results/simulation-results';
-import Breakfast from '../simulation/pages/breakfast';
-import ColdBeverages from '../simulation/pages/cold-beverages';
-import HotBeverages from '../simulation/pages/hot-beverages';
-import MilkType from '../simulation/pages/milk-type';
-import Meals from '../simulation/pages/meals';
+import Breakfast from '../simulation/pages/alimentation/breakfast';
+import ColdBeverages from '../simulation/pages/alimentation/cold-beverages';
+import HotBeverages from '../simulation/pages/alimentation/hot-beverages';
+import MilkType from '../simulation/pages/alimentation/milk-type';
+import Meals from '../simulation/pages/alimentation/meals';
+import CarKmType from '../simulation/pages/transport/car-km-type';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -40,6 +41,7 @@ export default function App() {
                   {(props) => <ColdBeverages {...props} containerStyle={styles.container} />}
                 </Stack.Screen>
                 <Stack.Screen name={Routes.Meals}>{(props) => <Meals {...props} containerStyle={styles.container} />}</Stack.Screen>
+                <Stack.Screen name={Routes.CarKmType}>{(props) => <CarKmType {...props} containerStyle={styles.container} />}</Stack.Screen>
                 <Stack.Screen name={Routes.SimulationResults}>
                   {(props) => <SimulationResults {...props} containerStyle={styles.container} />}
                 </Stack.Screen>
