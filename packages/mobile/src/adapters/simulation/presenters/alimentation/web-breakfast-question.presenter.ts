@@ -5,11 +5,11 @@ import {
   MultipleAnswersViewModel,
   QuestionPresenterViewModel,
   QuestionViewModel,
-} from '../../../domain/ports/presenters/question.presenter';
-import { WebSelectableQuestionPresenter } from './web-selectable-question.presenter';
+} from '../../../../domain/ports/presenters/question.presenter';
+import { WebSelectableQuestionPresenter } from '../web-selectable-question.presenter';
 
 export type BreakfastAnswer = Answer<BreakfastTypes>;
-export type BreakfastViewModel = QuestionPresenterViewModel<QuestionViewModel<MultipleAnswersViewModel<BreakfastAnswer[]>>>;
+export type BreakfastViewModel = QuestionPresenterViewModel<QuestionViewModel<MultipleAnswersViewModel<BreakfastAnswer>>>;
 
 @injectable()
 export class WebBreakfastQuestionPresenter extends WebSelectableQuestionPresenter<BreakfastTypes, BreakfastViewModel> {

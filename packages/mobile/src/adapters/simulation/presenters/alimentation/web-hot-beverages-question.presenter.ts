@@ -1,20 +1,20 @@
 import { BreakfastTypes, HotBeveragesAnswer } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
-import { PositiveNumberError } from '../../../domain/entites/answer-validator';
+import { PositiveNumberError } from '../../../../domain/entites/answer-validator';
 import {
   InputAnswer,
   InputAnswerValue,
   MultipleAnswersViewModel,
   QuestionPresenterViewModel,
   QuestionViewModel,
-} from '../../../domain/ports/presenters/question.presenter';
-import { Routes } from '../../../infrastructure/root-navigation';
-import { selectSimulationAnswers } from '../../simulation-results/store/selectors/simulation-selectors';
-import { WebInputNumberQuestionPresenter } from './web-input-number-question.presenter';
+} from '../../../../domain/ports/presenters/question.presenter';
+import { Routes } from '../../../../infrastructure/root-navigation';
+import { selectSimulationAnswers } from '../../../simulation-results/store/selectors/simulation-selectors';
+import { WebInputNumberQuestionPresenter } from '../web-input-number-question.presenter';
 
 export type HotBeveragesKeys = keyof HotBeveragesAnswer;
 export type HotBeverageViewModel = QuestionPresenterViewModel<
-  QuestionViewModel<QuestionViewModel<MultipleAnswersViewModel<HotBeverageAnswerValue[]>>>
+  QuestionViewModel<QuestionViewModel<MultipleAnswersViewModel<HotBeverageAnswerValue>>>
 >;
 type HotBeverageAnswerValue = InputAnswer<HotBeveragesKeys>;
 

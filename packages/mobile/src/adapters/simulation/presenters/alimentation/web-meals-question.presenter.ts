@@ -1,6 +1,6 @@
 import { MealsAnswer } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
-import { NumberEqualError, PositiveNumberError } from '../../../domain/entites/answer-validator';
+import { NumberEqualError, PositiveNumberError } from '../../../../domain/entites/answer-validator';
 import {
   InputAnswer,
   InputAnswerValue,
@@ -8,12 +8,12 @@ import {
   QuestionPresenterViewModel,
   QuestionViewModel,
   WithFormValidation,
-} from '../../../domain/ports/presenters/question.presenter';
-import { WebInputNumberQuestionPresenter } from './web-input-number-question.presenter';
+} from '../../../../domain/ports/presenters/question.presenter';
+import { WebInputNumberQuestionPresenter } from '../web-input-number-question.presenter';
 
 export type MealsKeys = keyof MealsAnswer;
 export type MealViewModel = QuestionPresenterViewModel<
-  QuestionViewModel<MultipleAnswersViewModel<MealAnswerValue[]>> & { formError: string | null }
+  QuestionViewModel<MultipleAnswersViewModel<MealAnswerValue>> & { formError: string | null }
 >;
 type MealAnswerValue = InputAnswer<MealsKeys>;
 

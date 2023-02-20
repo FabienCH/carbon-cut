@@ -9,19 +9,19 @@ export abstract class WebSelectableQuestionPresenter<AnswerType extends string, 
 
   selectedAnswer: AnswerType | undefined;
 
-  protected notifyChanges!: (viewModel: ViewModel) => void;
+  #notifyChanges!: (viewModel: ViewModel) => void;
 
   get viewModel(): ViewModel {
     return this._viewModel;
   }
 
   onViewModelChanges(updateViewFn: (viewModel: ViewModel) => void): void {
-    this.notifyChanges = updateViewFn;
+    this.#notifyChanges = updateViewFn;
   }
 
-  setAnswer(answerValue: AnswerType): void {
+  setSelectedAnswer(answerValue: AnswerType): void {
     this.selectedAnswer = answerValue;
     this._viewModel = { ...this._viewModel, canSubmit: !!this.selectedAnswer };
-    this.notifyChanges(this._viewModel);
+    this.#notifyChanges(this._viewModel);
   }
 }
