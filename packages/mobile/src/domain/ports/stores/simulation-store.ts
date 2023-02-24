@@ -3,13 +3,10 @@ import { AlimentationDto, CarbonFootprintDto, SimulationDto, TransportDto } from
 export const SimulationStoreToken = Symbol.for('SimulationStore');
 
 export type AnswerKey = keyof AlimentationDto | keyof TransportDto;
-export type AnswerValue = AlimentationDto[keyof AlimentationDto] | TransportDto[keyof TransportDto];
-export type AnswerToSave = {
-  [key in AnswerKey]: AnswerValue;
-};
+export type AnswerValues = AlimentationDto[keyof AlimentationDto] | Partial<TransportDto[keyof TransportDto]>;
 
 export interface SimulationStore {
-  saveAnswer: (sector: keyof SimulationDto, answer: Partial<AnswerToSave>) => void;
+  saveAnswer: (sector: keyof SimulationDto, answerKey: AnswerKey, answers: AnswerValues) => void;
   getSimulationsAnswers: () => SimulationDto | undefined;
   setCarbonFootprint: (carbonFootprint: CarbonFootprintDto) => void;
 }

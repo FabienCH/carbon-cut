@@ -2,21 +2,13 @@ import 'reflect-metadata';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { selectSimulationAnswers } from '../../../../adapters/simulation-results/store/selectors/simulation-selectors';
-import { CarbonFootprintGatewayToken } from '../../../../domain/ports/gateways/carbon-footprint.gateway';
-import { InMemoryCarbonFootprintGateway } from '../../../../tests/in-memory-carbon-footprint.gateway';
 import { appStore } from '../../../../adapters/commons/store/app-store';
-import { diContainer } from '../../../inversify.config';
 import Meals from './meals';
 import MockTheme from '../../../../tests/theme-mock';
 import { NavigationProp } from '@react-navigation/native';
 import { RootStackParamList, Routes } from '../../../root-navigation';
 
 describe('Meals component', () => {
-  beforeAll(() => {
-    diContainer.unbind(CarbonFootprintGatewayToken);
-    diContainer.bind(CarbonFootprintGatewayToken).to(InMemoryCarbonFootprintGateway);
-  });
-
   beforeEach(() => {
     render(
       <Provider store={appStore}>
