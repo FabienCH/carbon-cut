@@ -12,11 +12,13 @@ import { WebHotBeveragesQuestionPresenter } from '../adapters/simulation/present
 import { WebMealsQuestionPresenter } from '../adapters/simulation/presenters/alimentation/web-meals-question.presenter';
 import { WebMilkTypeQuestionPresenter } from '../adapters/simulation/presenters/alimentation/web-milk-type-question.presenter';
 import { WebCarKmTypeQuestionPresenter } from '../adapters/simulation/presenters/transport/web-car-km-type-question.presenter';
+import { WebFuelCarConsumptionQuestionPresenter } from '../adapters/simulation/presenters/transport/web-fuel-car-consumption-question.presenter';
 import { CarbonFootprintGateway, CarbonFootprintGatewayToken } from '../domain/ports/gateways/carbon-footprint.gateway';
 import {
   BreakfastQuestionPresenterToken,
   CarKmTypeQuestionPresenterToken,
   ColdBeveragesQuestionPresenterToken,
+  FuelCarConsumptionQuestionPresenterToken,
   HotBeveragesQuestionPresenterToken,
   InputQuestionPresenter,
   MealsQuestionPresenterToken,
@@ -43,6 +45,9 @@ diContainer.bind<SelectableQuestionPresenter<MilkTypes>>(MilkTypeQuestionPresent
 diContainer.bind<InputQuestionPresenter<ColdBeveragesAnswer>>(ColdBeveragesQuestionPresenterToken).to(WebColdBeveragesQuestionPresenter);
 diContainer.bind<InputQuestionPresenter<MealsAnswer>>(MealsQuestionPresenterToken).to(WebMealsQuestionPresenter);
 diContainer.bind<WebCarKmTypeQuestionPresenter>(CarKmTypeQuestionPresenterToken).to(WebCarKmTypeQuestionPresenter);
+diContainer
+  .bind<WebFuelCarConsumptionQuestionPresenter>(FuelCarConsumptionQuestionPresenterToken)
+  .to(WebFuelCarConsumptionQuestionPresenter);
 diContainer.bind<SimulationResultsPresenter>(SimulationResultsPresenterToken).to(WebSimulationResultsPresenter);
 diContainer.bind<UserNotifyPresenter>(UserNotifyPresenterToken).to(ReactToastUserNotifyPresenter);
 diContainer.bind<Record<string, string | undefined>>(UserNotifyConfigToken).toConstantValue({ backgroundColor: theme.darkColors?.error });

@@ -1,4 +1,4 @@
-import { CarAnswer, EngineType } from 'carbon-cut-commons';
+import { EngineType } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
 import { PositiveNumberError } from '../../../../domain/entites/answer-validator';
 import {
@@ -13,20 +13,21 @@ import {
   SelectableQuestionPresenter,
 } from '../../../../domain/ports/presenters/question.presenter';
 
-export type CarAnswerKeys = keyof CarAnswer;
-export type CarAnswerViewModel = QuestionPresenterViewModel<{
+export type CarKmTypeAnswerViewModel = QuestionPresenterViewModel<{
   engineTypeQuestion: QuestionViewModel<MultipleAnswersViewModel<Answer<EngineType>>>;
   kmQuestion: QuestionViewModel<AnswerViewModel<InputAnswer<'km'>>>;
 }>;
 
 @injectable()
 export class WebCarKmTypeQuestionPresenter
-  implements SelectableQuestionPresenter<EngineType, CarAnswerViewModel>, InputQuestionPresenter<{ km: number }, CarAnswerViewModel>
+  implements
+    SelectableQuestionPresenter<EngineType, CarKmTypeAnswerViewModel>,
+    InputQuestionPresenter<{ km: number }, CarKmTypeAnswerViewModel>
 {
   selectedAnswer!: EngineType;
   #kmAnswerValid = false;
 
-  get viewModel(): CarAnswerViewModel {
+  get viewModel(): CarKmTypeAnswerViewModel {
     return this._viewModel;
   }
 
@@ -34,7 +35,7 @@ export class WebCarKmTypeQuestionPresenter
     return { km: this.#valueToNumber(this._viewModel.kmQuestion.answer.value) as number };
   }
 
-  protected _viewModel: CarAnswerViewModel = {
+  protected _viewModel: CarKmTypeAnswerViewModel = {
     engineTypeQuestion: {
       question: 'Quel est le type de motorisation de votre voiture ?',
       answers: [
@@ -50,7 +51,7 @@ export class WebCarKmTypeQuestionPresenter
     canSubmit: false,
   };
 
-  #notifyChanges!: (viewModel: CarAnswerViewModel) => void;
+  #notifyChanges!: (viewModel: CarKmTypeAnswerViewModel) => void;
 
   setAnswer({ value }: InputAnswerValue<'km'>, error: PositiveNumberError, isValid: boolean): void {
     const kmQuestionWihUpdatedAnswer = {
@@ -68,7 +69,7 @@ export class WebCarKmTypeQuestionPresenter
     this.#notifyChanges(this._viewModel);
   }
 
-  onViewModelChanges(updateViewFn: (viewModel: CarAnswerViewModel) => void): void {
+  onViewModelChanges(updateViewFn: (viewModel: CarKmTypeAnswerViewModel) => void): void {
     this.#notifyChanges = updateViewFn;
   }
 
@@ -85,7 +86,7 @@ export class WebCarKmTypeQuestionPresenter
     return { ...answer, value: this.#formatValue(value), errorMessage };
   }
 
-  #updateViewModel(viewModel: Partial<CarAnswerViewModel>) {
+  #updateViewModel(viewModel: Partial<CarKmTypeAnswerViewModel>) {
     this._viewModel = { ...this._viewModel, ...viewModel };
     this.#notifyChanges(this._viewModel);
   }
