@@ -13,45 +13,67 @@ export interface Answer<T> {
   value: T;
 }
 
-export interface InputAnswer<IdType extends string> extends Answer<string | undefined> {
-  id: IdType;
+export interface InputAnswer<AnswerId extends string> extends Answer<string | undefined> {
+  id: AnswerId;
   errorMessage?: string;
   placeholder?: string;
 }
 
-export interface MultipleAnswersViewModel<T = InputAnswer<string> | Answer<unknown>> {
+type DefaultAnswer = InputAnswer<string> | Answer<unknown>;
+
+export interface MultipleAnswersViewModel<T extends DefaultAnswer> {
   answers: T[];
 }
 
-export interface AnswerViewModel<T = InputAnswer<string> | Answer<unknown>> {
+export interface AnswerViewModel<T extends DefaultAnswer> {
   answer: T;
 }
 
-export type QuestionViewModel<T = AnswerViewModel<unknown> | MultipleAnswersViewModel<unknown>> = T & { question: string };
+type DefaultAnswersViewModel = AnswerViewModel<DefaultAnswer> | MultipleAnswersViewModel<DefaultAnswer>;
 
-export type MultipleQuestionsViewModel<T = QuestionViewModel> = { questions: T[] };
+export type QuestionViewModel<T extends DefaultAnswersViewModel> = T & {
+  question: string;
+};
 
-export type QuestionPresenterViewModel<T = QuestionViewModel | MultipleQuestionsViewModel> = T & { canSubmit: boolean };
+type DefaultQuestionViewModel = QuestionViewModel<DefaultAnswersViewModel>;
 
-export interface QuestionPresenter<ViewModel = QuestionPresenterViewModel> {
+export type MultipleQuestionsViewModel<T extends DefaultQuestionViewModel[] | { [key: string]: DefaultQuestionViewModel }> = {
+  questions: T;
+};
+
+export type RecordQuestionViewModel = Omit<{ [key: string]: DefaultQuestionViewModel }, 'canSubmit'>;
+
+export type QuestionPresenterViewModel<
+  T extends DefaultQuestionViewModel | MultipleQuestionsViewModel<DefaultQuestionViewModel[] | { [key: string]: DefaultQuestionViewModel }>,
+> = T & {
+  canSubmit: boolean;
+};
+
+export type DefaultQuestionPresenterViewModel = QuestionPresenterViewModel<
+  DefaultQuestionViewModel | MultipleQuestionsViewModel<DefaultQuestionViewModel[] | { [key: string]: DefaultQuestionViewModel }>
+>;
+
+export interface QuestionPresenter<ViewModel extends DefaultQuestionPresenterViewModel> {
   viewModel: ViewModel;
   onViewModelChanges(updateViewFn: (viewModel: ViewModel) => void): void;
 }
 
-export interface WithFormValidation<ViewModel = QuestionPresenterViewModel> {
+export interface WithFormValidation<ViewModel extends DefaultQuestionPresenterViewModel> {
   viewModel: ViewModel & { formError: string | null };
   updateFormError(formError: NumberEqualError): void;
 }
 
 export type InputAnswerValue<IdType> = { id: IdType; value: string | undefined };
 
-export interface InputQuestionPresenter<AnswerValues extends Record<string, number | undefined>, ViewModel = QuestionPresenterViewModel>
-  extends QuestionPresenter<ViewModel> {
+export interface InputQuestionPresenter<
+  AnswerValues extends Record<string, number | undefined>,
+  ViewModel extends DefaultQuestionPresenterViewModel,
+> extends QuestionPresenter<ViewModel> {
   answerValues: Partial<AnswerValues>;
   setAnswer(answerValue: InputAnswerValue<keyof AnswerValues>, errors: PositiveNumberError, isValid: boolean, questionIndex?: number): void;
 }
 
-export interface SelectableQuestionPresenter<AnswerType = string, ViewModel = QuestionPresenterViewModel>
+export interface SelectableQuestionPresenter<AnswerType extends string, ViewModel extends DefaultQuestionPresenterViewModel>
   extends QuestionPresenter<ViewModel> {
   selectedAnswer: AnswerType | undefined;
   setSelectedAnswer(answerValue: AnswerType, questionIndex?: number): void;

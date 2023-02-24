@@ -1,17 +1,17 @@
 import { injectable } from 'inversify';
 import { PositiveNumberError } from '../../../domain/entites/answer-validator';
 import {
+  DefaultQuestionPresenterViewModel,
   InputAnswer,
   InputAnswerValue,
   InputQuestionPresenter,
-  QuestionPresenterViewModel,
 } from '../../../domain/ports/presenters/question.presenter';
 
 @injectable()
 export abstract class WebInputNumberQuestionPresenter<
   AnswerValues extends Record<string, number | undefined>,
-  ViewModel extends QuestionPresenterViewModel,
-> implements InputQuestionPresenter<AnswerValues>
+  ViewModel extends DefaultQuestionPresenterViewModel,
+> implements InputQuestionPresenter<AnswerValues, ViewModel>
 {
   abstract setAnswer(
     answerValue: InputAnswerValue<keyof AnswerValues>,

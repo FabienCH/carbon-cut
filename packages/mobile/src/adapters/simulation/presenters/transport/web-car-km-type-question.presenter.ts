@@ -1,97 +1,50 @@
 import { EngineType } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
-import { PositiveNumberError } from '../../../../domain/entites/answer-validator';
 import {
   Answer,
   AnswerViewModel,
   InputAnswer,
-  InputAnswerValue,
-  InputQuestionPresenter,
   MultipleAnswersViewModel,
+  MultipleQuestionsViewModel,
   QuestionPresenterViewModel,
   QuestionViewModel,
-  SelectableQuestionPresenter,
 } from '../../../../domain/ports/presenters/question.presenter';
+import { WebMultipleQuestionsPresenter } from '../web-multiple-questions.presenter';
 
-export type CarKmTypeAnswerViewModel = QuestionPresenterViewModel<{
-  engineTypeQuestion: QuestionViewModel<MultipleAnswersViewModel<Answer<EngineType>>>;
-  kmQuestion: QuestionViewModel<AnswerViewModel<InputAnswer<'km'>>>;
-}>;
+export type CarKmTypeAnswerViewModel = QuestionPresenterViewModel<
+  MultipleQuestionsViewModel<{
+    selectableQuestion: QuestionViewModel<MultipleAnswersViewModel<Answer<EngineType>>>;
+    inputQuestion: QuestionViewModel<AnswerViewModel<InputAnswer<'km'>>>;
+  }>
+>;
 
 @injectable()
-export class WebCarKmTypeQuestionPresenter
-  implements
-    SelectableQuestionPresenter<EngineType, CarKmTypeAnswerViewModel>,
-    InputQuestionPresenter<{ km: number }, CarKmTypeAnswerViewModel>
-{
+export class WebCarKmTypeQuestionPresenter extends WebMultipleQuestionsPresenter<CarKmTypeAnswerViewModel> {
   selectedAnswer!: EngineType;
-  #kmAnswerValid = false;
 
   get viewModel(): CarKmTypeAnswerViewModel {
     return this._viewModel;
   }
 
   get answerValues(): { km: number } {
-    return { km: this.#valueToNumber(this._viewModel.kmQuestion.answer.value) as number };
+    return { km: this.valueToNumber(this._viewModel.questions.inputQuestion.answer.value) as number };
   }
 
   protected _viewModel: CarKmTypeAnswerViewModel = {
-    engineTypeQuestion: {
-      question: 'Quel est le type de motorisation de votre voiture ?',
-      answers: [
-        { label: 'Thermique (diesel/essence)', value: EngineType.thermal },
-        { label: 'Hybride', value: EngineType.hybrid },
-        { label: 'Electrique', value: EngineType.electric },
-      ],
-    },
-    kmQuestion: {
-      question: "Combien de km parcourez-vous dans l'année ?",
-      answer: { id: 'km', label: '', placeholder: 'km / an', value: undefined },
+    questions: {
+      selectableQuestion: {
+        question: 'Quel est le type de motorisation de votre voiture ?',
+        answers: [
+          { label: 'Thermique (diesel/essence)', value: EngineType.thermal },
+          { label: 'Hybride', value: EngineType.hybrid },
+          { label: 'Electrique', value: EngineType.electric },
+        ],
+      },
+      inputQuestion: {
+        question: "Combien de km parcourez-vous dans l'année ?",
+        answer: { id: 'km', label: '', placeholder: 'km / an', value: undefined },
+      },
     },
     canSubmit: false,
   };
-
-  #notifyChanges!: (viewModel: CarKmTypeAnswerViewModel) => void;
-
-  setAnswer({ value }: InputAnswerValue<'km'>, error: PositiveNumberError, isValid: boolean): void {
-    const kmQuestionWihUpdatedAnswer = {
-      ...this._viewModel.kmQuestion,
-      answer: this.#updateAnswer(this._viewModel.kmQuestion.answer, value, error),
-    };
-
-    this.#kmAnswerValid = isValid;
-    this.#updateViewModel({ kmQuestion: kmQuestionWihUpdatedAnswer, canSubmit: this.#kmAnswerValid && !!this.selectedAnswer });
-  }
-
-  setSelectedAnswer(answerValue: EngineType): void {
-    this.selectedAnswer = answerValue;
-    this._viewModel = { ...this._viewModel, canSubmit: this.#kmAnswerValid && !!this.selectedAnswer };
-    this.#notifyChanges(this._viewModel);
-  }
-
-  onViewModelChanges(updateViewFn: (viewModel: CarKmTypeAnswerViewModel) => void): void {
-    this.#notifyChanges = updateViewFn;
-  }
-
-  #valueToNumber(value: string | undefined): number | undefined {
-    if (value === undefined) {
-      return undefined;
-    }
-    return parseFloat(value);
-  }
-
-  #updateAnswer<InputKey extends string>(answer: InputAnswer<InputKey>, value: string | undefined, answerError: PositiveNumberError) {
-    const errorMessage = answerError ? `Veuillez saisir un nombre${answerError.error === 'isNotPositive' ? ' positif' : ''}` : undefined;
-
-    return { ...answer, value: this.#formatValue(value), errorMessage };
-  }
-
-  #updateViewModel(viewModel: Partial<CarKmTypeAnswerViewModel>) {
-    this._viewModel = { ...this._viewModel, ...viewModel };
-    this.#notifyChanges(this._viewModel);
-  }
-
-  #formatValue(value: string | undefined): string | undefined {
-    return value?.replace(',', '.');
-  }
 }

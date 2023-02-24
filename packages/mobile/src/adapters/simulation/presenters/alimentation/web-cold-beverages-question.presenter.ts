@@ -13,7 +13,7 @@ import { WebInputNumberQuestionPresenter } from '../web-input-number-question.pr
 
 export type ColdBeveragesKeys = keyof ColdBeveragesAnswer;
 export type ColdBeveragesViewModel = QuestionPresenterViewModel<
-  MultipleQuestionsViewModel<QuestionViewModel<AnswerViewModel<ColdBeverageAnswerValue>>>
+  MultipleQuestionsViewModel<QuestionViewModel<AnswerViewModel<ColdBeverageAnswerValue>>[]>
 >;
 type ColdBeverageAnswerValue = InputAnswer<ColdBeveragesKeys>;
 

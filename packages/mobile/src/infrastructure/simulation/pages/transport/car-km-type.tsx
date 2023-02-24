@@ -53,14 +53,14 @@ export default function CarKmType({ navigation, containerStyle }: CarKmTypeProps
     });
     navigation.navigate(Routes.FuelCarConsumption, { containerStyle });
   };
-
+  const { selectableQuestion, inputQuestion } = viewModel.questions;
   return (
     <View style={containerStyle}>
-      <Question question={viewModel.engineTypeQuestion.question}>
-        <SelectableAnswers answers={viewModel.engineTypeQuestion.answers} answerSelected={(answer) => setSelectedEngineType(answer)} />
+      <Question question={selectableQuestion.question}>
+        <SelectableAnswers answers={selectableQuestion.answers} answerSelected={(answer) => setSelectedEngineType(answer)} />
       </Question>
-      <Question question={viewModel.kmQuestion.question}>
-        <InputAnswers answers={[viewModel.kmQuestion.answer]} answerChanged={(value) => setAnswer(value)} />
+      <Question question={inputQuestion.question}>
+        <InputAnswers answers={[inputQuestion.answer]} answerChanged={(value) => setAnswer(value)} />
       </Question>
       <SubmitButton isLastQuestion={false} canSubmit={viewModel.canSubmit} nextButtonClicked={() => saveAnswer()} />
     </View>

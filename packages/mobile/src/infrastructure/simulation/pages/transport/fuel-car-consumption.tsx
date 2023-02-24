@@ -64,15 +64,15 @@ export default function FuelCarConsumption({ containerStyle }: { containerStyle:
     });
     carbonFootprintSimulationUseCase.execute();
   };
-
+  const { selectableQuestion, inputQuestion } = viewModel.questions;
   return (
     <View style={containerStyle}>
       <ScrollView style={styles.scrollView}>
-        <Question question={viewModel.fuelTypeQuestion.question}>
-          <SelectableAnswers answers={viewModel.fuelTypeQuestion.answers} answerSelected={(answer) => setSelectedEngineType(answer)} />
+        <Question question={selectableQuestion.question}>
+          <SelectableAnswers answers={selectableQuestion.answers} answerSelected={(answer) => setSelectedEngineType(answer)} />
         </Question>
-        <Question question={viewModel.fuelConsumptionQuestion.question}>
-          <InputAnswers answers={[viewModel.fuelConsumptionQuestion.answer]} answerChanged={(value) => setAnswer(value)} />
+        <Question question={inputQuestion.question}>
+          <InputAnswers answers={[inputQuestion.answer]} answerChanged={(value) => setAnswer(value)} />
         </Question>
       </ScrollView>
       <SubmitButton

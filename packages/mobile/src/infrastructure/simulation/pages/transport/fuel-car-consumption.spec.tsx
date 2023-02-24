@@ -16,7 +16,7 @@ import { unselectedAnswerStyle } from '../../../../tests/answer';
 import { FuelType } from 'carbon-cut-commons';
 import FuelCarConsumption from './fuel-car-consumption';
 
-describe('CarKmType component', () => {
+describe('FuelCarConsumption component', () => {
   beforeAll(() => {
     diContainer.unbind(CarbonFootprintGatewayToken);
     diContainer.bind(CarbonFootprintGatewayToken).to(InMemoryCarbonFootprintGateway);
