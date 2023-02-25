@@ -1,6 +1,6 @@
 import { ColdBeveragesAnswer } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
-import { PositiveNumberError } from '../../../domain/entites/answer-validator';
+import { PositiveNumberError } from '../../../../domain/entites/answer-validator';
 import {
   AnswerViewModel,
   InputAnswer,
@@ -8,8 +8,8 @@ import {
   MultipleQuestionsViewModel,
   QuestionPresenterViewModel,
   QuestionViewModel,
-} from '../../../domain/ports/presenters/question.presenter';
-import { WebInputNumberQuestionPresenter } from './web-input-number-question.presenter';
+} from '../../../../domain/ports/presenters/question.presenter';
+import { WebInputNumberQuestionPresenter } from '../web-input-number-question.presenter';
 
 export type ColdBeveragesKeys = keyof ColdBeveragesAnswer;
 export type ColdBeveragesViewModel = QuestionPresenterViewModel<

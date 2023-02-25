@@ -4,20 +4,19 @@ import { Provider } from 'react-redux';
 import { MilkTypes } from 'carbon-cut-commons';
 import MilkType from './milk-type';
 import { NavigationProp } from '@react-navigation/native';
-import { selectSimulationAnswers } from '../../../adapters/simulation-results/store/selectors/simulation-selectors';
-import { appStore } from '../../../adapters/commons/store/app-store';
-import { RootStackParamList, Routes } from '../../root-navigation';
+import { selectSimulationAnswers } from '../../../../adapters/simulation-results/store/selectors/simulation-selectors';
+import { appStore } from '../../../../adapters/commons/store/app-store';
+import { RootStackParamList, Routes } from '../../../root-navigation';
+import { selectedAnswerStyle, unselectedAnswerStyle } from '../../../../tests/answer';
+import MockTheme from '../../../../tests/theme-mock';
 
 describe('MilkType component', () => {
-  const unselectedAnswerStyle = {
-    backgroundColor: 'transparent',
-    borderColor: '#2089dc',
-  };
-
   beforeEach(() => {
     render(
       <Provider store={appStore}>
-        <MilkType navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.MilkType>} containerStyle={{}} />
+        <MockTheme>
+          <MilkType navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.MilkType>} containerStyle={{}} />
+        </MockTheme>
       </Provider>,
     );
   });
@@ -42,10 +41,6 @@ describe('MilkType component', () => {
   });
 
   it('should select an answer when user click on a Chip', () => {
-    const selectedAnswerStyle = {
-      backgroundColor: '#2089dc',
-      borderColor: '#2089dc',
-    };
     const expectedAnswersStyle = [unselectedAnswerStyle, selectedAnswerStyle, unselectedAnswerStyle];
 
     const answers = screen.getAllByRole('radio');

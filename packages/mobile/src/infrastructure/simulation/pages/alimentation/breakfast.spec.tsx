@@ -4,20 +4,19 @@ import Breakfast from './breakfast';
 import { Provider } from 'react-redux';
 import { BreakfastTypes } from 'carbon-cut-commons';
 import { NavigationProp } from '@react-navigation/native';
-import { selectSimulationAnswers } from '../../../adapters/simulation-results/store/selectors/simulation-selectors';
-import { appStore } from '../../../adapters/commons/store/app-store';
-import { RootStackParamList, Routes } from '../../root-navigation';
+import { selectSimulationAnswers } from '../../../../adapters/simulation-results/store/selectors/simulation-selectors';
+import { appStore } from '../../../../adapters/commons/store/app-store';
+import { RootStackParamList, Routes } from '../../../root-navigation';
+import { selectedAnswerStyle, unselectedAnswerStyle } from '../../../../tests/answer';
+import MockTheme from '../../../../tests/theme-mock';
 
 describe('Breakfast component', () => {
-  const unselectedAnswerStyle = {
-    backgroundColor: 'transparent',
-    borderColor: '#2089dc',
-  };
-
   beforeEach(() => {
     render(
       <Provider store={appStore}>
-        <Breakfast navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.Breakfast>} containerStyle={{}} />
+        <MockTheme>
+          <Breakfast navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.Breakfast>} containerStyle={{}} />
+        </MockTheme>
       </Provider>,
     );
   });
@@ -48,10 +47,6 @@ describe('Breakfast component', () => {
   });
 
   it('should select an answer when user click on a Chip', () => {
-    const selectedAnswerStyle = {
-      backgroundColor: '#2089dc',
-      borderColor: '#2089dc',
-    };
     const expectedAnswersStyle = [
       unselectedAnswerStyle,
       selectedAnswerStyle,

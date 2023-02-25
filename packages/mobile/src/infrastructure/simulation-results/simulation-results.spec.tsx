@@ -5,8 +5,10 @@ import { setCarbonFootprint } from '../../adapters/simulation-results/store/acti
 import MockTheme from '../../tests/theme-mock';
 import { appStore } from '../../adapters/commons/store/app-store';
 
+type ExpectedData = { value: number; tooltipFormater: string; labelFormater: string };
+
 describe('SimulationResults component', () => {
-  it('should display carbon footprint simulation results with less than 1t footprint', () => {
+  it('should display carbon footprint simulation results with tooltip for less than 1t footprint', () => {
     appStore.dispatch(
       setCarbonFootprint({
         alimentation: {
@@ -14,8 +16,8 @@ describe('SimulationResults component', () => {
           meals: { total: 0 },
           total: 603.354,
         },
-        transport: { total: 0 },
-        total: 603.354,
+        transport: { total: 105, car: 105 },
+        total: 708.354,
       }),
     );
     render(
@@ -24,16 +26,19 @@ describe('SimulationResults component', () => {
       </MockTheme>,
     );
 
-    const expectedChartData = [{ value: 603, name: 'Alimentation', itemStyle: { color: '#57B349' } }];
     const results = screen.getByRole('text');
     const resultsTextContent = results.props.children[0];
     const pieChart = screen.getByTestId('SIMULATION_RESULTS').children[2];
 
-    expect(resultsTextContent).toEqual('603 kgCO2e / an');
+    const expectedChartData = getExpectedChartData({
+      alimentation: { value: 603.354, tooltipFormater: '<div>Petit déj. : 603kg (100 %)</div>', labelFormater: '603kg' },
+      transport: { value: 105, tooltipFormater: '<div>Voiture : 105kg (100 %)</div>', labelFormater: '105kg' },
+    });
+    expect(resultsTextContent).toEqual('708 kgCO2e / an');
     expect(pieChart.props.option.series[0].data).toEqual(expectedChartData);
   });
 
-  it('should display carbon footprint simulation results with more than 1t footprint', () => {
+  it('should display carbon footprint simulation results with tooltip for more than 1t footprint', () => {
     appStore.dispatch(
       setCarbonFootprint({
         alimentation: {
@@ -47,8 +52,8 @@ describe('SimulationResults component', () => {
           meals: { total: 0 },
           total: 1123.304,
         },
-        transport: { total: 0 },
-        total: 1123.304,
+        transport: { total: 278.25, car: 278.25 },
+        total: 1401.554,
       }),
     );
     render(
@@ -57,47 +62,50 @@ describe('SimulationResults component', () => {
       </MockTheme>,
     );
 
-    const expectedChartData = [{ value: 1.12, name: 'Alimentation', itemStyle: { color: '#57B349' } }];
     const results = screen.getByRole('text');
     const resultsTextContent = results.props.children[0];
     const pieChart = screen.getByTestId('SIMULATION_RESULTS').children[2];
 
-    expect(resultsTextContent).toEqual('1,12 tCO2e / an');
+    const expectedChartData = getExpectedChartData({
+      alimentation: {
+        value: 1123.304,
+        tooltipFormater: '<div>Petit déj. : 603kg (53.7 %)</div><div>Boissons chaudes : 520kg (46.3 %)</div>',
+        labelFormater: '1.12t',
+      },
+      transport: { value: 278.25, tooltipFormater: '<div>Voiture : 278kg (100 %)</div>', labelFormater: '278kg' },
+    });
+    expect(resultsTextContent).toEqual('1,4 tCO2e / an');
     expect(pieChart.props.option.series[0].data).toEqual(expectedChartData);
   });
 
-  it('chart should have a tooltip that display footprint informations for each category', () => {
-    appStore.dispatch(
-      setCarbonFootprint({
-        alimentation: {
-          breakfast: 1013.354,
-          hotBeverages: {
-            coffee: 173.5,
-            tea: 35.45,
-            hotChocolate: 305.6,
-            total: 519.95,
-          },
-          coldBeverages: {
-            sweet: 73.5,
-            total: 73.5,
-          },
-          meals: { total: 0 },
-          total: 1606.804,
+  function getExpectedChartData({ alimentation, transport }: { alimentation: ExpectedData; transport: ExpectedData }) {
+    return [
+      {
+        value: alimentation.value,
+        name: 'Alimentation',
+        itemStyle: { color: '#57B349' },
+        tooltip: {
+          formatter: alimentation.tooltipFormater,
         },
-        transport: { total: 0 },
-        total: 1606.804,
-      }),
-    );
-    render(
-      <MockTheme>
-        <SimulationResults containerStyle={{}} />
-      </MockTheme>,
-    );
-
-    const pieChart = screen.getByTestId('SIMULATION_RESULTS').children[2];
-    const tooltip = pieChart.props.option.tooltip;
-    expect(tooltip.formatter).toEqual(
-      '<div>Petit déj. : 1.01t (63.1 %)</div><div>Boissons chaudes : 520kg (32.4 %)</div><div>Boissons froides : 74kg (4.6 %)</div>',
-    );
-  });
+        label: {
+          normal: {
+            formatter: `${alimentation.labelFormater}\n({d}%)`,
+          },
+        },
+      },
+      {
+        value: transport.value,
+        name: 'Transport',
+        itemStyle: { color: '#BF4545' },
+        tooltip: {
+          formatter: transport.tooltipFormater,
+        },
+        label: {
+          normal: {
+            formatter: `${transport.labelFormater}\n({d}%)`,
+          },
+        },
+      },
+    ];
+  }
 });

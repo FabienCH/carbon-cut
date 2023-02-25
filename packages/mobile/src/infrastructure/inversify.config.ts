@@ -6,14 +6,16 @@ import { ReduxLoadingStore } from '../adapters/commons/store/loading-store';
 import { RestCarbonFootprintGateway } from '../adapters/simulation-results/gateways/rest-carbon-footprint.gateway';
 import { WebSimulationResultsPresenter } from '../adapters/simulation-results/presenters/web-simulation-results.presenter';
 import { ReduxSimulationStore } from '../adapters/simulation-results/store/simulation-store';
-import { WebBreakfastQuestionPresenter } from '../adapters/simulation/presenters/web-breakfast-question.presenter';
-import { WebColdBeveragesQuestionPresenter } from '../adapters/simulation/presenters/web-cold-beverages-question.presenter';
-import { WebHotBeveragesQuestionPresenter } from '../adapters/simulation/presenters/web-hot-beverages-question.presenter';
-import { WebMealsQuestionPresenter } from '../adapters/simulation/presenters/web-meals-question.presenter';
-import { WebMilkTypeQuestionPresenter } from '../adapters/simulation/presenters/web-milk-type-question.presenter';
+import { WebBreakfastQuestionPresenter } from '../adapters/simulation/presenters/alimentation/web-breakfast-question.presenter';
+import { WebColdBeveragesQuestionPresenter } from '../adapters/simulation/presenters/alimentation/web-cold-beverages-question.presenter';
+import { WebHotBeveragesQuestionPresenter } from '../adapters/simulation/presenters/alimentation/web-hot-beverages-question.presenter';
+import { WebMealsQuestionPresenter } from '../adapters/simulation/presenters/alimentation/web-meals-question.presenter';
+import { WebMilkTypeQuestionPresenter } from '../adapters/simulation/presenters/alimentation/web-milk-type-question.presenter';
+import { WebCarKmTypeQuestionPresenter } from '../adapters/simulation/presenters/transport/web-car-km-type-question.presenter';
 import { CarbonFootprintGateway, CarbonFootprintGatewayToken } from '../domain/ports/gateways/carbon-footprint.gateway';
 import {
   BreakfastQuestionPresenterToken,
+  CarKmTypeQuestionPresenterToken,
   ColdBeveragesQuestionPresenterToken,
   HotBeveragesQuestionPresenterToken,
   InputQuestionPresenter,
@@ -40,6 +42,7 @@ diContainer.bind<InputQuestionPresenter<HotBeveragesAnswer>>(HotBeveragesQuestio
 diContainer.bind<SelectableQuestionPresenter<MilkTypes>>(MilkTypeQuestionPresenterToken).to(WebMilkTypeQuestionPresenter);
 diContainer.bind<InputQuestionPresenter<ColdBeveragesAnswer>>(ColdBeveragesQuestionPresenterToken).to(WebColdBeveragesQuestionPresenter);
 diContainer.bind<InputQuestionPresenter<MealsAnswer>>(MealsQuestionPresenterToken).to(WebMealsQuestionPresenter);
+diContainer.bind<WebCarKmTypeQuestionPresenter>(CarKmTypeQuestionPresenterToken).to(WebCarKmTypeQuestionPresenter);
 diContainer.bind<SimulationResultsPresenter>(SimulationResultsPresenterToken).to(WebSimulationResultsPresenter);
 diContainer.bind<UserNotifyPresenter>(UserNotifyPresenterToken).to(ReactToastUserNotifyPresenter);
 diContainer.bind<Record<string, string | undefined>>(UserNotifyConfigToken).toConstantValue({ backgroundColor: theme.darkColors?.error });

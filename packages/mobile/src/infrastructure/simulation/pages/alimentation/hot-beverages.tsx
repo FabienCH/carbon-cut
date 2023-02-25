@@ -1,21 +1,21 @@
 import { StyleProp, View, ViewStyle } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
 
-import InputAnswers from '../components/input-answers';
-import Question from '../components/question';
-import SubmitButton from '../components/submit-button';
+import InputAnswers from '../../components/input-answers';
+import Question from '../../components/question';
+import SubmitButton from '../../components/submit-button';
 import { useEffect, useState } from 'react';
 import {
   HotBeveragesKeys,
   HotBeverageViewModel,
   WebHotBeveragesQuestionPresenter,
-} from '../../../adapters/simulation/presenters/web-hot-beverages-question.presenter';
-import { HotBeveragesQuestionPresenterToken } from '../../../domain/ports/presenters/question.presenter';
-import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../domain/usecases/save-simulation-answer.usecase';
-import { diContainer } from '../../inversify.config';
-import { RootStackParamList, Routes } from '../../root-navigation';
-import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '../../../domain/usecases/set-input-answer.usecase';
-import { AnswerValidator } from '../../../domain/entites/answer-validator';
+} from '../../../../adapters/simulation/presenters/alimentation/web-hot-beverages-question.presenter';
+import { HotBeveragesQuestionPresenterToken } from '../../../../domain/ports/presenters/question.presenter';
+import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../../domain/usecases/save-simulation-answer.usecase';
+import { diContainer } from '../../../inversify.config';
+import { RootStackParamList, Routes } from '../../../root-navigation';
+import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '../../../../domain/usecases/set-input-answer.usecase';
+import { AnswerValidator } from '../../../../domain/entites/answer-validator';
 
 type HotBeveragesNavigationProp = NavigationProp<RootStackParamList, Routes.HotBeverages>;
 type HotBeveragesProps = {

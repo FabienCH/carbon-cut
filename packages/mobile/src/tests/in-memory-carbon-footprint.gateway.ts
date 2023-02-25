@@ -21,8 +21,8 @@ export class InMemoryCarbonFootprintGateway implements CarbonFootprintGateway {
         },
         total: 467.824,
       },
-      transport: { total: 0 },
-      total: 467.824,
+      transport: { car: 230, total: 230 },
+      total: 697.824,
     };
   }
 }

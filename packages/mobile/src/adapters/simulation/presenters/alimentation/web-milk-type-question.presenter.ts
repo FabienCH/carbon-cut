@@ -5,11 +5,11 @@ import {
   MultipleAnswersViewModel,
   QuestionPresenterViewModel,
   QuestionViewModel,
-} from '../../../domain/ports/presenters/question.presenter';
-import { WebSelectableQuestionPresenter } from './web-selectable-question.presenter';
+} from '../../../../domain/ports/presenters/question.presenter';
+import { WebSelectableQuestionPresenter } from '../web-selectable-question.presenter';
 
 export type MilkTypeAnswer = Answer<MilkTypes>;
-export type MilkTypeViewModel = QuestionPresenterViewModel<QuestionViewModel<MultipleAnswersViewModel<MilkTypeAnswer[]>>>;
+export type MilkTypeViewModel = QuestionPresenterViewModel<QuestionViewModel<MultipleAnswersViewModel<MilkTypeAnswer>>>;
 
 @injectable()
 export class WebMilkTypeQuestionPresenter extends WebSelectableQuestionPresenter<MilkTypes, MilkTypeViewModel> {

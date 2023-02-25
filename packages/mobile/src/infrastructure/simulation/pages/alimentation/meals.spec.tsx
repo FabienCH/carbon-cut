@@ -1,47 +1,41 @@
 import 'reflect-metadata';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
-import ColdBeverages from './cold-beverages';
-import { selectSimulationAnswers } from '../../../adapters/simulation-results/store/selectors/simulation-selectors';
-import { appStore } from '../../../adapters/commons/store/app-store';
-import { RootStackParamList, Routes } from '../../root-navigation';
+import { selectSimulationAnswers } from '../../../../adapters/simulation-results/store/selectors/simulation-selectors';
+import { CarbonFootprintGatewayToken } from '../../../../domain/ports/gateways/carbon-footprint.gateway';
+import { InMemoryCarbonFootprintGateway } from '../../../../tests/in-memory-carbon-footprint.gateway';
+import { appStore } from '../../../../adapters/commons/store/app-store';
+import { diContainer } from '../../../inversify.config';
+import Meals from './meals';
+import MockTheme from '../../../../tests/theme-mock';
 import { NavigationProp } from '@react-navigation/native';
-import MockTheme from '../../../tests/theme-mock';
+import { RootStackParamList, Routes } from '../../../root-navigation';
 
-describe('ColdBeverages component', () => {
+describe('Meals component', () => {
+  beforeAll(() => {
+    diContainer.unbind(CarbonFootprintGatewayToken);
+    diContainer.bind(CarbonFootprintGatewayToken).to(InMemoryCarbonFootprintGateway);
+  });
+
   beforeEach(() => {
     render(
       <Provider store={appStore}>
         <MockTheme>
-          <ColdBeverages
-            navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.ColdBeverages>}
-            containerStyle={{}}
-          />
+          <Meals navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.Meals>} containerStyle={{}} />
         </MockTheme>
       </Provider>,
     );
   });
 
   it('should display a list of answers', () => {
-    const expectedPlaceholder = 'litres / semaine';
+    const mealsTypes = ['végétaliens', 'végétariens', 'viande blanche', 'viande rouge', 'poisson blanc', 'autres poissons'];
+    const expectedPlaceholders = (mealsTypesIdx: number) => `Repas ${mealsTypes[mealsTypesIdx]} / semaine`;
 
     const placeholderElements = screen.getAllByPlaceholderText(/\/ semaine/);
 
-    placeholderElements.forEach((placeholderElem) => {
-      expect(placeholderElem.props.placeholder).toEqual(expectedPlaceholder);
+    placeholderElements.forEach((placeholderElem, idx) => {
+      expect(placeholderElem.props.placeholder).toEqual(expectedPlaceholders(idx));
     });
-  });
-
-  it('should allow floating point number', () => {
-    const placeholderElements = screen.getAllByPlaceholderText(/\/ semaine/);
-
-    fireEvent.changeText(placeholderElements[0], '1.3');
-    fireEvent.changeText(placeholderElements[1], '1,2');
-
-    const errorMessage = screen.queryByText('Veuillez saisir un nombre positif');
-    expect(errorMessage).toBeNull();
-    expect(placeholderElements[0].props.value).toEqual('1.3');
-    expect(placeholderElements[1].props.value).toEqual('1.2');
   });
 
   it('should display a disable submit answer button', () => {
@@ -86,13 +80,22 @@ describe('ColdBeverages component', () => {
     expect(errorMessage).toBeTruthy();
   });
 
-  it('should enable submit answer button if all answers are valid', () => {
-    const submitButton = screen.getByRole('button');
+  it('should display an error message if total of the answers is not 14', () => {
     const placeholderElements = screen.getAllByPlaceholderText(/\/ semaine/);
 
     placeholderElements.forEach((placeholderElem) => {
       fireEvent.changeText(placeholderElem, '2');
     });
+
+    const errorMessage = screen.getByText('Le nombre de repas pour une semaine doit être de 14');
+    expect(errorMessage).toBeTruthy();
+  });
+
+  it('should enable submit answer button if all answers are valid', () => {
+    const submitButton = screen.getByRole('button');
+    const placeholderElements = screen.getAllByPlaceholderText(/\/ semaine/);
+
+    fillValidForm(placeholderElements);
 
     expect(submitButton.props.accessibilityState.disabled).toBeFalsy();
   });
@@ -113,14 +116,19 @@ describe('ColdBeverages component', () => {
     const submitButton = screen.getByRole('button');
     const placeholderElements = screen.getAllByPlaceholderText(/\/ semaine/);
 
-    placeholderElements.forEach((placeholderElem) => {
-      fireEvent.changeText(placeholderElem, '2');
-    });
+    fillValidForm(placeholderElements);
     fireEvent.press(submitButton);
 
     await waitFor(() => {
       const simulationAnswers = selectSimulationAnswers();
-      expect(simulationAnswers?.alimentation.coldBeverages).toEqual({ sweet: 2, alcohol: 2 });
+      expect(simulationAnswers?.alimentation.meals).toEqual({ vegan: 3, vegetarian: 3, whiteMeat: 2, redMeat: 2, whiteFish: 2, fish: 2 });
     });
   });
+
+  function fillValidForm(placeholderElements: any[]) {
+    placeholderElements.forEach((placeholderElem, idx) => {
+      const value = idx < 2 ? '3' : '2';
+      fireEvent.changeText(placeholderElem, value);
+    });
+  }
 });
