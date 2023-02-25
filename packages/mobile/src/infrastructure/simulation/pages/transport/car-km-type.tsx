@@ -1,6 +1,6 @@
 import { EngineType } from 'carbon-cut-commons';
 import { useEffect, useState } from 'react';
-import { ScrollView, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 import { selectIsLoading } from '../../../../adapters/commons/store/selectors/loading-selectors';
 import {
@@ -42,13 +42,7 @@ export default function CarKmType({ containerStyle }: { containerStyle: StylePro
   }, [presenter, presenter.viewModel]);
 
   const setAnswer = (value: string): void => {
-    setInputAnswerUseCase.execute(
-      presenter,
-      { id: 'km', value },
-      {
-        answerValidatorsFn: [AnswerValidator.positiveNumberValidator],
-      },
-    );
+    setInputAnswerUseCase.execute(presenter, { id: 'km', value }, { answerValidatorsFn: [AnswerValidator.positiveNumberValidator] });
   };
 
   const setSelectedEngineType = (answer: Answer<EngineType>): void => {
@@ -66,14 +60,12 @@ export default function CarKmType({ containerStyle }: { containerStyle: StylePro
 
   return (
     <View style={containerStyle}>
-      <ScrollView style={styles.scrollView}>
-        <Question question={viewModel.engineTypeQuestion.question}>
-          <SelectableAnswers answers={viewModel.engineTypeQuestion.answers} answerSelected={(answer) => setSelectedEngineType(answer)} />
-        </Question>
-        <Question question={viewModel.kmQuestion.question}>
-          <InputAnswers answers={[viewModel.kmQuestion.answer]} answerChanged={(value) => setAnswer(value)} />
-        </Question>
-      </ScrollView>
+      <Question question={viewModel.engineTypeQuestion.question}>
+        <SelectableAnswers answers={viewModel.engineTypeQuestion.answers} answerSelected={(answer) => setSelectedEngineType(answer)} />
+      </Question>
+      <Question question={viewModel.kmQuestion.question}>
+        <InputAnswers answers={[viewModel.kmQuestion.answer]} answerChanged={(value) => setAnswer(value)} />
+      </Question>
       <SubmitButton
         isLastQuestion={true}
         canSubmit={viewModel.canSubmit}
@@ -83,9 +75,3 @@ export default function CarKmType({ containerStyle }: { containerStyle: StylePro
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  scrollView: {
-    flexGrow: 0,
-  },
-});
