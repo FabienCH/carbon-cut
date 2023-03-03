@@ -1,6 +1,6 @@
 {
   "name": "carbon-cut",
-  "packageManager": "yarn@3.2.4",
+  "packageManager": "yarn@1.22.19",
   "private": true,
   "main": "index.ts",
   "workspaces": [
