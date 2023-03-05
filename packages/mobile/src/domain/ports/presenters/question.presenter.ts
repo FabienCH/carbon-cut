@@ -7,6 +7,7 @@ export const ColdBeveragesQuestionPresenterToken = Symbol.for('ColdBeveragesQues
 export const MealsQuestionPresenterToken = Symbol.for('MealsQuestionPresenter');
 export const CarKmTypeQuestionPresenterToken = Symbol.for('CarKmTypeQuestionPresenter');
 export const FuelCarConsumptionQuestionPresenterToken = Symbol.for('FuelCarConsumptionQuestionPresenter');
+export const ElectricCarSizeQuestionPresenterToken = Symbol.for('ElectricCarSizeQuestionPresenter');
 
 export interface Answer<T> {
   label: string;
