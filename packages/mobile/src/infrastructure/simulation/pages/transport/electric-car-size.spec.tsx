@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import ElectricCarSize from './electric-car-size';
 import { Provider } from 'react-redux';
-import { CarSize, FuelType } from 'carbon-cut-commons';
+import { CarSize } from 'carbon-cut-commons';
 import {
   selectSimulationAnswers,
   selectSimulationResults,
