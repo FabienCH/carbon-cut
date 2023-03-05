@@ -1,6 +1,7 @@
 import { EngineType } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
 import { NumericAnswerHelper } from '../../../../domain/entites/numeric-answer-helper';
+import { ConditionalNextQuestion } from '../../../../domain/ports/presenters/conditionnal-next-question';
 import {
   Answer,
   AnswerViewModel,
@@ -10,6 +11,7 @@ import {
   QuestionPresenterViewModel,
   QuestionViewModel,
 } from '../../../../domain/ports/presenters/question.presenter';
+import { Routes } from '../../../../infrastructure/root-navigation';
 import { WebMultipleQuestionsPresenter } from '../web-multiple-questions.presenter';
 
 export type CarKmTypeAnswerViewModel = QuestionPresenterViewModel<
@@ -20,7 +22,10 @@ export type CarKmTypeAnswerViewModel = QuestionPresenterViewModel<
 >;
 
 @injectable()
-export class WebCarKmTypeQuestionPresenter extends WebMultipleQuestionsPresenter<CarKmTypeAnswerViewModel> {
+export class WebCarKmTypeQuestionPresenter
+  extends WebMultipleQuestionsPresenter<CarKmTypeAnswerViewModel>
+  implements ConditionalNextQuestion
+{
   selectedAnswer!: EngineType;
 
   get viewModel(): CarKmTypeAnswerViewModel {
@@ -48,4 +53,8 @@ export class WebCarKmTypeQuestionPresenter extends WebMultipleQuestionsPresenter
     },
     canSubmit: false,
   };
+
+  getNextQuestion(): Routes {
+    return this.selectedAnswer === EngineType.electric ? Routes.ElectricCarSize : Routes.FuelCarConsumption;
+  }
 }

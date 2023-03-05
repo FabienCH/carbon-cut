@@ -2,6 +2,7 @@ import { BreakfastTypes, HotBeveragesAnswer } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
 import { PositiveNumberError } from '../../../../domain/entites/answer-validator';
 import { NumericAnswerHelper } from '../../../../domain/entites/numeric-answer-helper';
+import { ConditionalNextQuestion } from '../../../../domain/ports/presenters/conditionnal-next-question';
 import {
   InputAnswer,
   InputAnswerValue,
@@ -20,7 +21,10 @@ export type HotBeverageViewModel = QuestionPresenterViewModel<
 type HotBeverageAnswerValue = InputAnswer<HotBeveragesKeys>;
 
 @injectable()
-export class WebHotBeveragesQuestionPresenter extends WebInputNumberQuestionPresenter<HotBeveragesAnswer, HotBeverageViewModel> {
+export class WebHotBeveragesQuestionPresenter
+  extends WebInputNumberQuestionPresenter<HotBeveragesAnswer, HotBeverageViewModel>
+  implements ConditionalNextQuestion
+{
   get answerValues(): HotBeveragesAnswer {
     return this._viewModel.answers.reduce((hotBeverages, answer) => {
       hotBeverages = { ...hotBeverages, [answer.id]: NumericAnswerHelper.valueToNumber(answer.value) };
@@ -50,7 +54,7 @@ export class WebHotBeveragesQuestionPresenter extends WebInputNumberQuestionPres
     this.updateViewModel({ answers, canSubmit });
   }
 
-  nextNavigateRoute(): Routes {
+  getNextQuestion(): Routes {
     const isBreakFastWithoutMilk = selectSimulationAnswers()?.alimentation?.breakfast !== BreakfastTypes.milkCerealBreakfast;
     const noHotChocolate = this.#noHotChocolate();
     return isBreakFastWithoutMilk && noHotChocolate ? Routes.ColdBeverages : Routes.MilkType;

@@ -83,7 +83,7 @@ describe('ElectricCarSize component', () => {
 
     await waitFor(() => {
       const simulationAnswers = selectSimulationAnswers();
-      expect(simulationAnswers?.transport.car).toEqual({ carSize: CarSize.medium });
+      expect(simulationAnswers?.transport.car).toEqual({ carSize: CarSize.SUV });
       const results = selectSimulationResults();
       expect(selectIsLoading()).toBeFalsy();
       expect(results).toEqual({
@@ -145,6 +145,6 @@ describe('ElectricCarSize component', () => {
 
   function fillValidForm() {
     const carSizeAnswers = screen.getAllByRole('radio');
-    fireEvent.press(carSizeAnswers[1]);
+    fireEvent.press(carSizeAnswers[3]);
   }
 });

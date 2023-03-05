@@ -31,8 +31,6 @@ export default function HotBeverages({ navigation, containerStyle }: HotBeverage
   const [saveSimulationAnswerUseCase] = useState<SaveSimulationAnswerUseCase>(
     diContainer.get<SaveSimulationAnswerUseCase>(SaveSimulationAnswerUseCaseToken),
   );
-  const [nextNavigateRoute, setNextNavigateRoute] = useState<Routes>(presenter.nextNavigateRoute());
-
   const [viewModel, updateViewModel] = useState<HotBeverageViewModel>(presenter.viewModel);
 
   useEffect(() => {
@@ -41,12 +39,11 @@ export default function HotBeverages({ navigation, containerStyle }: HotBeverage
 
   const setAnswer = (value: string, id: HotBeveragesKeys): void => {
     setInputAnswerUseCase.execute(presenter, { id, value }, { answerValidatorsFn: [AnswerValidator.positiveNumberValidator] });
-    setNextNavigateRoute(presenter.nextNavigateRoute());
   };
 
   const saveAnswer = (): void => {
     saveSimulationAnswerUseCase.execute({ sector: 'alimentation', answerKey: 'hotBeverages', answer: presenter.answerValues });
-    navigation.navigate(nextNavigateRoute, { containerStyle });
+    navigation.navigate(presenter.getNextQuestion(), { containerStyle });
   };
 
   return (
