@@ -1,17 +1,18 @@
 import { injectable } from 'inversify';
 import { PositiveNumberError } from '../../../domain/entites/answer-validator';
+import { NumericAnswerHelper } from '../../../domain/entites/numeric-answer-helper';
 import {
+  DefaultQuestionPresenterViewModel,
   InputAnswer,
   InputAnswerValue,
   InputQuestionPresenter,
-  QuestionPresenterViewModel,
 } from '../../../domain/ports/presenters/question.presenter';
 
 @injectable()
 export abstract class WebInputNumberQuestionPresenter<
   AnswerValues extends Record<string, number | undefined>,
-  ViewModel extends QuestionPresenterViewModel,
-> implements InputQuestionPresenter<AnswerValues>
+  ViewModel extends DefaultQuestionPresenterViewModel,
+> implements InputQuestionPresenter<AnswerValues, ViewModel>
 {
   abstract setAnswer(
     answerValue: InputAnswerValue<keyof AnswerValues>,
@@ -46,17 +47,6 @@ export abstract class WebInputNumberQuestionPresenter<
   ) {
     const errorMessage = answerError ? `Veuillez saisir un nombre${answerError.error === 'isNotPositive' ? ' positif' : ''}` : undefined;
 
-    return { ...answer, value: this.#formatValue(value), errorMessage };
-  }
-
-  protected valueToNumber(value: string | undefined): number | undefined {
-    if (value === undefined) {
-      return undefined;
-    }
-    return parseFloat(value);
-  }
-
-  #formatValue(value: string | undefined): string | undefined {
-    return value?.replace(',', '.');
+    return { ...answer, value: NumericAnswerHelper.formatValue(value), errorMessage };
   }
 }

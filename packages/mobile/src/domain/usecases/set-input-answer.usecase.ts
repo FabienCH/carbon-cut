@@ -1,15 +1,22 @@
 import { injectable } from 'inversify';
 import { AnswerValidatorsFn, FormValidatorsFn, NumberEqualError, PositiveNumberError } from '../entites/answer-validator';
-import { InputAnswerValue, InputQuestionPresenter, WithFormValidation } from '../ports/presenters/question.presenter';
+import {
+  DefaultQuestionPresenterViewModel,
+  InputAnswerValue,
+  InputQuestionPresenter,
+  WithFormValidation,
+} from '../ports/presenters/question.presenter';
 
 export const SetInputAnswerUseCaseToken = Symbol.for('SetInputAnswerUseCase');
 
-type PresenterWithOptionalFormValidation<T> = T | (T & WithFormValidation);
+type PresenterWithOptionalFormValidation<T> = T | (T & WithFormValidation<DefaultQuestionPresenterViewModel>);
 
 @injectable()
 export class SetInputAnswerUseCase {
   execute(
-    inputQuestionPresenter: PresenterWithOptionalFormValidation<InputQuestionPresenter<Record<string, number | undefined>, unknown>>,
+    inputQuestionPresenter: PresenterWithOptionalFormValidation<
+      InputQuestionPresenter<Record<string, number | undefined>, DefaultQuestionPresenterViewModel>
+    >,
     answerValue: InputAnswerValue<string>,
     { answerValidatorsFn, formValidatorsFn }: { answerValidatorsFn?: AnswerValidatorsFn[]; formValidatorsFn?: FormValidatorsFn[] },
     questionIndex?: number,

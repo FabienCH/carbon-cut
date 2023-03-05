@@ -1,16 +1,14 @@
 import { injectable } from 'inversify';
 import { WebInputNumberQuestionPresenter } from '../adapters/simulation/presenters/web-input-number-question.presenter';
 import { PositiveNumberError } from '../domain/entites/answer-validator';
-import { QuestionPresenterViewModel } from '../domain/ports/presenters/question.presenter';
-
-export type FakeViewModel = QuestionPresenterViewModel;
+import { DefaultQuestionPresenterViewModel } from '../domain/ports/presenters/question.presenter';
 
 @injectable()
 export class FakeInputQuestionPresenter extends WebInputNumberQuestionPresenter<
   Record<string, number | undefined>,
-  QuestionPresenterViewModel
+  DefaultQuestionPresenterViewModel
 > {
-  protected _viewModel!: QuestionPresenterViewModel;
+  protected _viewModel!: DefaultQuestionPresenterViewModel;
   answerValues!: Record<string, number | undefined>;
 
   setAnswer({ id, value }: { id: string; value: string | undefined }, __: PositiveNumberError): void {

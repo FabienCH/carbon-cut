@@ -1,6 +1,6 @@
 import { CarbonFootprintDto, CarSize, FuelType, SimulationDto } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
-import { AnswerToSave, SimulationStore } from '../../../domain/ports/stores/simulation-store';
+import { AnswerKey, AnswerValues, SimulationStore } from '../../../domain/ports/stores/simulation-store';
 import { navigate, Routes } from '../../../infrastructure/root-navigation';
 import { appStore } from '../../commons/store/app-store';
 import { saveAnswer, setCarbonFootprint } from './actions/simulation-actions';
@@ -24,7 +24,7 @@ export class ReduxSimulationStore implements SimulationStore {
     return { ...answers, transport } as SimulationDto;
   }
 
-  saveAnswer(sector: keyof SimulationDto, answer: Partial<AnswerToSave>) {
-    appStore.dispatch(saveAnswer({ sector, answer }));
+  saveAnswer(sector: keyof SimulationDto, answerKey: AnswerKey, answers: AnswerValues) {
+    appStore.dispatch(saveAnswer({ sector, answerKey, answers }));
   }
 }

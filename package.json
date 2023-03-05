@@ -1,6 +1,6 @@
 {
   "name": "carbon-cut",
-  "packageManager": "yarn@3.2.4",
+  "packageManager": "yarn@1.22.19",
   "private": true,
   "main": "index.ts",
   "workspaces": [
@@ -12,11 +12,13 @@
     "start": "yarn start:back & yarn start:mobile",
     "lint:mobile": "yarn workspace carbon-cut-mobile run lint",
     "lint:back": "yarn workspace carbon-cut-back run lint",
-    "lint": "yarn workspaces foreach -vpi run lint",
+    "lint": "yarn lint:back & yarn lint:mobile",
     "test:mobile": "yarn workspace carbon-cut-mobile run test",
+    "test:mobile:ci": "yarn workspace carbon-cut-mobile run test:ci",
     "test:back": "yarn workspace carbon-cut-back run test",
-    "test": "yarn workspaces foreach -vpi run test",
-    "test:ci": "yarn workspaces foreach -vpi run test:ci",
+    "test:back:ci": "yarn workspace carbon-cut-back run test:ci",
+    "test": "yarn test:back & yarn test:mobile",
+    "test:ci": "yarn test:back:ci & yarn test:mobile:ci",
     "build:commons": "yarn workspace carbon-cut-commons run build",
     "build": "yarn workspaces foreach -vpi run build"
   },

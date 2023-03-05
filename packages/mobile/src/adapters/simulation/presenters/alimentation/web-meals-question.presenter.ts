@@ -1,6 +1,7 @@
 import { MealsAnswer } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
 import { NumberEqualError, PositiveNumberError } from '../../../../domain/entites/answer-validator';
+import { NumericAnswerHelper } from '../../../../domain/entites/numeric-answer-helper';
 import {
   InputAnswer,
   InputAnswerValue,
@@ -24,7 +25,7 @@ export class WebMealsQuestionPresenter
 {
   get answerValues(): MealsAnswer {
     return this._viewModel.answers.reduce((meals, answer) => {
-      meals = { ...meals, [answer.id]: this.valueToNumber(answer.value) };
+      meals = { ...meals, [answer.id]: NumericAnswerHelper.valueToNumber(answer.value) };
       return meals;
     }, {} as MealsAnswer);
   }
