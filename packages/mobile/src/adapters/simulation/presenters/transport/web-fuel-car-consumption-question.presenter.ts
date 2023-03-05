@@ -1,5 +1,6 @@
 import { FuelType } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
+import { NumericAnswerHelper } from '../../../../domain/entites/numeric-answer-helper';
 import {
   Answer,
   AnswerViewModel,
@@ -23,7 +24,7 @@ export class WebFuelCarConsumptionQuestionPresenter extends WebMultipleQuestions
   selectedAnswer!: FuelType;
 
   get answerValues(): { fuelConsumption: number } {
-    return { fuelConsumption: this.valueToNumber(this._viewModel.questions.inputQuestion.answer.value) as number };
+    return { fuelConsumption: NumericAnswerHelper.valueToNumber(this._viewModel.questions.inputQuestion.answer.value) as number };
   }
 
   protected _viewModel: FuelCarConsumptionAnswerViewModel = {

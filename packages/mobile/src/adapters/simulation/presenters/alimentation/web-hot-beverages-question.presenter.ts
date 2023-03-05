@@ -1,6 +1,7 @@
 import { BreakfastTypes, HotBeveragesAnswer } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
 import { PositiveNumberError } from '../../../../domain/entites/answer-validator';
+import { NumericAnswerHelper } from '../../../../domain/entites/numeric-answer-helper';
 import {
   InputAnswer,
   InputAnswerValue,
@@ -22,7 +23,7 @@ type HotBeverageAnswerValue = InputAnswer<HotBeveragesKeys>;
 export class WebHotBeveragesQuestionPresenter extends WebInputNumberQuestionPresenter<HotBeveragesAnswer, HotBeverageViewModel> {
   get answerValues(): HotBeveragesAnswer {
     return this._viewModel.answers.reduce((hotBeverages, answer) => {
-      hotBeverages = { ...hotBeverages, [answer.id]: this.valueToNumber(answer.value) };
+      hotBeverages = { ...hotBeverages, [answer.id]: NumericAnswerHelper.valueToNumber(answer.value) };
       return hotBeverages;
     }, {} as HotBeveragesAnswer);
   }

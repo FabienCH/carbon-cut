@@ -1,5 +1,6 @@
 import { EngineType } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
+import { NumericAnswerHelper } from '../../../../domain/entites/numeric-answer-helper';
 import {
   Answer,
   AnswerViewModel,
@@ -27,7 +28,7 @@ export class WebCarKmTypeQuestionPresenter extends WebMultipleQuestionsPresenter
   }
 
   get answerValues(): { km: number } {
-    return { km: this.valueToNumber(this._viewModel.questions.inputQuestion.answer.value) as number };
+    return { km: NumericAnswerHelper.valueToNumber(this._viewModel.questions.inputQuestion.answer.value) as number };
   }
 
   protected _viewModel: CarKmTypeAnswerViewModel = {

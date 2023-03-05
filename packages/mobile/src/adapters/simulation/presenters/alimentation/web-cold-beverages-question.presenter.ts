@@ -1,6 +1,7 @@
 import { ColdBeveragesAnswer } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
 import { PositiveNumberError } from '../../../../domain/entites/answer-validator';
+import { NumericAnswerHelper } from '../../../../domain/entites/numeric-answer-helper';
 import {
   AnswerViewModel,
   InputAnswer,
@@ -22,7 +23,7 @@ export class WebColdBeveragesQuestionPresenter extends WebInputNumberQuestionPre
   get answerValues(): ColdBeveragesAnswer {
     return this._viewModel.questions.reduce((coldBeverages, question) => {
       const answer = question.answer;
-      coldBeverages = { ...coldBeverages, [answer.id]: this.valueToNumber(answer.value) };
+      coldBeverages = { ...coldBeverages, [answer.id]: NumericAnswerHelper.valueToNumber(answer.value) };
       return coldBeverages;
     }, {} as ColdBeveragesAnswer);
   }

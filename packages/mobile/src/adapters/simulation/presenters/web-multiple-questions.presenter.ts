@@ -1,5 +1,6 @@
 import { injectable } from 'inversify';
 import { PositiveNumberError } from '../../../domain/entites/answer-validator';
+import { NumericAnswerHelper } from '../../../domain/entites/numeric-answer-helper';
 import {
   Answer,
   AnswerViewModel,
@@ -67,24 +68,13 @@ export abstract class WebMultipleQuestionsPresenter<ViewModel extends MultipleQu
     this.#notifyChanges = updateViewFn;
   }
 
-  protected valueToNumber(value: string | undefined): number | undefined {
-    if (value === undefined) {
-      return undefined;
-    }
-    return parseFloat(value);
-  }
-
   #updateAnswer<InputKey extends string>(answer: InputAnswer<InputKey>, value: string | undefined, answerError: PositiveNumberError) {
     const errorMessage = answerError ? `Veuillez saisir un nombre${answerError.error === 'isNotPositive' ? ' positif' : ''}` : undefined;
-    return { ...answer, value: this.#formatValue(value), errorMessage };
+    return { ...answer, value: NumericAnswerHelper.formatValue(value), errorMessage };
   }
 
   #updateViewModel(questions: Partial<ViewModel['questions']>, canSubmit: boolean) {
     this._viewModel = { ...this._viewModel, questions: { ...this._viewModel.questions, ...questions }, canSubmit: canSubmit };
     this.#notifyChanges(this._viewModel);
-  }
-
-  #formatValue(value: string | undefined): string | undefined {
-    return value?.replace(',', '.');
   }
 }
