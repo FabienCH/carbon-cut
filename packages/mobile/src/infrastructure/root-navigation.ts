@@ -12,6 +12,7 @@ export enum Routes {
   Meals = 'Meals',
   CarKmType = 'CarKmType',
   FuelCarConsumption = 'FuelCarConsumption',
+  ElectricCarSize = 'ElectricCarSize',
   SimulationResults = 'SimulationResults',
 }
 

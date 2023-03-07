@@ -11,11 +11,15 @@ import { NavigationProp } from '@react-navigation/native';
 import { RootStackParamList, Routes } from '../../../root-navigation';
 
 describe('CarKmType component', () => {
+  let navigation: NavigationProp<RootStackParamList, Routes.CarKmType>;
+
   beforeEach(() => {
+    navigation = { navigate: (_) => {} } as NavigationProp<RootStackParamList, Routes.CarKmType>;
+
     render(
       <Provider store={appStore}>
         <MockTheme>
-          <CarKmType navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.CarKmType>} containerStyle={{}} />
+          <CarKmType navigation={navigation} containerStyle={{}} />
         </MockTheme>
       </Provider>,
     );
@@ -64,7 +68,7 @@ describe('CarKmType component', () => {
   it('should enable submit answer button if all answers are valid', () => {
     const submitButton = screen.getByRole('button');
 
-    fillValidForm();
+    fillValidForm({ engineTypeIdx: 1 });
 
     expect(submitButton.props.accessibilityState.disabled).toBeFalsy();
   });
@@ -81,7 +85,7 @@ describe('CarKmType component', () => {
   it('should save the answer to store', async () => {
     const submitButton = screen.getByRole('button');
 
-    fillValidForm();
+    fillValidForm({ engineTypeIdx: 1 });
     fireEvent.press(submitButton);
 
     await waitFor(() => {
@@ -90,10 +94,36 @@ describe('CarKmType component', () => {
     });
   });
 
-  function fillValidForm() {
+  describe('Next Navigation', () => {
+    let navigateSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+      navigateSpy = jest.spyOn(navigation, 'navigate');
+    });
+
+    it('should navigate to electric car size question if engine type is electric', () => {
+      const submitButton = screen.getByRole('button');
+
+      fillValidForm({ engineTypeIdx: 2 });
+      fireEvent.press(submitButton);
+
+      expect(navigateSpy).toHaveBeenCalledWith(Routes.ElectricCarSize, { containerStyle: {} });
+    });
+
+    it('should navigate to fuel car consumption question if engine type is not electric', () => {
+      const submitButton = screen.getByRole('button');
+
+      fillValidForm({ engineTypeIdx: 1 });
+      fireEvent.press(submitButton);
+
+      expect(navigateSpy).toHaveBeenCalledWith(Routes.FuelCarConsumption, { containerStyle: {} });
+    });
+  });
+
+  function fillValidForm({ engineTypeIdx }: { engineTypeIdx: number }) {
     const expectedKmAnswerPlaceholderElem = screen.getByPlaceholderText(/km \/ an/);
     const engineTypeAnswers = screen.getAllByRole('radio');
     fireEvent.changeText(expectedKmAnswerPlaceholderElem, '100');
-    fireEvent.press(engineTypeAnswers[1]);
+    fireEvent.press(engineTypeAnswers[engineTypeIdx]);
   }
 });

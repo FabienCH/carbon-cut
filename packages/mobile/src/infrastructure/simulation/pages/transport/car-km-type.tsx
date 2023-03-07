@@ -51,9 +51,11 @@ export default function CarKmType({ navigation, containerStyle }: CarKmTypeProps
       answerKey: 'car',
       answer: { ...presenter.answerValues, engineType: presenter.selectedAnswer },
     });
-    navigation.navigate(Routes.FuelCarConsumption, { containerStyle });
+    navigation.navigate(presenter.getNextQuestion(), { containerStyle });
   };
+
   const { selectableQuestion, inputQuestion } = viewModel.questions;
+
   return (
     <View style={containerStyle}>
       <Question question={selectableQuestion.question}>

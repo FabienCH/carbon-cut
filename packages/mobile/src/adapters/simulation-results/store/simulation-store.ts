@@ -1,4 +1,4 @@
-import { CarbonFootprintDto, CarSize, FuelType, SimulationDto } from 'carbon-cut-commons';
+import { CarbonFootprintDto, SimulationDto } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
 import { AnswerKey, AnswerValues, SimulationStore } from '../../../domain/ports/stores/simulation-store';
 import { navigate, Routes } from '../../../infrastructure/root-navigation';
@@ -14,14 +14,7 @@ export class ReduxSimulationStore implements SimulationStore {
   }
 
   getSimulationsAnswers() {
-    const answers = selectSimulationAnswers();
-    const transport = answers?.transport
-      ? {
-          ...answers?.transport,
-          car: { ...answers.transport.car, fuelType: FuelType.diesel, fuelConsumption: 6.5, carSize: CarSize.medium },
-        }
-      : { car: { fuelType: FuelType.diesel, carSize: CarSize.medium } };
-    return { ...answers, transport } as SimulationDto;
+    return selectSimulationAnswers() as SimulationDto;
   }
 
   saveAnswer(sector: keyof SimulationDto, answerKey: AnswerKey, answers: AnswerValues) {
