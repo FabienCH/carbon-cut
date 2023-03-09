@@ -1,11 +1,11 @@
+import { SimulationDataRepositoryToken } from '@domain/ports/repositories/simulation-data.repository';
+import { CalculateCarbonFootprintUseCase } from '@domain/usecases/calculate-carbon-footprint.usecase';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
+import { InMemorySimulationDataRepository } from '@tests/repositories/in-memory-simulation-data.repository';
+import { defaultAlimentationAnswers, defaultSimulationAnswers, defaultTransportAnswers } from '@tests/simulation-answers';
 import { BreakfastTypes } from 'carbon-cut-commons';
 import * as request from 'supertest';
-import { SimulationDataRepositoryToken } from '../../domain/ports/repositories/simulation-data.repository';
-import { CalculateCarbonFootprintUseCase } from '../../domain/usecases/calculate-carbon-footprint.usecase';
-import { InMemorySimulationDataRepository } from '../../tests/repositories/in-memory-simulation-data.repository';
-import { defaultAlimentationAnswers, defaultSimulationAnswers, defaultTransportAnswers } from '../../tests/simulation-answers';
 import { NestCarbonFootprintController } from './nest-carbon-footprint.controller';
 
 describe('Carbon footprint calculation use case', () => {

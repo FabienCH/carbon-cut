@@ -1,5 +1,5 @@
-import { SimulationDataRepository } from '../../domain/ports/repositories/simulation-data.repository';
-import { SimulationData } from '../../domain/types/simulation-data';
+import { SimulationDataRepository } from '@domain/ports/repositories/simulation-data.repository';
+import { SimulationData } from '@domain/types/simulation-data';
 
 export class InMemorySimulationDataRepository implements SimulationDataRepository {
   simulationData: SimulationData;

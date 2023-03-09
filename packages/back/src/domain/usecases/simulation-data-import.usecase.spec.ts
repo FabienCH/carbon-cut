@@ -1,5 +1,5 @@
-import { InMemorySimulationDataSourceRepository } from '../../tests/repositories/in-memory-simulation-data-source.repository';
-import { InMemorySimulationDataRepository } from '../../tests/repositories/in-memory-simulation-data.repository';
+import { InMemorySimulationDataSourceRepository } from '@tests/repositories/in-memory-simulation-data-source.repository';
+import { InMemorySimulationDataRepository } from '@tests/repositories/in-memory-simulation-data.repository';
 import { SimulationDataSourceMapper } from '../entities/simulation-datasource-mapper';
 import { AlimentationData } from '../types/alimentation-types';
 import { TransportData } from '../types/transport-types';
