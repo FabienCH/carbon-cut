@@ -3,10 +3,10 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react-nativ
 import { Provider } from 'react-redux';
 import HotBeverages from './hot-beverages';
 import { NavigationProp } from '@react-navigation/native';
-import { selectSimulationAnswers } from '../../../../adapters/simulation-results/store/selectors/simulation-selectors';
-import { appStore } from '../../../../adapters/commons/store/app-store';
+import { selectSimulationAnswers } from '@adapters/simulation-results/store/selectors/simulation-selectors';
+import { appStore } from '@adapters/commons/store/app-store';
 import { RootStackParamList, Routes } from '../../../root-navigation';
-import MockTheme from '../../../../tests/theme-mock';
+import MockTheme from '@tests/theme-mock';
 
 describe('HotBeverages component', () => {
   beforeEach(() => {

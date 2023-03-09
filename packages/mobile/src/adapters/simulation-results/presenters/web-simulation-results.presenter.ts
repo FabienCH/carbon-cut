@@ -1,3 +1,4 @@
+import { SimulationResultsPresenter, SimulationResultsViewModel } from '@domain/ports/presenters/simulation-results.presenter';
 import {
   AlimentationFootprintDto,
   CarbonFootprintDto,
@@ -6,7 +7,6 @@ import {
   TransportFootprintDto,
 } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
-import { SimulationResultsPresenter, SimulationResultsViewModel } from '../../../domain/ports/presenters/simulation-results.presenter';
 import { selectSimulationResults } from '../store/selectors/simulation-selectors';
 
 type KeyofWithoutTotal<T = AlimentationFootprintDto | TransportFootprintDto> = keyof Omit<T, 'total'>;

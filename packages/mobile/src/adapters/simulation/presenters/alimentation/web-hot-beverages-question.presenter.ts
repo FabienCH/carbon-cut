@@ -1,16 +1,16 @@
-import { BreakfastTypes, HotBeveragesAnswer } from 'carbon-cut-commons';
-import { injectable } from 'inversify';
-import { PositiveNumberError } from '../../../../domain/entites/answer-validator';
-import { NumericAnswerHelper } from '../../../../domain/entites/numeric-answer-helper';
-import { ConditionalNextQuestion } from '../../../../domain/ports/presenters/conditionnal-next-question';
+import { PositiveNumberError } from '@domain/entites/answer-validator';
+import { NumericAnswerHelper } from '@domain/entites/numeric-answer-helper';
+import { ConditionalNextQuestion } from '@domain/ports/presenters/conditionnal-next-question';
 import {
   InputAnswer,
   InputAnswerValue,
   MultipleAnswersViewModel,
   QuestionPresenterViewModel,
   QuestionViewModel,
-} from '../../../../domain/ports/presenters/question.presenter';
-import { Routes } from '../../../../infrastructure/root-navigation';
+} from '@domain/ports/presenters/question.presenter';
+import { Routes } from '@infrastructure/root-navigation';
+import { BreakfastTypes, HotBeveragesAnswer } from 'carbon-cut-commons';
+import { injectable } from 'inversify';
 import { selectSimulationAnswers } from '../../../simulation-results/store/selectors/simulation-selectors';
 import { WebInputNumberQuestionPresenter } from '../web-input-number-question.presenter';
 

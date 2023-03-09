@@ -1,6 +1,5 @@
-import { injectable } from 'inversify';
-import { PositiveNumberError } from '../../../domain/entites/answer-validator';
-import { NumericAnswerHelper } from '../../../domain/entites/numeric-answer-helper';
+import { PositiveNumberError } from '@domain/entites/answer-validator';
+import { NumericAnswerHelper } from '@domain/entites/numeric-answer-helper';
 import {
   Answer,
   AnswerViewModel,
@@ -12,7 +11,8 @@ import {
   QuestionPresenterViewModel,
   QuestionViewModel,
   SelectableQuestionPresenter,
-} from '../../../domain/ports/presenters/question.presenter';
+} from '@domain/ports/presenters/question.presenter';
+import { injectable } from 'inversify';
 
 type MultipleQuestionsPresenterViewModel = QuestionPresenterViewModel<
   MultipleQuestionsViewModel<{

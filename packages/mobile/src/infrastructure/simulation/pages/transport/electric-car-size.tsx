@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
-import { selectIsLoading } from '../../../../adapters/commons/store/selectors/loading-selectors';
+import { selectIsLoading } from '@adapters/commons/store/selectors/loading-selectors';
 import {
   ElectricCarSizeAnswer,
   ElectricCarSizeViewModel,
   WebElectricCarSizeQuestionPresenter,
-} from '../../../../adapters/simulation/presenters/transport/web-electric-car-size-question.presenter';
-import { ElectricCarSizeQuestionPresenterToken } from '../../../../domain/ports/presenters/question.presenter';
+} from '@adapters/simulation/presenters/transport/web-electric-car-size-question.presenter';
+import { ElectricCarSizeQuestionPresenterToken } from '@domain/ports/presenters/question.presenter';
 import {
   CarbonFootprintSimulationUseCase,
   CarbonFootprintSimulationUseCaseToken,
-} from '../../../../domain/usecases/carbon-footprint-simulation.usescase';
-import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../../domain/usecases/save-simulation-answer.usecase';
+} from '@domain/usecases/carbon-footprint-simulation.usescase';
+import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '@domain/usecases/save-simulation-answer.usecase';
 import { diContainer } from '../../../inversify.config';
 import Question from '../../components/question';
 import SelectableAnswers from '../../components/selectable-answers';

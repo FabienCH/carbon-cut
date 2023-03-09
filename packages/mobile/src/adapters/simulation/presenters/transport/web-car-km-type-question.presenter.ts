@@ -1,7 +1,5 @@
-import { EngineType } from 'carbon-cut-commons';
-import { injectable } from 'inversify';
-import { NumericAnswerHelper } from '../../../../domain/entites/numeric-answer-helper';
-import { ConditionalNextQuestion } from '../../../../domain/ports/presenters/conditionnal-next-question';
+import { NumericAnswerHelper } from '@domain/entites/numeric-answer-helper';
+import { ConditionalNextQuestion } from '@domain/ports/presenters/conditionnal-next-question';
 import {
   Answer,
   AnswerViewModel,
@@ -10,8 +8,10 @@ import {
   MultipleQuestionsViewModel,
   QuestionPresenterViewModel,
   QuestionViewModel,
-} from '../../../../domain/ports/presenters/question.presenter';
-import { Routes } from '../../../../infrastructure/root-navigation';
+} from '@domain/ports/presenters/question.presenter';
+import { Routes } from '@infrastructure/root-navigation';
+import { EngineType } from 'carbon-cut-commons';
+import { injectable } from 'inversify';
 import { WebMultipleQuestionsPresenter } from '../web-multiple-questions.presenter';
 
 export type CarKmTypeAnswerViewModel = QuestionPresenterViewModel<

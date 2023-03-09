@@ -1,7 +1,7 @@
 import { Chip } from '@rneui/themed';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Answer } from '../../../domain/ports/presenters/question.presenter';
+import { Answer } from '@domain/ports/presenters/question.presenter';
 
 interface SelectableAnswersProps<T> {
   answers: Answer<T>[];

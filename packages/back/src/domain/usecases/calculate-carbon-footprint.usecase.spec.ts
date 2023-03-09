@@ -1,7 +1,7 @@
+import { defaultCarbonFootprint, defaultMealsFootprint } from '@tests/carbon-footprints';
+import { InMemorySimulationDataRepository } from '@tests/repositories/in-memory-simulation-data.repository';
+import { defaultAlimentationAnswers, defaultSimulationAnswers, defaultTransportAnswers } from '@tests/simulation-answers';
 import { BreakfastTypes, CarSize, EngineType, FuelType, MilkTypes } from 'carbon-cut-commons';
-import { defaultCarbonFootprint, defaultMealsFootprint } from '../../tests/carbon-footprints';
-import { InMemorySimulationDataRepository } from '../../tests/repositories/in-memory-simulation-data.repository';
-import { defaultAlimentationAnswers, defaultSimulationAnswers, defaultTransportAnswers } from '../../tests/simulation-answers';
 import { ValidationError } from '../entities/validation-error';
 import { CalculateCarbonFootprintUseCase } from './calculate-carbon-footprint.usecase';
 

@@ -1,5 +1,5 @@
-import { SimulationDataSourceRepository } from '../../domain/ports/repositories/simulation-datasource.repository';
-import { DataRecord } from '../../domain/types/data-record';
+import { SimulationDataSourceRepository } from '@domain/ports/repositories/simulation-datasource.repository';
+import { DataRecord } from '@domain/types/data-record';
 
 export class InMemorySimulationDataSourceRepository implements SimulationDataSourceRepository {
   constructor(private readonly returnIncorrectData = false) {}

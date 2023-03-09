@@ -2,21 +2,21 @@ import { FuelType } from 'carbon-cut-commons';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
-import { selectIsLoading } from '../../../../adapters/commons/store/selectors/loading-selectors';
+import { selectIsLoading } from '@adapters/commons/store/selectors/loading-selectors';
 import {
   FuelCarConsumptionAnswerViewModel,
   WebFuelCarConsumptionQuestionPresenter,
-} from '../../../../adapters/simulation/presenters/transport/web-fuel-car-consumption-question.presenter';
+} from '@adapters/simulation/presenters/transport/web-fuel-car-consumption-question.presenter';
 
-import { AnswerValidator } from '../../../../domain/entites/answer-validator';
-import { Answer, FuelCarConsumptionQuestionPresenterToken } from '../../../../domain/ports/presenters/question.presenter';
+import { AnswerValidator } from '@domain/entites/answer-validator';
+import { Answer, FuelCarConsumptionQuestionPresenterToken } from '@domain/ports/presenters/question.presenter';
 
 import {
   CarbonFootprintSimulationUseCase,
   CarbonFootprintSimulationUseCaseToken,
-} from '../../../../domain/usecases/carbon-footprint-simulation.usescase';
-import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../../domain/usecases/save-simulation-answer.usecase';
-import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '../../../../domain/usecases/set-input-answer.usecase';
+} from '@domain/usecases/carbon-footprint-simulation.usescase';
+import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '@domain/usecases/save-simulation-answer.usecase';
+import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '@domain/usecases/set-input-answer.usecase';
 import { diContainer } from '../../../inversify.config';
 import InputAnswers from '../../components/input-answers';
 import Question from '../../components/question';

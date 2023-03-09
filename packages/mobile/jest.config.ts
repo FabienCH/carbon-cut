@@ -15,4 +15,10 @@ export default {
     ],
   },
   transformIgnorePatterns: ['node_modules/(?!@react-native|react-native|@rneui)'],
+  moduleNameMapper: {
+    '@adapters/(.*)': '<rootDir>/src/adapters/$1',
+    '@domain/(.*)': '<rootDir>/src/domain/$1',
+    '@infrastructure/(.*)': '<rootDir>/src/infrastructure/$1',
+    '@tests/(.*)': '<rootDir>/src/tests/$1',
+  },
 };

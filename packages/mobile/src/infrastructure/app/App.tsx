@@ -8,7 +8,7 @@ import { navigationRef, RootStackParamList, Routes } from '../root-navigation';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import { styles } from './style';
 import { Provider } from 'react-redux';
-import { appStore } from '../../adapters/commons/store/app-store';
+import { appStore } from '@adapters/commons/store/app-store';
 import SimulationResults from '../simulation-results/simulation-results';
 import Breakfast from '../simulation/pages/alimentation/breakfast';
 import ColdBeverages from '../simulation/pages/alimentation/cold-beverages';

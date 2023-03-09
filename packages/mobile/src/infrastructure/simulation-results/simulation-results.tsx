@@ -3,8 +3,8 @@ import { Dimensions, StyleProp, StyleSheet, View, ViewStyle } from 'react-native
 import { Text, useTheme } from '@rneui/themed';
 import RNEChartsPro from 'react-native-echarts-pro';
 import { useState } from 'react';
-import { WebSimulationResultsPresenter } from '../../adapters/simulation-results/presenters/web-simulation-results.presenter';
-import { SimulationResultsPresenterToken } from '../../domain/ports/presenters/simulation-results.presenter';
+import { WebSimulationResultsPresenter } from '@adapters/simulation-results/presenters/web-simulation-results.presenter';
+import { SimulationResultsPresenterToken } from '@domain/ports/presenters/simulation-results.presenter';
 import { diContainer } from '../inversify.config';
 
 export default function SimulationResults({ containerStyle }: { containerStyle: StyleProp<ViewStyle> }) {

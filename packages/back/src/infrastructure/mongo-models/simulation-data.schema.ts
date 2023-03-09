@@ -1,8 +1,8 @@
+import { AlimentationData } from '@domain/types/alimentation-types';
+import { SimulationData } from '@domain/types/simulation-data';
+import { TransportData } from '@domain/types/transport-types';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
-import { AlimentationData } from '../../domain/types/alimentation-types';
-import { SimulationData } from '../../domain/types/simulation-data';
-import { TransportData } from '../../domain/types/transport-types';
 
 export type SimulationDataDocument = HydratedDocument<SimulationData>;
 

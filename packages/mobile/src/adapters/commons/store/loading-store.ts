@@ -1,5 +1,5 @@
+import { LoadingStore } from '@domain/ports/stores/loading-store';
 import { injectable } from 'inversify';
-import { LoadingStore } from '../../../domain/ports/stores/loading-store';
 import { setIsLoading } from './actions/loading-actions';
 import { appStore } from './app-store';
 

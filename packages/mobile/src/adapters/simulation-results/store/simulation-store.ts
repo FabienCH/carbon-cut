@@ -1,7 +1,7 @@
+import { AnswerKey, AnswerValues, SimulationStore } from '@domain/ports/stores/simulation-store';
+import { navigate, Routes } from '@infrastructure/root-navigation';
 import { CarbonFootprintDto, SimulationDto } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
-import { AnswerKey, AnswerValues, SimulationStore } from '../../../domain/ports/stores/simulation-store';
-import { navigate, Routes } from '../../../infrastructure/root-navigation';
 import { appStore } from '../../commons/store/app-store';
 import { saveAnswer, setCarbonFootprint } from './actions/simulation-actions';
 import { selectSimulationAnswers } from './selectors/simulation-selectors';

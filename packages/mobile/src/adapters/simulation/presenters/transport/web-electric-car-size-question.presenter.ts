@@ -1,11 +1,11 @@
-import { CarSize } from 'carbon-cut-commons';
-import { injectable } from 'inversify';
 import {
   Answer,
   MultipleAnswersViewModel,
   QuestionPresenterViewModel,
   QuestionViewModel,
-} from '../../../../domain/ports/presenters/question.presenter';
+} from '@domain/ports/presenters/question.presenter';
+import { CarSize } from 'carbon-cut-commons';
+import { injectable } from 'inversify';
 import { WebSelectableQuestionPresenter } from '../web-selectable-question.presenter';
 
 export type ElectricCarSizeAnswer = Answer<CarSize>;

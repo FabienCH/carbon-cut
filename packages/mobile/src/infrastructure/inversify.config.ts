@@ -1,32 +1,29 @@
-import { BreakfastTypes, ColdBeveragesAnswer, HotBeveragesAnswer, MealsAnswer, MilkTypes } from 'carbon-cut-commons';
-import { Container } from 'inversify';
-import 'reflect-metadata';
-import { ReactToastUserNotifyPresenter } from '../adapters/commons/presenters/react-toast-user-notify.presenter';
-import { ReduxLoadingStore } from '../adapters/commons/store/loading-store';
-import { RestCarbonFootprintGateway } from '../adapters/simulation-results/gateways/rest-carbon-footprint.gateway';
-import { WebSimulationResultsPresenter } from '../adapters/simulation-results/presenters/web-simulation-results.presenter';
-import { ReduxSimulationStore } from '../adapters/simulation-results/store/simulation-store';
+import { ReactToastUserNotifyPresenter } from '@adapters/commons/presenters/react-toast-user-notify.presenter';
+import { ReduxLoadingStore } from '@adapters/commons/store/loading-store';
+import { RestCarbonFootprintGateway } from '@adapters/simulation-results/gateways/rest-carbon-footprint.gateway';
+import { WebSimulationResultsPresenter } from '@adapters/simulation-results/presenters/web-simulation-results.presenter';
+import { ReduxSimulationStore } from '@adapters/simulation-results/store/simulation-store';
 import {
   BreakfastViewModel,
   WebBreakfastQuestionPresenter,
-} from '../adapters/simulation/presenters/alimentation/web-breakfast-question.presenter';
+} from '@adapters/simulation/presenters/alimentation/web-breakfast-question.presenter';
 import {
   ColdBeveragesViewModel,
   WebColdBeveragesQuestionPresenter,
-} from '../adapters/simulation/presenters/alimentation/web-cold-beverages-question.presenter';
+} from '@adapters/simulation/presenters/alimentation/web-cold-beverages-question.presenter';
 import {
   HotBeverageViewModel,
   WebHotBeveragesQuestionPresenter,
-} from '../adapters/simulation/presenters/alimentation/web-hot-beverages-question.presenter';
-import { MealViewModel, WebMealsQuestionPresenter } from '../adapters/simulation/presenters/alimentation/web-meals-question.presenter';
+} from '@adapters/simulation/presenters/alimentation/web-hot-beverages-question.presenter';
+import { MealViewModel, WebMealsQuestionPresenter } from '@adapters/simulation/presenters/alimentation/web-meals-question.presenter';
 import {
   MilkTypeViewModel,
   WebMilkTypeQuestionPresenter,
-} from '../adapters/simulation/presenters/alimentation/web-milk-type-question.presenter';
-import { WebCarKmTypeQuestionPresenter } from '../adapters/simulation/presenters/transport/web-car-km-type-question.presenter';
-import { WebElectricCarSizeQuestionPresenter } from '../adapters/simulation/presenters/transport/web-electric-car-size-question.presenter';
-import { WebFuelCarConsumptionQuestionPresenter } from '../adapters/simulation/presenters/transport/web-fuel-car-consumption-question.presenter';
-import { CarbonFootprintGateway, CarbonFootprintGatewayToken } from '../domain/ports/gateways/carbon-footprint.gateway';
+} from '@adapters/simulation/presenters/alimentation/web-milk-type-question.presenter';
+import { WebCarKmTypeQuestionPresenter } from '@adapters/simulation/presenters/transport/web-car-km-type-question.presenter';
+import { WebElectricCarSizeQuestionPresenter } from '@adapters/simulation/presenters/transport/web-electric-car-size-question.presenter';
+import { WebFuelCarConsumptionQuestionPresenter } from '@adapters/simulation/presenters/transport/web-fuel-car-consumption-question.presenter';
+import { CarbonFootprintGateway, CarbonFootprintGatewayToken } from '@domain/ports/gateways/carbon-footprint.gateway';
 import {
   BreakfastQuestionPresenterToken,
   CarKmTypeQuestionPresenterToken,
@@ -38,17 +35,20 @@ import {
   MealsQuestionPresenterToken,
   MilkTypeQuestionPresenterToken,
   SelectableQuestionPresenter,
-} from '../domain/ports/presenters/question.presenter';
-import { SimulationResultsPresenter, SimulationResultsPresenterToken } from '../domain/ports/presenters/simulation-results.presenter';
-import { UserNotifyConfigToken, UserNotifyPresenter, UserNotifyPresenterToken } from '../domain/ports/presenters/user-notify.presenter';
-import { LoadingStore, LoadingStoreToken } from '../domain/ports/stores/loading-store';
-import { SimulationStore, SimulationStoreToken } from '../domain/ports/stores/simulation-store';
+} from '@domain/ports/presenters/question.presenter';
+import { SimulationResultsPresenter, SimulationResultsPresenterToken } from '@domain/ports/presenters/simulation-results.presenter';
+import { UserNotifyConfigToken, UserNotifyPresenter, UserNotifyPresenterToken } from '@domain/ports/presenters/user-notify.presenter';
+import { LoadingStore, LoadingStoreToken } from '@domain/ports/stores/loading-store';
+import { SimulationStore, SimulationStoreToken } from '@domain/ports/stores/simulation-store';
 import {
   CarbonFootprintSimulationUseCase,
   CarbonFootprintSimulationUseCaseToken,
-} from '../domain/usecases/carbon-footprint-simulation.usescase';
-import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../domain/usecases/save-simulation-answer.usecase';
-import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '../domain/usecases/set-input-answer.usecase';
+} from '@domain/usecases/carbon-footprint-simulation.usescase';
+import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '@domain/usecases/save-simulation-answer.usecase';
+import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '@domain/usecases/set-input-answer.usecase';
+import { BreakfastTypes, ColdBeveragesAnswer, HotBeveragesAnswer, MealsAnswer, MilkTypes } from 'carbon-cut-commons';
+import { Container } from 'inversify';
+import 'reflect-metadata';
 import { theme } from './app/theme';
 
 const diContainer = new Container();

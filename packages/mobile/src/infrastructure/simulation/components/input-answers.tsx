@@ -1,6 +1,6 @@
 import { Colors, Input, Theme, useTheme } from '@rneui/themed';
 import { StyleSheet, View } from 'react-native';
-import { InputAnswer } from '../../../domain/ports/presenters/question.presenter';
+import { InputAnswer } from '@domain/ports/presenters/question.presenter';
 
 interface InputAnswersProps<T extends string> {
   answers: InputAnswer<T>[];

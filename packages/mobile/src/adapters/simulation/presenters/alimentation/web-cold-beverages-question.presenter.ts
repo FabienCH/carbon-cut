@@ -1,7 +1,5 @@
-import { ColdBeveragesAnswer } from 'carbon-cut-commons';
-import { injectable } from 'inversify';
-import { PositiveNumberError } from '../../../../domain/entites/answer-validator';
-import { NumericAnswerHelper } from '../../../../domain/entites/numeric-answer-helper';
+import { PositiveNumberError } from '@domain/entites/answer-validator';
+import { NumericAnswerHelper } from '@domain/entites/numeric-answer-helper';
 import {
   AnswerViewModel,
   InputAnswer,
@@ -9,7 +7,9 @@ import {
   MultipleQuestionsViewModel,
   QuestionPresenterViewModel,
   QuestionViewModel,
-} from '../../../../domain/ports/presenters/question.presenter';
+} from '@domain/ports/presenters/question.presenter';
+import { ColdBeveragesAnswer } from 'carbon-cut-commons';
+import { injectable } from 'inversify';
 import { WebInputNumberQuestionPresenter } from '../web-input-number-question.presenter';
 
 export type ColdBeveragesKeys = keyof ColdBeveragesAnswer;

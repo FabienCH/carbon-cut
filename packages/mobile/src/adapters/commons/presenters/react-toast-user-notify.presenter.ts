@@ -1,6 +1,6 @@
+import { UserNotifyConfigToken, UserNotifyPresenter } from '@domain/ports/presenters/user-notify.presenter';
 import { inject, injectable } from 'inversify';
 import Toast from 'react-native-root-toast';
-import { UserNotifyConfigToken, UserNotifyPresenter } from '../../../domain/ports/presenters/user-notify.presenter';
 
 @injectable()
 export class ReactToastUserNotifyPresenter implements UserNotifyPresenter {

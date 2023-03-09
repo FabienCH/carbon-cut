@@ -9,5 +9,11 @@ export default {
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
+  moduleNameMapper: {
+    '@adapters/(.*)': '<rootDir>/adapters/$1',
+    '@domain/(.*)': '<rootDir>/domain/$1',
+    '@infrastructure/(.*)': '<rootDir>/infrastructure/$1',
+    '@tests/(.*)': '<rootDir>/tests/$1',
+  },
   testEnvironment: 'node',
 };

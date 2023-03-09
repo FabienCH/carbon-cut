@@ -1,5 +1,5 @@
+import { DefaultQuestionPresenterViewModel, SelectableQuestionPresenter } from '@domain/ports/presenters/question.presenter';
 import { injectable } from 'inversify';
-import { DefaultQuestionPresenterViewModel, SelectableQuestionPresenter } from '../../../domain/ports/presenters/question.presenter';
 
 @injectable()
 export abstract class WebSelectableQuestionPresenter<AnswerType extends string, ViewModel extends DefaultQuestionPresenterViewModel>
