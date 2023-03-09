@@ -1,4 +1,5 @@
-import { CarAnswer, EngineType, TransportFootprintDto } from 'carbon-cut-commons';
+import { TransportFootprint } from '@domain/types/carbon-footprint';
+import { CarAnswer, EngineType } from 'carbon-cut-commons';
 import { ElectricTypeData, FuelTypeData, TransportData } from '../../types/transport-types';
 import { AnswerValidator } from '../answer-validator';
 import { FootprintsCategory } from '../footprint-category';
@@ -26,12 +27,12 @@ export class Car extends FootprintsCategory<
     }
   }
 
-  calculateYearlyFootprint(): TransportFootprintDto {
+  calculateYearlyFootprint(): TransportFootprint {
     const { total, ...footprints } = this.calculateYearlyFootprintWithTotal();
     return { ...FootprintHelper.removeNullishFootprints(footprints), total };
   }
 
-  protected getYearlyFootprints(): Partial<TransportFootprintDto> {
+  protected getYearlyFootprints(): Partial<TransportFootprint> {
     const carFootprint = this.carAnswer.km * this.footprintsData[this.#footprintDataKey] * this.#footprintMultiplier;
     return { car: carFootprint };
   }

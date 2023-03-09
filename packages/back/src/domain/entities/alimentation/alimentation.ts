@@ -1,4 +1,6 @@
-import { AlimentationDto, AlimentationFootprintDto, NumberFormatter } from 'carbon-cut-commons';
+import { AlimentationFootprint } from '@domain/types/carbon-footprint';
+import { AlimentationAnswers } from '@domain/types/simulation-answers';
+import { NumberFormatter } from 'carbon-cut-commons';
 import { AlimentationData } from '../../types/alimentation-types';
 import { FootprintHelper } from '../footprints-helper';
 import { AlimentationFootprints } from './alimentation-footprints';
@@ -13,16 +15,16 @@ export class Alimentation {
   readonly #coldBeverages: ColdBeverages;
   readonly #meals: Meals;
 
-  constructor(alimentationDto: AlimentationDto, alimentationData: AlimentationData) {
+  constructor(alimentationAnswers: AlimentationAnswers, alimentationData: AlimentationData) {
     const alimentationFootprints = new AlimentationFootprints();
-    const { breakfast, hotBeverages, coldBeverages, milkType, meals } = alimentationDto;
+    const { breakfast, hotBeverages, coldBeverages, milkType, meals } = alimentationAnswers;
     this.#breakfast = new Breakfast(alimentationData, breakfast, milkType);
     this.#hotBeverages = new HotBeverages(alimentationFootprints, alimentationData, hotBeverages, milkType);
     this.#coldBeverages = new ColdBeverages(alimentationFootprints, alimentationData, coldBeverages);
     this.#meals = new Meals(alimentationFootprints, alimentationData, meals);
   }
 
-  calculateYearlyFootprint(): AlimentationFootprintDto {
+  calculateYearlyFootprint(): AlimentationFootprint {
     const breakfast = this.#breakfast.calculateYearlyFootprint();
     const hotBeverages = this.#hotBeverages.calculateYearlyFootprint();
     const coldBeverages = this.#coldBeverages.calculateYearlyFootprint();
