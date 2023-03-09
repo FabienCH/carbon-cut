@@ -1,6 +1,6 @@
+import { AnswerKey, AnswerValues } from '@domain/ports/stores/simulation-store';
 import { createReducer } from '@reduxjs/toolkit';
 import { AlimentationDto, CarbonFootprintDto, TransportDto } from 'carbon-cut-commons';
-import { AnswerKey, AnswerValues } from '../../../../domain/ports/stores/simulation-store';
 import { saveAnswer, setCarbonFootprint } from '../actions/simulation-actions';
 
 interface SimulationStateAnswers {

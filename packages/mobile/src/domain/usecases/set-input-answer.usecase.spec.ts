@@ -1,5 +1,4 @@
-import 'reflect-metadata';
-import { FakeInputQuestionPresenter } from '../../tests/fake-input-number-question.presenter';
+import { FakeInputQuestionPresenter } from '@tests/fake-input-number-question.presenter';
 import { AnswerValidator, AnswerValidatorsFn, FormValidatorsFn, PositiveNumberError } from '../entites/answer-validator';
 import { InputAnswerValue } from '../ports/presenters/question.presenter';
 import { SetInputAnswerUseCase } from './set-input-answer.usecase';

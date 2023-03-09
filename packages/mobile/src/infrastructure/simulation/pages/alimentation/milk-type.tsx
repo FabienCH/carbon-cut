@@ -5,9 +5,9 @@ import {
   MilkTypeAnswer,
   MilkTypeViewModel,
   WebMilkTypeQuestionPresenter,
-} from '../../../../adapters/simulation/presenters/alimentation/web-milk-type-question.presenter';
-import { MilkTypeQuestionPresenterToken } from '../../../../domain/ports/presenters/question.presenter';
-import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../../domain/usecases/save-simulation-answer.usecase';
+} from '@adapters/simulation/presenters/alimentation/web-milk-type-question.presenter';
+import { MilkTypeQuestionPresenterToken } from '@domain/ports/presenters/question.presenter';
+import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '@domain/usecases/save-simulation-answer.usecase';
 import { diContainer } from '../../../inversify.config';
 import { RootStackParamList, Routes } from '../../../root-navigation';
 import Question from '../../components/question';

@@ -3,16 +3,13 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 import ElectricCarSize from './electric-car-size';
 import { Provider } from 'react-redux';
 import { CarSize } from 'carbon-cut-commons';
-import {
-  selectSimulationAnswers,
-  selectSimulationResults,
-} from '../../../../adapters/simulation-results/store/selectors/simulation-selectors';
-import { appStore } from '../../../../adapters/commons/store/app-store';
-import { selectedAnswerStyle, unselectedAnswerStyle } from '../../../../tests/answer';
-import MockTheme from '../../../../tests/theme-mock';
-import { selectIsLoading } from '../../../../adapters/commons/store/selectors/loading-selectors';
-import { CarbonFootprintGatewayToken } from '../../../../domain/ports/gateways/carbon-footprint.gateway';
-import { InMemoryCarbonFootprintGateway } from '../../../../tests/in-memory-carbon-footprint.gateway';
+import { selectSimulationAnswers, selectSimulationResults } from '@adapters/simulation-results/store/selectors/simulation-selectors';
+import { appStore } from '@adapters/commons/store/app-store';
+import { selectedAnswerStyle, unselectedAnswerStyle } from '@tests/answer';
+import MockTheme from '@tests/theme-mock';
+import { selectIsLoading } from '@adapters/commons/store/selectors/loading-selectors';
+import { CarbonFootprintGatewayToken } from '@domain/ports/gateways/carbon-footprint.gateway';
+import { InMemoryCarbonFootprintGateway } from '@tests/in-memory-carbon-footprint.gateway';
 import { diContainer } from '../../../inversify.config';
 import { RootSiblingParent } from 'react-native-root-siblings';
 

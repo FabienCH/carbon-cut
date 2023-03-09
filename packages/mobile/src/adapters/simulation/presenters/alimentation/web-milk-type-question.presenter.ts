@@ -1,11 +1,11 @@
-import { MilkTypes } from 'carbon-cut-commons';
-import { injectable } from 'inversify';
 import {
   Answer,
   MultipleAnswersViewModel,
   QuestionPresenterViewModel,
   QuestionViewModel,
-} from '../../../../domain/ports/presenters/question.presenter';
+} from '@domain/ports/presenters/question.presenter';
+import { MilkTypes } from 'carbon-cut-commons';
+import { injectable } from 'inversify';
 import { WebSelectableQuestionPresenter } from '../web-selectable-question.presenter';
 
 export type MilkTypeAnswer = Answer<MilkTypes>;

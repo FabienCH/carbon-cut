@@ -5,9 +5,9 @@ import {
   BreakfastAnswer,
   BreakfastViewModel,
   WebBreakfastQuestionPresenter,
-} from '../../../../adapters/simulation/presenters/alimentation/web-breakfast-question.presenter';
-import { BreakfastQuestionPresenterToken } from '../../../../domain/ports/presenters/question.presenter';
-import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../../domain/usecases/save-simulation-answer.usecase';
+} from '@adapters/simulation/presenters/alimentation/web-breakfast-question.presenter';
+import { BreakfastQuestionPresenterToken } from '@domain/ports/presenters/question.presenter';
+import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '@domain/usecases/save-simulation-answer.usecase';
 import { diContainer } from '../../../inversify.config';
 import { RootStackParamList, Routes } from '../../../root-navigation';
 import Question from '../../components/question';
