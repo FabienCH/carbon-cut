@@ -8,6 +8,16 @@ module.exports = function (api) {
       ['@babel/plugin-proposal-class-properties', { loose: true }],
       ['@babel/plugin-proposal-private-methods', { loose: true }],
       'babel-plugin-transform-typescript-metadata',
+      [
+        'module-resolver',
+        {
+          alias: {
+            '@adapters': './src/adapters',
+            '@domain': './src/domain',
+            '@infrastructure': './src/infrastructure',
+          },
+        },
+      ],
     ],
   };
 };
