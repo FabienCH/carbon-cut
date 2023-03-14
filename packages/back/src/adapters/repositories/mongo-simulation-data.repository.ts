@@ -1,12 +1,8 @@
+import { SimulationDataRepository } from '@domain/ports/repositories/simulation-data.repository';
+import { SimulationData } from '@domain/types/simulation-data';
+import { SimulationCollectionName, SimulationDataDocument, SimulationModelName } from '@infrastructure/mongo-models/simulation-data.schema';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
-import { SimulationDataRepository } from '../../domain/ports/repositories/simulation-data.repository';
-import { SimulationData } from '../../domain/types/simulation-data';
-import {
-  SimulationCollectionName,
-  SimulationDataDocument,
-  SimulationModelName,
-} from '../../infrastructure/mongo-models/simulation-data.schema';
 
 export class MongoSimulationDataRepository implements SimulationDataRepository {
   constructor(

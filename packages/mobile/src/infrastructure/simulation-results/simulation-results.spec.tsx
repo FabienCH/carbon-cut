@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import { render, screen } from '@testing-library/react-native';
 import SimulationResults from './simulation-results';
-import { setCarbonFootprint } from '../../adapters/simulation-results/store/actions/simulation-actions';
-import MockTheme from '../../tests/theme-mock';
-import { appStore } from '../../adapters/commons/store/app-store';
+import { setCarbonFootprint } from '@adapters/simulation-results/store/actions/simulation-actions';
+import MockTheme from '@tests/theme-mock';
+import { appStore } from '@adapters/commons/store/app-store';
 
 type ExpectedData = { value: number; tooltipFormater: string; labelFormater: string };
 

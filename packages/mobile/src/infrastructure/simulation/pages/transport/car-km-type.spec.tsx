@@ -1,11 +1,11 @@
 import 'reflect-metadata';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
-import { selectSimulationAnswers } from '../../../../adapters/simulation-results/store/selectors/simulation-selectors';
-import { appStore } from '../../../../adapters/commons/store/app-store';
+import { selectSimulationAnswers } from '@adapters/simulation-results/store/selectors/simulation-selectors';
+import { appStore } from '@adapters/commons/store/app-store';
 import CarKmType from './car-km-type';
-import MockTheme from '../../../../tests/theme-mock';
-import { unselectedAnswerStyle } from '../../../../tests/answer';
+import MockTheme from '@tests/theme-mock';
+import { unselectedAnswerStyle } from '@tests/answer';
 import { EngineType } from 'carbon-cut-commons';
 import { NavigationProp } from '@react-navigation/native';
 import { RootStackParamList, Routes } from '../../../root-navigation';

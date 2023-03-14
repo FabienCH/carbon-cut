@@ -1,6 +1,4 @@
-import { FuelType } from 'carbon-cut-commons';
-import { injectable } from 'inversify';
-import { NumericAnswerHelper } from '../../../../domain/entites/numeric-answer-helper';
+import { NumericAnswerHelper } from '@domain/entites/numeric-answer-helper';
 import {
   Answer,
   AnswerViewModel,
@@ -9,7 +7,9 @@ import {
   MultipleQuestionsViewModel,
   QuestionPresenterViewModel,
   QuestionViewModel,
-} from '../../../../domain/ports/presenters/question.presenter';
+} from '@domain/ports/presenters/question.presenter';
+import { FuelType } from 'carbon-cut-commons';
+import { injectable } from 'inversify';
 import { WebMultipleQuestionsPresenter } from '../web-multiple-questions.presenter';
 
 export type FuelCarConsumptionAnswerViewModel = QuestionPresenterViewModel<

@@ -1,8 +1,8 @@
+import { ValidationError } from '@domain/entities/validation-error';
+import { CarbonFootprintController } from '@domain/ports/controllers/carbon-footprint.controller';
+import { CalculateCarbonFootprintUseCase } from '@domain/usecases/calculate-carbon-footprint.usecase';
 import { Body, Controller, HttpException, HttpStatus, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ValidationError } from '../../domain/entities/validation-error';
-import { CarbonFootprintController } from '../../domain/ports/controllers/carbon-footprint.controller';
-import { CalculateCarbonFootprintUseCase } from '../../domain/usecases/calculate-carbon-footprint.usecase';
 import { NestCarbonFootprintDto } from '../dtos/nest-carbon-footprint-dto';
 import { NestSimulationDto } from '../dtos/nest-simulation-dto';
 

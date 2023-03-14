@@ -2,17 +2,14 @@ import 'reflect-metadata';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { RootSiblingParent } from 'react-native-root-siblings';
-import { selectIsLoading } from '../../../../adapters/commons/store/selectors/loading-selectors';
-import {
-  selectSimulationAnswers,
-  selectSimulationResults,
-} from '../../../../adapters/simulation-results/store/selectors/simulation-selectors';
-import { CarbonFootprintGatewayToken } from '../../../../domain/ports/gateways/carbon-footprint.gateway';
-import { InMemoryCarbonFootprintGateway } from '../../../../tests/in-memory-carbon-footprint.gateway';
-import { appStore } from '../../../../adapters/commons/store/app-store';
+import { selectIsLoading } from '@adapters/commons/store/selectors/loading-selectors';
+import { selectSimulationAnswers, selectSimulationResults } from '@adapters/simulation-results/store/selectors/simulation-selectors';
+import { CarbonFootprintGatewayToken } from '@domain/ports/gateways/carbon-footprint.gateway';
+import { InMemoryCarbonFootprintGateway } from '@tests/in-memory-carbon-footprint.gateway';
+import { appStore } from '@adapters/commons/store/app-store';
 import { diContainer } from '../../../inversify.config';
-import MockTheme from '../../../../tests/theme-mock';
-import { unselectedAnswerStyle } from '../../../../tests/answer';
+import MockTheme from '@tests/theme-mock';
+import { unselectedAnswerStyle } from '@tests/answer';
 import { FuelType } from 'carbon-cut-commons';
 import FuelCarConsumption from './fuel-car-consumption';
 

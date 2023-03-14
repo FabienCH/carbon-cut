@@ -5,11 +5,11 @@ import { StyleProp, View, ViewStyle } from 'react-native';
 import {
   CarKmTypeAnswerViewModel,
   WebCarKmTypeQuestionPresenter,
-} from '../../../../adapters/simulation/presenters/transport/web-car-km-type-question.presenter';
-import { AnswerValidator } from '../../../../domain/entites/answer-validator';
-import { Answer, CarKmTypeQuestionPresenterToken } from '../../../../domain/ports/presenters/question.presenter';
-import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../../domain/usecases/save-simulation-answer.usecase';
-import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '../../../../domain/usecases/set-input-answer.usecase';
+} from '@adapters/simulation/presenters/transport/web-car-km-type-question.presenter';
+import { AnswerValidator } from '@domain/entites/answer-validator';
+import { Answer, CarKmTypeQuestionPresenterToken } from '@domain/ports/presenters/question.presenter';
+import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '@domain/usecases/save-simulation-answer.usecase';
+import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '@domain/usecases/set-input-answer.usecase';
 import { diContainer } from '../../../inversify.config';
 import { RootStackParamList, Routes } from '../../../root-navigation';
 import InputAnswers from '../../components/input-answers';

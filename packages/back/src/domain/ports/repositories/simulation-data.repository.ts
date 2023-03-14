@@ -1,4 +1,4 @@
-import { SimulationData } from '../../../domain/types/simulation-data';
+import { SimulationData } from '../../types/simulation-data';
 
 export const SimulationDataRepositoryToken = 'SimulationDataRepository';
 

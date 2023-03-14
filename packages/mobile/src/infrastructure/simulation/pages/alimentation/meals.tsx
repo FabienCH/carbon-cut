@@ -3,14 +3,11 @@ import { Text, useTheme } from '@rneui/themed';
 import { MealsAnswer } from 'carbon-cut-commons';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import {
-  MealViewModel,
-  WebMealsQuestionPresenter,
-} from '../../../../adapters/simulation/presenters/alimentation/web-meals-question.presenter';
-import { AnswerValidator } from '../../../../domain/entites/answer-validator';
-import { MealsQuestionPresenterToken } from '../../../../domain/ports/presenters/question.presenter';
-import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '../../../../domain/usecases/save-simulation-answer.usecase';
-import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '../../../../domain/usecases/set-input-answer.usecase';
+import { MealViewModel, WebMealsQuestionPresenter } from '@adapters/simulation/presenters/alimentation/web-meals-question.presenter';
+import { AnswerValidator } from '@domain/entites/answer-validator';
+import { MealsQuestionPresenterToken } from '@domain/ports/presenters/question.presenter';
+import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '@domain/usecases/save-simulation-answer.usecase';
+import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '@domain/usecases/set-input-answer.usecase';
 import { errorStyle } from '../../../app/style';
 import { diContainer } from '../../../inversify.config';
 import { RootStackParamList, Routes } from '../../../root-navigation';
