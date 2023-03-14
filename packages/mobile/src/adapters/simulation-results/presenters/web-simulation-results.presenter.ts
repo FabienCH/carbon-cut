@@ -1,19 +1,15 @@
 import { SimulationResultsPresenter, SimulationResultsViewModel } from '@domain/ports/presenters/simulation-results.presenter';
-import {
-  AlimentationFootprintDto,
-  CarbonFootprintDto,
-  getTypedObjectKeys,
-  NumberFormatter,
-  TransportFootprintDto,
-} from 'carbon-cut-commons';
+import { AlimentationFootprint, CarbonFootprint, TransportFootprint } from '@domain/types/carbon-footprint';
+import { getTypedObjectKeys, NumberFormatter } from 'carbon-cut-commons';
+
 import { injectable } from 'inversify';
 import { selectSimulationResults } from '../store/selectors/simulation-selectors';
 
-type KeyofWithoutTotal<T = AlimentationFootprintDto | TransportFootprintDto> = keyof Omit<T, 'total'>;
+type KeyofWithoutTotal<T = AlimentationFootprint | TransportFootprint> = keyof Omit<T, 'total'>;
 
 @injectable()
 export class WebSimulationResultsPresenter implements SimulationResultsPresenter {
-  readonly #labelMapper: Record<KeyofWithoutTotal<AlimentationFootprintDto & TransportFootprintDto>, string> = {
+  readonly #labelMapper: Record<KeyofWithoutTotal<AlimentationFootprint & TransportFootprint>, string> = {
     breakfast: 'Petit déj.',
     hotBeverages: 'Boissons chaudes',
     coldBeverages: 'Boissons froides',
@@ -66,11 +62,11 @@ export class WebSimulationResultsPresenter implements SimulationResultsPresenter
     };
   }
 
-  #getChartData(alimentationFootprintDto: CarbonFootprintDto | undefined) {
-    if (!alimentationFootprintDto) {
+  #getChartData(alimentationFootprint: CarbonFootprint | undefined) {
+    if (!alimentationFootprint) {
       return [];
     }
-    const { alimentation, transport } = alimentationFootprintDto;
+    const { alimentation, transport } = alimentationFootprint;
 
     return [
       this.#getDataItem(alimentation, { name: 'Alimentation', color: '#57B349' }),
@@ -78,8 +74,8 @@ export class WebSimulationResultsPresenter implements SimulationResultsPresenter
     ];
   }
 
-  #getDataItem(footprintDto: AlimentationFootprintDto | TransportFootprintDto, itemConfig: { name: string; color: string }) {
-    const { total } = footprintDto;
+  #getDataItem(footprint: AlimentationFootprint | TransportFootprint, itemConfig: { name: string; color: string }) {
+    const { total } = footprint;
     const { name, color } = itemConfig;
     const formattedTotal = this.#formatFootprintValue(total);
     const weightUnit = this.#getWeightUnit(total);
@@ -94,23 +90,23 @@ export class WebSimulationResultsPresenter implements SimulationResultsPresenter
         },
       },
       tooltip: {
-        formatter: this.#tooltipFormatter(footprintDto),
+        formatter: this.#tooltipFormatter(footprint),
       },
     };
   }
 
-  #tooltipFormatter(footprintDto: AlimentationFootprintDto | TransportFootprintDto): string {
-    const { total, ...footprints } = footprintDto;
+  #tooltipFormatter(footprint: AlimentationFootprint | TransportFootprint): string {
+    const { total, ...footprints } = footprint;
     const categories = getTypedObjectKeys(footprints).map((footprintKey) => {
-      const footprintItem = footprintDto[footprintKey];
+      const footprintItem = footprint[footprintKey];
       const footprintValue = typeof footprintItem === 'number' ? footprintItem : (footprintItem as any).total;
 
       if (footprintValue) {
         const percentage = this.#formatPercentage(footprintValue / total);
-        const footprint = this.#formatFootprintValue(footprintValue);
+        const formattedFootprint = this.#formatFootprintValue(footprintValue);
         const weightUnit = this.#getWeightUnit(footprintValue);
 
-        return `<div>${this.#labelMapper[footprintKey]} : ${footprint}${weightUnit} (${percentage} %)</div>`;
+        return `<div>${this.#labelMapper[footprintKey]} : ${formattedFootprint}${weightUnit} (${percentage} %)</div>`;
       }
     });
 

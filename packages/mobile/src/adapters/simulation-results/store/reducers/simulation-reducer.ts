@@ -1,16 +1,17 @@
 import { AnswerKey, AnswerValues } from '@domain/ports/stores/simulation-store';
+import { CarbonFootprint } from '@domain/types/carbon-footprint';
+import { AlimentationAnswers, TransportAnswers } from '@domain/types/simulation-answers';
 import { createReducer } from '@reduxjs/toolkit';
-import { AlimentationDto, CarbonFootprintDto, TransportDto } from 'carbon-cut-commons';
 import { saveAnswer, setCarbonFootprint } from '../actions/simulation-actions';
 
 interface SimulationStateAnswers {
-  alimentation: Partial<AlimentationDto>;
-  transport: Partial<TransportDto>;
+  alimentation: Partial<AlimentationAnswers>;
+  transport: Partial<TransportAnswers>;
 }
 
 export interface SimulationState {
   answers: SimulationStateAnswers;
-  simulationResults?: CarbonFootprintDto;
+  simulationResults?: CarbonFootprint;
 }
 
 const initialAnswers: SimulationStateAnswers = { alimentation: {}, transport: {} };
@@ -37,7 +38,7 @@ export const simulationReducer = createReducer(initialState, (builder) => {
 });
 
 const getCategoryAnswers = (
-  currentSectorAnswers: Partial<AlimentationDto> | Partial<TransportDto>,
+  currentSectorAnswers: Partial<AlimentationAnswers> | Partial<TransportAnswers>,
   answerKey: AnswerKey,
 ): AnswerValues | undefined => {
   if (isKeyOfSectorAnswers(currentSectorAnswers, answerKey)) {
@@ -49,6 +50,6 @@ const isObject = (answerValues: AnswerValues): answerValues is object =>
   !!answerValues && typeof answerValues === 'object' && !Array.isArray(answerValues);
 
 const isKeyOfSectorAnswers = (
-  currentSectorAnswers: Partial<AlimentationDto> | Partial<TransportDto>,
+  currentSectorAnswers: Partial<AlimentationAnswers> | Partial<TransportAnswers>,
   answerKey: AnswerKey,
 ): answerKey is keyof typeof currentSectorAnswers => !!answerKey && answerKey in currentSectorAnswers;
