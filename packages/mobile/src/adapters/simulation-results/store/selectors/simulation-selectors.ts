@@ -1,5 +1,6 @@
+import { CarbonFootprint } from '@domain/types/carbon-footprint';
+import { SimulationAnswers } from '@domain/types/simulation-answers';
 import { createSelector } from '@reduxjs/toolkit';
-import { CarbonFootprintDto, SimulationDto } from 'carbon-cut-commons';
 import { AppState, appStore } from '../../../commons/store/app-store';
 
 const selectSimulationState = (state: AppState) => state.simulation;
@@ -11,8 +12,8 @@ export const simulationResultsSelector = createSelector(selectSimulationState, (
 });
 
 export const answersSelector = createSelector(selectSimulationState, (simulationState) => {
-  return simulationState.answers as SimulationDto;
+  return simulationState.answers as SimulationAnswers;
 });
 
-export const selectSimulationResults = (): CarbonFootprintDto | undefined => simulationResultsSelector(appStore.getState());
-export const selectSimulationAnswers = (): SimulationDto | undefined => answersSelector(appStore.getState());
+export const selectSimulationResults = (): CarbonFootprint | undefined => simulationResultsSelector(appStore.getState());
+export const selectSimulationAnswers = (): SimulationAnswers | undefined => answersSelector(appStore.getState());

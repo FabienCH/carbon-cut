@@ -1,4 +1,4 @@
-import { SimulationDto } from 'carbon-cut-commons';
+import { SimulationAnswers } from '@domain/types/simulation-answers';
 import { inject, injectable } from 'inversify';
 import { AnswerKey, AnswerValues, SimulationStore, SimulationStoreToken } from '../ports/stores/simulation-store';
 
@@ -8,7 +8,15 @@ export const SaveSimulationAnswerUseCaseToken = Symbol.for('SaveSimulationAnswer
 export class SaveSimulationAnswerUseCase {
   constructor(@inject(SimulationStoreToken) private readonly simulationStore: SimulationStore) {}
 
-  execute({ sector, answerKey, answer }: { sector: keyof SimulationDto; answerKey: AnswerKey; answer: AnswerValues | undefined }): void {
+  execute({
+    sector,
+    answerKey,
+    answer,
+  }: {
+    sector: keyof SimulationAnswers;
+    answerKey: AnswerKey;
+    answer: AnswerValues | undefined;
+  }): void {
     if (answer) {
       this.simulationStore.saveAnswer(sector, answerKey, answer);
     }
