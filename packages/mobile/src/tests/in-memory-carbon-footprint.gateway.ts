@@ -1,10 +1,11 @@
-import { CarbonFootprintDto, SimulationDto } from 'carbon-cut-commons';
+import { SimulationAnswers } from '@domain/types/simulation-answers';
+import { CarbonFootprintDto } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
 import { CarbonFootprintGateway } from '../domain/ports/gateways/carbon-footprint.gateway';
 
 @injectable()
 export class InMemoryCarbonFootprintGateway implements CarbonFootprintGateway {
-  async calculate(_: SimulationDto): Promise<Required<CarbonFootprintDto>> {
+  async calculate(_: SimulationAnswers): Promise<Required<CarbonFootprintDto>> {
     return {
       alimentation: {
         breakfast: 171.234,

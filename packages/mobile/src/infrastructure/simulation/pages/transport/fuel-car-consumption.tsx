@@ -59,7 +59,7 @@ export default function FuelCarConsumption({ containerStyle }: { containerStyle:
   const runCalculation = (): void => {
     saveSimulationAnswerUseCase.execute({
       sector: 'transport',
-      answerKey: 'car',
+      answerKey: 'fuelCar',
       answer: { ...presenter.answerValues, fuelType: presenter.selectedAnswer },
     });
     carbonFootprintSimulationUseCase.execute();

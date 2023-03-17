@@ -80,7 +80,7 @@ describe('ElectricCarSize component', () => {
 
     await waitFor(() => {
       const simulationAnswers = selectSimulationAnswers();
-      expect(simulationAnswers?.transport.car).toEqual({ carSize: CarSize.SUV });
+      expect(simulationAnswers?.transport.electricCar).toEqual({ size: CarSize.SUV });
       const results = selectSimulationResults();
       expect(selectIsLoading()).toBeFalsy();
       expect(results).toEqual({
