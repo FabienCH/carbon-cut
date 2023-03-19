@@ -1,6 +1,6 @@
-import { SimulationAnswers } from '@domain/types/simulation-answers';
+import { AlimentationAnswers, SimulationAnswers, TransportAnswers } from '@domain/types/simulation-answers';
 import { inject, injectable } from 'inversify';
-import { AnswerKey, AnswerValues, SimulationStore, SimulationStoreToken } from '../ports/stores/simulation-store';
+import { AnswerKey, AnswerValues, PickOne, SimulationStore, SimulationStoreToken } from '../ports/stores/simulation-store';
 
 export const SaveSimulationAnswerUseCaseToken = Symbol.for('SaveSimulationAnswerUseCase');
 
@@ -19,6 +19,12 @@ export class SaveSimulationAnswerUseCase {
   }): void {
     if (answer) {
       this.simulationStore.saveAnswer(sector, answerKey, answer);
+    }
+  }
+
+  executeOne(answer: PickOne<AlimentationAnswers & TransportAnswers>): void {
+    if (answer) {
+      this.simulationStore.saveAnswerOne(answer);
     }
   }
 }

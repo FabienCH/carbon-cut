@@ -17,13 +17,17 @@ export class RestCarbonFootprintGateway implements CarbonFootprintGateway {
   }
 
   #mapToSimulationDto(simulationAnswers: SimulationAnswers): SimulationDto {
+    const { alimentation, transport } = simulationAnswers;
     return {
-      ...simulationAnswers,
+      alimentation: {
+        ...alimentation,
+        milkType: alimentation.milkType ?? undefined,
+      },
       transport: {
         car: {
-          ...simulationAnswers.transport.carUsage,
-          ...simulationAnswers.transport.electricCar,
-          ...simulationAnswers.transport.fuelCar,
+          ...transport.carUsage,
+          ...transport.electricCar,
+          ...transport.fuelCar,
         },
       },
     };

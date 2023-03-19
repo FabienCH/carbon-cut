@@ -13,7 +13,7 @@ export interface AlimentationAnswers {
   breakfast: BreakfastTypes;
   hotBeverages: HotBeveragesAnswer;
   coldBeverages: ColdBeveragesAnswer;
-  milkType?: MilkTypes;
+  milkType: MilkTypes | null;
   meals: MealsAnswer;
 }
 
