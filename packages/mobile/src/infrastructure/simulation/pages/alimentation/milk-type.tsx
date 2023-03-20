@@ -13,6 +13,7 @@ import { RootStackParamList, Routes } from '../../../root-navigation';
 import Question from '../../components/question';
 import SelectableAnswers from '../../components/selectable-answers';
 import SubmitButton from '../../components/submit-button';
+import { MilkTypes } from 'carbon-cut-commons';
 
 type MilkTypeNavigationProp = NavigationProp<RootStackParamList, Routes.MilkType>;
 type MilkTypeProps = {
@@ -36,7 +37,7 @@ export default function MilkType({ navigation, containerStyle }: MilkTypeProps) 
   };
 
   const saveAnswer = (): void => {
-    saveSimulationAnswerUseCase.execute({ sector: 'alimentation', answerKey: 'milkType', answer: presenter.selectedAnswer });
+    saveSimulationAnswerUseCase.execute({ milkType: presenter.selectedAnswer as MilkTypes });
     navigation.navigate(Routes.ColdBeverages, { containerStyle });
   };
 

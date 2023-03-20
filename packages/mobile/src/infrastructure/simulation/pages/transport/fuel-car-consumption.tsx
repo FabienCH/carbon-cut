@@ -57,11 +57,7 @@ export default function FuelCarConsumption({ containerStyle }: { containerStyle:
   };
 
   const runCalculation = (): void => {
-    saveSimulationAnswerUseCase.execute({
-      sector: 'transport',
-      answerKey: 'fuelCar',
-      answer: { ...presenter.answerValues, fuelType: presenter.selectedAnswer },
-    });
+    saveSimulationAnswerUseCase.execute({ fuelCar: { ...presenter.answerValues, fuelType: presenter.selectedAnswer } });
     carbonFootprintSimulationUseCase.execute();
   };
   const { selectableQuestion, inputQuestion } = viewModel.questions;

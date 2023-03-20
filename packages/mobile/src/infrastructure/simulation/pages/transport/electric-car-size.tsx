@@ -17,6 +17,7 @@ import { diContainer } from '../../../inversify.config';
 import Question from '../../components/question';
 import SelectableAnswers from '../../components/selectable-answers';
 import SubmitButton from '../../components/submit-button';
+import { CarSize } from 'carbon-cut-commons';
 
 export default function ElectricCarSize({ containerStyle }: { containerStyle: StyleProp<ViewStyle> }) {
   const [presenter] = useState<WebElectricCarSizeQuestionPresenter>(
@@ -40,11 +41,7 @@ export default function ElectricCarSize({ containerStyle }: { containerStyle: St
   };
 
   const runCalculation = (): void => {
-    saveSimulationAnswerUseCase.execute({
-      sector: 'transport',
-      answerKey: 'electricCar',
-      answer: { size: presenter.selectedAnswer },
-    });
+    saveSimulationAnswerUseCase.execute({ electricCar: { size: presenter.selectedAnswer as CarSize } });
     carbonFootprintSimulationUseCase.execute();
   };
 

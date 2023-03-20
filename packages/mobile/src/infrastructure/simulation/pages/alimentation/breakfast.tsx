@@ -13,6 +13,7 @@ import { RootStackParamList, Routes } from '../../../root-navigation';
 import Question from '../../components/question';
 import SelectableAnswers from '../../components/selectable-answers';
 import SubmitButton from '../../components/submit-button';
+import { BreakfastTypes } from 'carbon-cut-commons';
 
 type BreakfastNavigationProp = NavigationProp<RootStackParamList, Routes.Breakfast>;
 type BreakfastProps = {
@@ -38,7 +39,7 @@ export default function Breakfast({ navigation, containerStyle }: BreakfastProps
   };
 
   const saveAnswer = (): void => {
-    saveSimulationAnswerUseCase.execute({ sector: 'alimentation', answerKey: 'breakfast', answer: presenter.selectedAnswer });
+    saveSimulationAnswerUseCase.execute({ breakfast: presenter.selectedAnswer as BreakfastTypes });
     navigation.navigate(Routes.HotBeverages, { containerStyle });
   };
 
