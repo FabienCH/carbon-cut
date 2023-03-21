@@ -4,12 +4,10 @@ import { AlimentationAnswers, SimulationAnswers, TransportAnswers } from '@domai
 export const SimulationStoreToken = Symbol.for('SimulationStore');
 
 export type PickOne<T> = { [P in keyof T]: Record<P, T[P]> & Partial<Record<Exclude<keyof T, P>, undefined>> }[keyof T];
-
-export type AllUnionMember<T> = T extends any ? T : never;
-export type AllUnionMemberKeys<T> = T extends any ? keyof T : never;
+export type AnswerToSave = PickOne<AlimentationAnswers & TransportAnswers>;
 
 export interface SimulationStore {
-  saveAnswer: (answer: PickOne<AlimentationAnswers & TransportAnswers>) => void;
+  saveAnswer: (answer: AnswerToSave) => void;
   getSimulationsAnswers: () => SimulationAnswers | undefined;
   setCarbonFootprint: (carbonFootprint: CarbonFootprint) => void;
 }

@@ -1,10 +1,9 @@
 import { CarbonFootprint } from '@domain/types/carbon-footprint';
+import { Nullable } from '@domain/types/nullable';
 import { AlimentationAnswers, TransportAnswers } from '@domain/types/simulation-answers';
 import { createReducer } from '@reduxjs/toolkit';
 import { getTypedObjectKeys } from 'carbon-cut-commons';
 import { saveAnswer, setCarbonFootprint } from '../actions/simulation-actions';
-
-type Nullable<T> = { [P in keyof T]: T[P] | null };
 
 interface SimulationStateAnswers {
   alimentation: Nullable<AlimentationAnswers>;
