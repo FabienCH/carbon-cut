@@ -3,7 +3,7 @@ import { AlimentationAnswers, SimulationAnswers, TransportAnswers } from '@domai
 
 export const SimulationStoreToken = Symbol.for('SimulationStore');
 
-export type PickOne<T> = { [P in keyof T]: Record<P, T[P]> & Partial<Record<Exclude<keyof T, P>, undefined>> }[keyof T];
+type PickOne<T> = { [P in keyof T]: Record<P, T[P]> & Partial<Record<Exclude<keyof T, P>, undefined>> }[keyof T];
 export type AnswerToSave = PickOne<AlimentationAnswers & TransportAnswers>;
 
 export interface SimulationStore {

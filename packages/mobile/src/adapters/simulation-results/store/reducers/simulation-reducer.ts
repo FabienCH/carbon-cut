@@ -1,3 +1,4 @@
+import { AnswerToSave } from '@domain/ports/stores/simulation-store';
 import { CarbonFootprint } from '@domain/types/carbon-footprint';
 import { Nullable } from '@domain/types/nullable';
 import { AlimentationAnswers, TransportAnswers } from '@domain/types/simulation-answers';
@@ -25,22 +26,18 @@ const initialState: SimulationState = { answers: initialAnswers };
 export const simulationReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(setCarbonFootprint, (state, { payload }) => ({ ...state, simulationResults: payload }))
-    .addCase(saveAnswer, (state, { payload }) => {
-      const { answer } = payload;
-      const stateAnswers = state.answers;
-      const updatedAnswers = getTypedObjectKeys(stateAnswers).reduce((answersAcc, sectorKey) => {
-        const currentSectorAnswers = stateAnswers[sectorKey];
-        if (getTypedObjectKeys(currentSectorAnswers).find((answerKey) => answerKey === getTypedObjectKeys(answer)[0])) {
-          answersAcc = { ...answersAcc, [sectorKey]: { ...answersAcc[sectorKey], ...answer } };
-        }
-
-        return answersAcc;
-      }, stateAnswers);
-
-      return {
-        ...state,
-        answers: updatedAnswers,
-      };
-    })
+    .addCase(saveAnswer, (state, { payload }) => ({ ...state, answers: updateAnswers(state.answers, payload.answer) }))
     .addDefaultCase((state) => state);
 });
+
+function updateAnswers(stateAnswers: SimulationStateAnswers, answer: AnswerToSave) {
+  return getTypedObjectKeys(stateAnswers).reduce((answersAcc, sectorKey) => {
+    const currentSectorAnswersKeys = getTypedObjectKeys(stateAnswers[sectorKey]);
+    const savedAnswerKey = getTypedObjectKeys(answer)[0];
+    if (currentSectorAnswersKeys.find((answerKey) => answerKey === savedAnswerKey)) {
+      answersAcc = { ...answersAcc, [sectorKey]: { ...answersAcc[sectorKey], ...answer } };
+    }
+
+    return answersAcc;
+  }, stateAnswers);
+}
