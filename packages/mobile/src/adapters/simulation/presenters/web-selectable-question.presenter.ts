@@ -7,7 +7,7 @@ export abstract class WebSelectableQuestionPresenter<AnswerType extends string, 
 {
   protected abstract _viewModel: ViewModel;
 
-  selectedAnswer: AnswerType | undefined;
+  selectedAnswer!: AnswerType | null;
 
   #notifyChanges!: (viewModel: ViewModel) => void;
 

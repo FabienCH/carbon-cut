@@ -36,7 +36,7 @@ export default function MilkType({ navigation, containerStyle }: MilkTypeProps) 
   };
 
   const saveAnswer = (): void => {
-    saveSimulationAnswerUseCase.execute({ sector: 'alimentation', answerKey: 'milkType', answer: presenter.selectedAnswer });
+    saveSimulationAnswerUseCase.execute({ milkType: presenter.selectedAnswer });
     navigation.navigate(Routes.ColdBeverages, { containerStyle });
   };
 

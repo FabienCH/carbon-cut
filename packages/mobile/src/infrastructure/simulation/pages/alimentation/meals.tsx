@@ -48,7 +48,7 @@ export default function Meals({ navigation, containerStyle }: MealsProps) {
   };
 
   const runCalculation = (): void => {
-    saveSimulationAnswerUseCase.execute({ sector: 'alimentation', answerKey: 'meals', answer: presenter.answerValues });
+    saveSimulationAnswerUseCase.execute({ meals: presenter.answerValues });
     navigation.navigate(Routes.CarKmType, { containerStyle });
   };
 

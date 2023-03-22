@@ -96,7 +96,7 @@ describe('FuelCarConsumption component', () => {
 
     await waitFor(() => {
       const simulationAnswers = selectSimulationAnswers();
-      expect(simulationAnswers?.transport.car).toEqual({ fuelConsumption: 8, fuelType: FuelType.essenceE10 });
+      expect(simulationAnswers?.transport.fuelCar).toEqual({ fuelConsumption: 8, fuelType: FuelType.essenceE10 });
       const results = selectSimulationResults();
       expect(selectIsLoading()).toBeFalsy();
       expect(results).toEqual({

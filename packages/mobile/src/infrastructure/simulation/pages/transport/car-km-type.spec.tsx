@@ -90,7 +90,7 @@ describe('CarKmType component', () => {
 
     await waitFor(() => {
       const simulationAnswers = selectSimulationAnswers();
-      expect(simulationAnswers?.transport.car).toEqual({ km: 100, engineType: EngineType.hybrid });
+      expect(simulationAnswers?.transport.carUsage).toEqual({ km: 100, engineType: EngineType.hybrid });
     });
   });
 

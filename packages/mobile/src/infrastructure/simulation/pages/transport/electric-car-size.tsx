@@ -40,11 +40,7 @@ export default function ElectricCarSize({ containerStyle }: { containerStyle: St
   };
 
   const runCalculation = (): void => {
-    saveSimulationAnswerUseCase.execute({
-      sector: 'transport',
-      answerKey: 'car',
-      answer: { carSize: presenter.selectedAnswer },
-    });
+    saveSimulationAnswerUseCase.execute({ electricCar: { size: presenter.selectedAnswer } });
     carbonFootprintSimulationUseCase.execute();
   };
 

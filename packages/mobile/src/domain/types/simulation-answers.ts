@@ -1,15 +1,26 @@
-import { BreakfastTypes, CarAnswer, ColdBeveragesAnswer, HotBeveragesAnswer, MealsAnswer, MilkTypes } from 'carbon-cut-commons';
+import {
+  BreakfastTypes,
+  CarAnswer,
+  CarSize,
+  ColdBeveragesAnswer,
+  FuelType,
+  HotBeveragesAnswer,
+  MealsAnswer,
+  MilkTypes,
+} from 'carbon-cut-commons';
 
 export interface AlimentationAnswers {
   breakfast: BreakfastTypes;
   hotBeverages: HotBeveragesAnswer;
   coldBeverages: ColdBeveragesAnswer;
-  milkType?: MilkTypes;
+  milkType: MilkTypes | null;
   meals: MealsAnswer;
 }
 
 export interface TransportAnswers {
-  car: CarAnswer;
+  carUsage: { km: CarAnswer['km']; engineType: CarAnswer['engineType'] };
+  electricCar: { size: CarSize } | null;
+  fuelCar: { fuelType: FuelType; fuelConsumption: number } | null;
 }
 
 export interface SimulationAnswers {

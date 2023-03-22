@@ -3,11 +3,11 @@ import { AlimentationAnswers, SimulationAnswers, TransportAnswers } from '@domai
 
 export const SimulationStoreToken = Symbol.for('SimulationStore');
 
-export type AnswerKey = keyof AlimentationAnswers | keyof TransportAnswers;
-export type AnswerValues = AlimentationAnswers[keyof AlimentationAnswers] | Partial<TransportAnswers[keyof TransportAnswers]>;
+type PickOne<T> = { [P in keyof T]: Record<P, T[P]> & Partial<Record<Exclude<keyof T, P>, undefined>> }[keyof T];
+export type AnswerToSave = PickOne<AlimentationAnswers & TransportAnswers>;
 
 export interface SimulationStore {
-  saveAnswer: (sector: keyof SimulationAnswers, answerKey: AnswerKey, answers: AnswerValues) => void;
+  saveAnswer: (answer: AnswerToSave) => void;
   getSimulationsAnswers: () => SimulationAnswers | undefined;
   setCarbonFootprint: (carbonFootprint: CarbonFootprint) => void;
 }

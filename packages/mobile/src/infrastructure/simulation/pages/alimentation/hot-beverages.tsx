@@ -42,7 +42,7 @@ export default function HotBeverages({ navigation, containerStyle }: HotBeverage
   };
 
   const saveAnswer = (): void => {
-    saveSimulationAnswerUseCase.execute({ sector: 'alimentation', answerKey: 'hotBeverages', answer: presenter.answerValues });
+    saveSimulationAnswerUseCase.execute({ hotBeverages: presenter.answerValues });
     navigation.navigate(presenter.getNextQuestion(), { containerStyle });
   };
 

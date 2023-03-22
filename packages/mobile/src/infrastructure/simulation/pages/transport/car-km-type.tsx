@@ -46,11 +46,7 @@ export default function CarKmType({ navigation, containerStyle }: CarKmTypeProps
   };
 
   const saveAnswer = (): void => {
-    saveSimulationAnswerUseCase.execute({
-      sector: 'transport',
-      answerKey: 'car',
-      answer: { ...presenter.answerValues, engineType: presenter.selectedAnswer },
-    });
+    saveSimulationAnswerUseCase.execute({ carUsage: { ...presenter.answerValues, engineType: presenter.selectedAnswer } });
     navigation.navigate(presenter.getNextQuestion(), { containerStyle });
   };
 

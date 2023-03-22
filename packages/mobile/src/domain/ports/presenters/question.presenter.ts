@@ -76,6 +76,6 @@ export interface InputQuestionPresenter<
 
 export interface SelectableQuestionPresenter<AnswerType extends string, ViewModel extends DefaultQuestionPresenterViewModel>
   extends QuestionPresenter<ViewModel> {
-  selectedAnswer: AnswerType | undefined;
+  selectedAnswer: AnswerType | null;
   setSelectedAnswer(answerValue: AnswerType, questionIndex?: number): void;
 }

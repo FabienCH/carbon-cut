@@ -1,12 +1,14 @@
-import { AnswerKey, AnswerValues } from '@domain/ports/stores/simulation-store';
+import { AnswerToSave } from '@domain/ports/stores/simulation-store';
 import { CarbonFootprint } from '@domain/types/carbon-footprint';
+import { Nullable } from '@domain/types/nullable';
 import { AlimentationAnswers, TransportAnswers } from '@domain/types/simulation-answers';
 import { createReducer } from '@reduxjs/toolkit';
+import { getTypedObjectKeys } from 'carbon-cut-commons';
 import { saveAnswer, setCarbonFootprint } from '../actions/simulation-actions';
 
 interface SimulationStateAnswers {
-  alimentation: Partial<AlimentationAnswers>;
-  transport: Partial<TransportAnswers>;
+  alimentation: Nullable<AlimentationAnswers>;
+  transport: Nullable<TransportAnswers>;
 }
 
 export interface SimulationState {
@@ -14,42 +16,28 @@ export interface SimulationState {
   simulationResults?: CarbonFootprint;
 }
 
-const initialAnswers: SimulationStateAnswers = { alimentation: {}, transport: {} };
+const initialAnswers: SimulationStateAnswers = {
+  alimentation: { breakfast: null, hotBeverages: null, coldBeverages: null, milkType: null, meals: null },
+  transport: { carUsage: null, electricCar: null, fuelCar: null },
+};
+
 const initialState: SimulationState = { answers: initialAnswers };
 
 export const simulationReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(setCarbonFootprint, (state, { payload }) => ({ ...state, simulationResults: payload }))
-    .addCase(saveAnswer, (state, { payload }) => {
-      const { answers, answerKey } = payload;
-      const currentSectorAnswers = { ...state.answers[payload.sector] };
-      const currentCategoryAnswers = getCategoryAnswers(currentSectorAnswers, answerKey);
-      const sectorAnswers = {
-        ...currentSectorAnswers,
-        [answerKey]: isObject(currentCategoryAnswers) && isObject(answers) ? { ...currentCategoryAnswers, ...answers } : answers,
-      };
-
-      return {
-        ...state,
-        answers: { ...state.answers, [payload.sector]: sectorAnswers },
-      };
-    })
+    .addCase(saveAnswer, (state, { payload }) => ({ ...state, answers: updateAnswers(state.answers, payload.answer) }))
     .addDefaultCase((state) => state);
 });
 
-const getCategoryAnswers = (
-  currentSectorAnswers: Partial<AlimentationAnswers> | Partial<TransportAnswers>,
-  answerKey: AnswerKey,
-): AnswerValues | undefined => {
-  if (isKeyOfSectorAnswers(currentSectorAnswers, answerKey)) {
-    return currentSectorAnswers[answerKey];
-  }
-};
+function updateAnswers(stateAnswers: SimulationStateAnswers, answer: AnswerToSave) {
+  return getTypedObjectKeys(stateAnswers).reduce((answersAcc, sectorKey) => {
+    const currentSectorAnswersKeys = getTypedObjectKeys(stateAnswers[sectorKey]);
+    const savedAnswerKey = getTypedObjectKeys(answer)[0];
+    if (currentSectorAnswersKeys.find((answerKey) => answerKey === savedAnswerKey)) {
+      answersAcc = { ...answersAcc, [sectorKey]: { ...answersAcc[sectorKey], ...answer } };
+    }
 
-const isObject = (answerValues: AnswerValues): answerValues is object =>
-  !!answerValues && typeof answerValues === 'object' && !Array.isArray(answerValues);
-
-const isKeyOfSectorAnswers = (
-  currentSectorAnswers: Partial<AlimentationAnswers> | Partial<TransportAnswers>,
-  answerKey: AnswerKey,
-): answerKey is keyof typeof currentSectorAnswers => !!answerKey && answerKey in currentSectorAnswers;
+    return answersAcc;
+  }, stateAnswers);
+}
