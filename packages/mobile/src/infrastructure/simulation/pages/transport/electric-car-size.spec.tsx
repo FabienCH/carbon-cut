@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import ElectricCarSize from './electric-car-size';
 import { Provider } from 'react-redux';

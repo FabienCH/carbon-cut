@@ -5,7 +5,7 @@ export default {
   preset: 'react-native',
   coverageDirectory: './coverage',
   testRegex: '.*\\.spec\\.tsx?$',
-  setupFiles: ['./jest-setup.js'],
+  setupFiles: ['./jest-setup.ts'],
   transform: {
     '^.+\\.tsx?$': [
       'ts-jest',

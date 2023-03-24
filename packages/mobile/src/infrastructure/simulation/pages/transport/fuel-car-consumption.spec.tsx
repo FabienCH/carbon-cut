@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { RootSiblingParent } from 'react-native-root-siblings';

@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import ColdBeverages from './cold-beverages';
