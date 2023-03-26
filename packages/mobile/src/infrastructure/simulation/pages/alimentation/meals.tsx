@@ -10,13 +10,13 @@ import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '@
 import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '@domain/usecases/set-input-answer.usecase';
 import { errorStyle } from '../../../app/style';
 import { diContainer } from '../../../inversify.config';
-import { RootStackParamList, Routes } from '../../../root-navigation';
+import { RootStackParamList, AllRoutes, Route } from '../../../root-navigation';
 import InputAnswers from '../../components/input-answers';
 import Question from '../../components/question';
 import SubmitButton from '../../components/submit-button';
 
 export type MealsAnswerKeys = keyof MealsAnswer;
-type MealsNavigationProp = NavigationProp<RootStackParamList, Routes.Meals>;
+type MealsNavigationProp = NavigationProp<RootStackParamList, Route<'Meals'>>;
 type MealsProps = {
   navigation: MealsNavigationProp;
   containerStyle: StyleProp<ViewStyle>;
@@ -49,7 +49,7 @@ export default function Meals({ navigation, containerStyle }: MealsProps) {
 
   const runCalculation = (): void => {
     saveSimulationAnswerUseCase.execute({ meals: presenter.answerValues });
-    navigation.navigate(Routes.CarKmType, { containerStyle });
+    navigation.navigate(AllRoutes.CarKmType, { containerStyle });
   };
 
   return (

@@ -9,7 +9,7 @@ import {
   QuestionPresenterViewModel,
   QuestionViewModel,
 } from '@domain/ports/presenters/question.presenter';
-import { Routes } from '@infrastructure/root-navigation';
+import { AllRoutes, Routes } from '@infrastructure/root-navigation';
 import { EngineType } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
 import { WebMultipleQuestionsPresenter } from '../web-multiple-questions.presenter';
@@ -55,6 +55,6 @@ export class WebCarKmTypeQuestionPresenter
   };
 
   getNextQuestion(): Routes {
-    return this.selectedAnswer === EngineType.electric ? Routes.ElectricCarSize : Routes.FuelCarConsumption;
+    return this.selectedAnswer === EngineType.electric ? AllRoutes.ElectricCarSize : AllRoutes.FuelCarConsumption;
   }
 }

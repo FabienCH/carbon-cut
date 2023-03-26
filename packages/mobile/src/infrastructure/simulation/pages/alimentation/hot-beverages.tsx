@@ -13,11 +13,11 @@ import {
 import { HotBeveragesQuestionPresenterToken } from '@domain/ports/presenters/question.presenter';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '@domain/usecases/save-simulation-answer.usecase';
 import { diContainer } from '../../../inversify.config';
-import { RootStackParamList, Routes } from '../../../root-navigation';
+import { RootStackParamList, Route } from '../../../root-navigation';
 import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '@domain/usecases/set-input-answer.usecase';
 import { AnswerValidator } from '@domain/entites/answer-validator';
 
-type HotBeveragesNavigationProp = NavigationProp<RootStackParamList, Routes.HotBeverages>;
+type HotBeveragesNavigationProp = NavigationProp<RootStackParamList, Route<'HotBeverages'>>;
 type HotBeveragesProps = {
   navigation: HotBeveragesNavigationProp;
   containerStyle: StyleProp<ViewStyle>;

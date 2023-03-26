@@ -11,13 +11,13 @@ import { ColdBeveragesQuestionPresenterToken } from '@domain/ports/presenters/qu
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '@domain/usecases/save-simulation-answer.usecase';
 import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '@domain/usecases/set-input-answer.usecase';
 import { diContainer } from '../../../inversify.config';
-import { RootStackParamList, Routes } from '../../../root-navigation';
+import { RootStackParamList, Route, AllRoutes } from '../../../root-navigation';
 import InputAnswers from '../../components/input-answers';
 import Question from '../../components/question';
 import SubmitButton from '../../components/submit-button';
 
 export type ColdBeveragesKeys = keyof ColdBeveragesAnswer;
-type ColdBeveragesNavigationProp = NavigationProp<RootStackParamList, Routes.ColdBeverages>;
+type ColdBeveragesNavigationProp = NavigationProp<RootStackParamList, Route<'ColdBeverages'>>;
 type ColdBeveragesProps = {
   navigation: ColdBeveragesNavigationProp;
   containerStyle: StyleProp<ViewStyle>;
@@ -49,7 +49,7 @@ export default function ColdBeverages({ navigation, containerStyle }: ColdBevera
 
   const saveAnswer = (): void => {
     saveSimulationAnswerUseCase.execute({ coldBeverages: presenter.answerValues });
-    navigation.navigate(Routes.Meals, { containerStyle });
+    navigation.navigate(AllRoutes.Meals, { containerStyle });
   };
 
   return (

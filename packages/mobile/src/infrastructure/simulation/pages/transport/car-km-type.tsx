@@ -11,13 +11,13 @@ import { Answer, CarKmTypeQuestionPresenterToken } from '@domain/ports/presenter
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '@domain/usecases/save-simulation-answer.usecase';
 import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '@domain/usecases/set-input-answer.usecase';
 import { diContainer } from '../../../inversify.config';
-import { RootStackParamList, Routes } from '../../../root-navigation';
+import { RootStackParamList, Route } from '../../../root-navigation';
 import InputAnswers from '../../components/input-answers';
 import Question from '../../components/question';
 import SelectableAnswers from '../../components/selectable-answers';
 import SubmitButton from '../../components/submit-button';
 
-type CarKmTypeNavigationProp = NavigationProp<RootStackParamList, Routes.CarKmType>;
+type CarKmTypeNavigationProp = NavigationProp<RootStackParamList, Route<'CarKmType'>>;
 type CarKmTypeProps = {
   navigation: CarKmTypeNavigationProp;
   containerStyle: StyleProp<ViewStyle>;

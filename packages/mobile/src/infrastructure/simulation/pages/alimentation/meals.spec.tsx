@@ -5,14 +5,14 @@ import { appStore } from '@adapters/commons/store/app-store';
 import Meals from './meals';
 import MockTheme from '@tests/theme-mock';
 import { NavigationProp } from '@react-navigation/native';
-import { RootStackParamList, Routes } from '../../../root-navigation';
+import { RootStackParamList, Route } from '../../../root-navigation';
 
 describe('Meals component', () => {
   beforeEach(() => {
     render(
       <Provider store={appStore}>
         <MockTheme>
-          <Meals navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.Meals>} containerStyle={{}} />
+          <Meals navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Route<'Meals'>>} containerStyle={{}} />
         </MockTheme>
       </Provider>,
     );

@@ -7,13 +7,13 @@ import MockTheme from '@tests/theme-mock';
 import { unselectedAnswerStyle } from '@tests/answer';
 import { EngineType } from 'carbon-cut-commons';
 import { NavigationProp } from '@react-navigation/native';
-import { RootStackParamList, Routes } from '../../../root-navigation';
+import { RootStackParamList, AllRoutes, Route } from '../../../root-navigation';
 
 describe('CarKmType component', () => {
-  let navigation: NavigationProp<RootStackParamList, Routes.CarKmType>;
+  let navigation: NavigationProp<RootStackParamList, Route<'CarKmType'>>;
 
   beforeEach(() => {
-    navigation = { navigate: (_) => {} } as NavigationProp<RootStackParamList, Routes.CarKmType>;
+    navigation = { navigate: (_) => {} } as NavigationProp<RootStackParamList, Route<'CarKmType'>>;
 
     render(
       <Provider store={appStore}>
@@ -106,7 +106,7 @@ describe('CarKmType component', () => {
       fillValidForm({ engineTypeIdx: 2 });
       fireEvent.press(submitButton);
 
-      expect(navigateSpy).toHaveBeenCalledWith(Routes.ElectricCarSize, { containerStyle: {} });
+      expect(navigateSpy).toHaveBeenCalledWith(AllRoutes.ElectricCarSize, { containerStyle: {} });
     });
 
     it('should navigate to fuel car consumption question if engine type is not electric', () => {
@@ -115,7 +115,7 @@ describe('CarKmType component', () => {
       fillValidForm({ engineTypeIdx: 1 });
       fireEvent.press(submitButton);
 
-      expect(navigateSpy).toHaveBeenCalledWith(Routes.FuelCarConsumption, { containerStyle: {} });
+      expect(navigateSpy).toHaveBeenCalledWith(AllRoutes.FuelCarConsumption, { containerStyle: {} });
     });
   });
 

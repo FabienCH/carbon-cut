@@ -9,12 +9,12 @@ import {
 import { BreakfastQuestionPresenterToken } from '@domain/ports/presenters/question.presenter';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '@domain/usecases/save-simulation-answer.usecase';
 import { diContainer } from '../../../inversify.config';
-import { RootStackParamList, Routes } from '../../../root-navigation';
+import { RootStackParamList, Route, AllRoutes } from '../../../root-navigation';
 import Question from '../../components/question';
 import SelectableAnswers from '../../components/selectable-answers';
 import SubmitButton from '../../components/submit-button';
 
-type BreakfastNavigationProp = NavigationProp<RootStackParamList, Routes.Breakfast>;
+type BreakfastNavigationProp = NavigationProp<RootStackParamList, Route<'Breakfast'>>;
 type BreakfastProps = {
   navigation: BreakfastNavigationProp;
   containerStyle: StyleProp<ViewStyle>;
@@ -39,7 +39,7 @@ export default function Breakfast({ navigation, containerStyle }: BreakfastProps
 
   const saveAnswer = (): void => {
     saveSimulationAnswerUseCase.execute({ breakfast: presenter.selectedAnswer });
-    navigation.navigate(Routes.HotBeverages, { containerStyle });
+    navigation.navigate(AllRoutes.HotBeverages, { containerStyle });
   };
 
   return (

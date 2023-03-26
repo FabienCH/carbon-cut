@@ -8,7 +8,7 @@ import {
   QuestionPresenterViewModel,
   QuestionViewModel,
 } from '@domain/ports/presenters/question.presenter';
-import { Routes } from '@infrastructure/root-navigation';
+import { AllRoutes, Routes } from '@infrastructure/root-navigation';
 import { BreakfastTypes, HotBeveragesAnswer } from 'carbon-cut-commons';
 import { injectable } from 'inversify';
 import { selectSimulationAnswers } from '../../../simulation-results/store/selectors/simulation-selectors';
@@ -57,7 +57,7 @@ export class WebHotBeveragesQuestionPresenter
   getNextQuestion(): Routes {
     const isBreakFastWithoutMilk = selectSimulationAnswers()?.alimentation?.breakfast !== BreakfastTypes.milkCerealBreakfast;
     const noHotChocolate = this.#noHotChocolate();
-    return isBreakFastWithoutMilk && noHotChocolate ? Routes.ColdBeverages : Routes.MilkType;
+    return isBreakFastWithoutMilk && noHotChocolate ? AllRoutes.ColdBeverages : AllRoutes.MilkType;
   }
 
   #noHotChocolate(): boolean {

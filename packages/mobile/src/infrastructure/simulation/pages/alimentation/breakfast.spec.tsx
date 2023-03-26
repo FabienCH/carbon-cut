@@ -5,7 +5,7 @@ import { BreakfastTypes } from 'carbon-cut-commons';
 import { NavigationProp } from '@react-navigation/native';
 import { selectSimulationAnswers } from '@adapters/simulation-results/store/selectors/simulation-selectors';
 import { appStore } from '@adapters/commons/store/app-store';
-import { RootStackParamList, Routes } from '../../../root-navigation';
+import { RootStackParamList, Route } from '../../../root-navigation';
 import { selectedAnswerStyle, unselectedAnswerStyle } from '@tests/answer';
 import MockTheme from '@tests/theme-mock';
 
@@ -14,7 +14,7 @@ describe('Breakfast component', () => {
     render(
       <Provider store={appStore}>
         <MockTheme>
-          <Breakfast navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.Breakfast>} containerStyle={{}} />
+          <Breakfast navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Route<'Breakfast'>>} containerStyle={{}} />
         </MockTheme>
       </Provider>,
     );

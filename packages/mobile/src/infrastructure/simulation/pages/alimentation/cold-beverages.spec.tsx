@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import ColdBeverages from './cold-beverages';
 import { selectSimulationAnswers } from '@adapters/simulation-results/store/selectors/simulation-selectors';
 import { appStore } from '@adapters/commons/store/app-store';
-import { RootStackParamList, Routes } from '../../../root-navigation';
+import { RootStackParamList, Route } from '../../../root-navigation';
 import { NavigationProp } from '@react-navigation/native';
 import MockTheme from '@tests/theme-mock';
 
@@ -13,7 +13,7 @@ describe('ColdBeverages component', () => {
       <Provider store={appStore}>
         <MockTheme>
           <ColdBeverages
-            navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.ColdBeverages>}
+            navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Route<'ColdBeverages'>>}
             containerStyle={{}}
           />
         </MockTheme>
