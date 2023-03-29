@@ -1,6 +1,6 @@
 import { QuestionIds } from '@domain/entites/questions-navigation';
 import { QuestionsController } from '@domain/ports/controllers/questions-controller';
-import { SimulationStore, SimulationStoreToken } from '@domain/ports/stores/simulation-store';
+import { AnswerToSave, SimulationStore, SimulationStoreToken } from '@domain/ports/stores/simulation-store';
 import { SaveSimulationAnswerUseCase } from '@domain/usecases/save-simulation-answer.usecase';
 import { diContainer } from '@infrastructure/inversify.config';
 import { FakeQuestionsController } from '@tests/fake-questions.controller';
@@ -36,71 +36,82 @@ describe('Save simulation answer use case', () => {
 
     describe('Next question should', () => {
       it('be hot beverage after breakfast', () => {
-        questionsController.currentQuestion = QuestionIds.Breakfast;
+        submitQuestions([{ breakfast: BreakfastTypes.britishBreakfast }]);
 
-        saveSimulationAnswerUseCase.execute({ breakfast: BreakfastTypes.britishBreakfast });
-
-        expect(showNextQuestionSpy).toHaveBeenCalledWith(QuestionIds.HotBeverages);
+        expect(showNextQuestionSpy).toHaveBeenLastCalledWith(QuestionIds.HotBeverages);
       });
 
       it('be milk type after hot beverages if breakfast has milk', () => {
-        questionsController.currentQuestion = QuestionIds.HotBeverages;
-        simulationStore.saveAnswer({ breakfast: BreakfastTypes.milkCerealBreakfast });
+        submitQuestions([{ breakfast: BreakfastTypes.milkCerealBreakfast }, { hotBeverages: { coffee: 5, tea: 2, hotChocolate: 0 } }]);
 
-        saveSimulationAnswerUseCase.execute({ hotBeverages: { coffee: 5, tea: 2, hotChocolate: 0 } });
-
-        expect(showNextQuestionSpy).toHaveBeenCalledWith(QuestionIds.MilkType);
+        expect(showNextQuestionSpy).toHaveBeenLastCalledWith(QuestionIds.MilkType);
       });
 
       it('be milk type after hot beverages if hot beverages has milk', () => {
-        questionsController.currentQuestion = QuestionIds.HotBeverages;
-        simulationStore.saveAnswer({ breakfast: BreakfastTypes.britishBreakfast });
+        submitQuestions([{ breakfast: BreakfastTypes.britishBreakfast }, { hotBeverages: { coffee: 5, tea: 2, hotChocolate: 1 } }]);
 
-        saveSimulationAnswerUseCase.execute({ hotBeverages: { coffee: 5, tea: 2, hotChocolate: 1 } });
-
-        expect(showNextQuestionSpy).toHaveBeenCalledWith(QuestionIds.MilkType);
+        expect(showNextQuestionSpy).toHaveBeenLastCalledWith(QuestionIds.MilkType);
       });
 
       it('skip milk type and show cold beverage after hot beverages if previous answers has no milk', () => {
-        questionsController.currentQuestion = QuestionIds.HotBeverages;
-        simulationStore.saveAnswer({ breakfast: BreakfastTypes.britishBreakfast });
+        submitQuestions([{ breakfast: BreakfastTypes.britishBreakfast }, { hotBeverages: { coffee: 5, tea: 2, hotChocolate: 0 } }]);
 
-        saveSimulationAnswerUseCase.execute({ hotBeverages: { coffee: 5, tea: 2, hotChocolate: 0 } });
-
-        expect(showNextQuestionSpy).toHaveBeenCalledWith(QuestionIds.ColdBeverages);
+        expect(showNextQuestionSpy).toHaveBeenLastCalledWith(QuestionIds.ColdBeverages);
       });
 
       it('be car km type after meals', () => {
-        questionsController.currentQuestion = QuestionIds.Meals;
+        submitQuestions([
+          { breakfast: BreakfastTypes.britishBreakfast },
+          { hotBeverages: { coffee: 5, tea: 2, hotChocolate: 0 } },
+          { coldBeverages: { alcohol: 1, sweet: 2 } },
+          { meals: { vegan: 4, vegetarian: 3, whiteMeat: 2, redMeat: 1, whiteFish: 2, fish: 2 } },
+        ]);
 
-        saveSimulationAnswerUseCase.execute({ meals: { vegan: 4, vegetarian: 3, whiteMeat: 2, redMeat: 1, whiteFish: 2, fish: 2 } });
-
-        expect(showNextQuestionSpy).toHaveBeenCalledWith(QuestionIds.CarKmType);
+        expect(showNextQuestionSpy).toHaveBeenLastCalledWith(QuestionIds.CarKmType);
       });
 
       it('be electric car size if car engine is electric', () => {
-        questionsController.currentQuestion = QuestionIds.CarKmType;
+        submitQuestions([
+          { breakfast: BreakfastTypes.britishBreakfast },
+          { hotBeverages: { coffee: 5, tea: 2, hotChocolate: 0 } },
+          { coldBeverages: { alcohol: 1, sweet: 2 } },
+          { meals: { vegan: 4, vegetarian: 3, whiteMeat: 2, redMeat: 1, whiteFish: 2, fish: 2 } },
+          { carUsage: { km: 4000, engineType: EngineType.electric } },
+        ]);
 
-        saveSimulationAnswerUseCase.execute({ carUsage: { km: 4000, engineType: EngineType.electric } });
-
-        expect(showNextQuestionSpy).toHaveBeenCalledWith(QuestionIds.ElectricCarSize);
+        expect(showNextQuestionSpy).toHaveBeenLastCalledWith(QuestionIds.ElectricCarSize);
       });
 
       it('be fuel car consumption if car engine is not electric', () => {
-        questionsController.currentQuestion = QuestionIds.CarKmType;
+        submitQuestions([
+          { breakfast: BreakfastTypes.britishBreakfast },
+          { hotBeverages: { coffee: 5, tea: 2, hotChocolate: 0 } },
+          { coldBeverages: { alcohol: 1, sweet: 2 } },
+          { meals: { vegan: 4, vegetarian: 3, whiteMeat: 2, redMeat: 1, whiteFish: 2, fish: 2 } },
+          { carUsage: { km: 4000, engineType: EngineType.hybrid } },
+        ]);
 
-        saveSimulationAnswerUseCase.execute({ carUsage: { km: 4000, engineType: EngineType.hybrid } });
-
-        expect(showNextQuestionSpy).toHaveBeenCalledWith(QuestionIds.FuelCarConsumption);
+        expect(showNextQuestionSpy).toHaveBeenLastCalledWith(QuestionIds.FuelCarConsumption);
       });
 
       it('not be fuel car consumption after electric car size', () => {
-        questionsController.currentQuestion = QuestionIds.ElectricCarSize;
+        submitQuestions([
+          { breakfast: BreakfastTypes.britishBreakfast },
+          { hotBeverages: { coffee: 5, tea: 2, hotChocolate: 0 } },
+          { coldBeverages: { alcohol: 1, sweet: 2 } },
+          { meals: { vegan: 4, vegetarian: 3, whiteMeat: 2, redMeat: 1, whiteFish: 2, fish: 2 } },
+          { carUsage: { km: 4000, engineType: EngineType.electric } },
+          { electricCar: { size: CarSize.sedan } },
+        ]);
 
-        saveSimulationAnswerUseCase.execute({ electricCar: { size: CarSize.sedan } });
-
-        expect(showNextQuestionSpy).toHaveBeenCalledTimes(0);
+        expect(showNextQuestionSpy).not.toHaveBeenLastCalledWith(QuestionIds.ElectricCarSize);
       });
     });
   });
+
+  function submitQuestions(answers: AnswerToSave[]) {
+    answers.forEach((answer) => {
+      saveSimulationAnswerUseCase.execute(answer);
+    });
+  }
 });

@@ -24,51 +24,46 @@ export class QuestionsNavigation {
     6: QuestionIds.ElectricCarSize,
     7: QuestionIds.FuelCarConsumption,
   };
+  #currentQuestionId = this.#questions[0];
 
-  getNextQuestion(
-    currentQuestion: QuestionIds,
-    simulationAnswers: SimulationAnswers | undefined,
-    answer: AnswerToSave,
-  ): QuestionIds | undefined {
+  getNextQuestion(simulationAnswers: SimulationAnswers | undefined, answer: AnswerToSave): QuestionIds | undefined {
     const nextQuestionIdx = Object.values(this.#questions).reduce((questionIdx, questionId, idx) => {
-      if (questionId === currentQuestion) {
-        questionIdx += this.#getNextIndex(answer, simulationAnswers, idx, currentQuestion);
+      if (questionId === this.#currentQuestionId) {
+        questionIdx += this.#getNextIndex(answer, simulationAnswers, idx);
       }
       return questionIdx;
     }, 0);
 
-    return this.#questions[nextQuestionIdx];
+    this.#currentQuestionId = this.#questions[nextQuestionIdx];
+    return this.#currentQuestionId;
   }
 
-  #getNextIndex(
-    answer: AnswerToSave,
-    simulationAnswers: SimulationAnswers | undefined,
-    currentQuestionIdx: number,
-    currentQuestion: QuestionIds,
-  ): number {
+  #getNextIndex(answer: AnswerToSave, simulationAnswers: SimulationAnswers | undefined, currentQuestionIdx: number): number {
     const nextQuestionIncrement =
-      this.#mustSkipMilkType(currentQuestion, simulationAnswers, answer) ||
-      this.#mustSkipFuelCarConsumption(currentQuestion, simulationAnswers) ||
-      this.#mustSkipElectricCarSize(currentQuestion, answer)
+      this.#mustSkipMilkType(simulationAnswers, answer) ||
+      this.#mustSkipFuelCarConsumption(simulationAnswers) ||
+      this.#mustSkipElectricCarSize(answer)
         ? 2
         : 1;
 
     return currentQuestionIdx + nextQuestionIncrement;
   }
 
-  #mustSkipMilkType(currentQuestion: QuestionIds, simulationAnswers: SimulationAnswers | undefined, answer: AnswerToSave): boolean {
+  #mustSkipMilkType(simulationAnswers: SimulationAnswers | undefined, answer: AnswerToSave): boolean {
     return (
-      currentQuestion === QuestionIds.HotBeverages &&
+      this.#currentQuestionId === QuestionIds.HotBeverages &&
       simulationAnswers?.alimentation?.breakfast !== BreakfastTypes.milkCerealBreakfast &&
       !answer?.hotBeverages?.hotChocolate
     );
   }
 
-  #mustSkipFuelCarConsumption(currentQuestion: QuestionIds, simulationAnswers: SimulationAnswers | undefined): boolean {
-    return currentQuestion === QuestionIds.ElectricCarSize && simulationAnswers?.transport?.carUsage.engineType !== EngineType.electric;
+  #mustSkipFuelCarConsumption(simulationAnswers: SimulationAnswers | undefined): boolean {
+    return (
+      this.#currentQuestionId === QuestionIds.ElectricCarSize && simulationAnswers?.transport?.carUsage.engineType !== EngineType.electric
+    );
   }
 
-  #mustSkipElectricCarSize(currentQuestion: QuestionIds, answer: AnswerToSave): boolean {
-    return currentQuestion === QuestionIds.CarKmType && answer?.carUsage?.engineType !== EngineType.electric;
+  #mustSkipElectricCarSize(answer: AnswerToSave): boolean {
+    return this.#currentQuestionId === QuestionIds.CarKmType && answer?.carUsage?.engineType !== EngineType.electric;
   }
 }

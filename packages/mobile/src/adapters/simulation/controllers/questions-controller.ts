@@ -7,9 +7,7 @@ export const QuestionsControllerToken = Symbol.for('QuestionsController');
 
 @injectable()
 export class RouterQuestionsController implements QuestionsController {
-  currentQuestion!: QuestionIds;
   showNextQuestion(questionId: QuestionIds) {
-    this.currentQuestion = questionId;
     navigate(questionId);
   }
 }
