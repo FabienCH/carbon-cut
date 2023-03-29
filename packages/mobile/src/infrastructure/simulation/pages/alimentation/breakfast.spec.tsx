@@ -2,10 +2,8 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 import Breakfast from './breakfast';
 import { Provider } from 'react-redux';
 import { BreakfastTypes } from 'carbon-cut-commons';
-import { NavigationProp } from '@react-navigation/native';
 import { selectSimulationAnswers } from '@adapters/simulation-results/store/selectors/simulation-selectors';
 import { appStore } from '@adapters/commons/store/app-store';
-import { RootStackParamList, Route } from '../../../root-navigation';
 import { selectedAnswerStyle, unselectedAnswerStyle } from '@tests/answer';
 import MockTheme from '@tests/theme-mock';
 
@@ -14,7 +12,7 @@ describe('Breakfast component', () => {
     render(
       <Provider store={appStore}>
         <MockTheme>
-          <Breakfast navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Route<'Breakfast'>>} containerStyle={{}} />
+          <Breakfast containerStyle={{}} />
         </MockTheme>
       </Provider>,
     );

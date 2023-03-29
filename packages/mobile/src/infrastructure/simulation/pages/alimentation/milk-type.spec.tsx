@@ -2,10 +2,8 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 import { Provider } from 'react-redux';
 import { MilkTypes } from 'carbon-cut-commons';
 import MilkType from './milk-type';
-import { NavigationProp } from '@react-navigation/native';
 import { selectSimulationAnswers } from '@adapters/simulation-results/store/selectors/simulation-selectors';
 import { appStore } from '@adapters/commons/store/app-store';
-import { RootStackParamList, Route } from '../../../root-navigation';
 import { selectedAnswerStyle, unselectedAnswerStyle } from '@tests/answer';
 import MockTheme from '@tests/theme-mock';
 
@@ -14,7 +12,7 @@ describe('MilkType component', () => {
     render(
       <Provider store={appStore}>
         <MockTheme>
-          <MilkType navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Route<'MilkType'>>} containerStyle={{}} />
+          <MilkType containerStyle={{}} />
         </MockTheme>
       </Provider>,
     );

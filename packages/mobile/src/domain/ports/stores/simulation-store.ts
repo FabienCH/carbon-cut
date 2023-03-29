@@ -1,3 +1,4 @@
+import { QuestionIds } from '@domain/entites/questions-navigation';
 import { CarbonFootprint } from '@domain/types/carbon-footprint';
 import { AlimentationAnswers, SimulationAnswers, TransportAnswers } from '@domain/types/simulation-answers';
 
@@ -10,4 +11,6 @@ export interface SimulationStore {
   saveAnswer: (answer: AnswerToSave) => void;
   getSimulationsAnswers: () => SimulationAnswers | undefined;
   setCarbonFootprint: (carbonFootprint: CarbonFootprint) => void;
+  setCurrentQuestion: (questionId: QuestionIds) => void;
+  getCurrentQuestion: () => QuestionIds;
 }

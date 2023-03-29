@@ -1,4 +1,3 @@
-import { NavigationProp } from '@react-navigation/native';
 import { ColdBeveragesAnswer } from 'carbon-cut-commons';
 import { useEffect, useState } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
@@ -11,19 +10,13 @@ import { ColdBeveragesQuestionPresenterToken } from '@domain/ports/presenters/qu
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '@domain/usecases/save-simulation-answer.usecase';
 import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '@domain/usecases/set-input-answer.usecase';
 import { diContainer } from '../../../inversify.config';
-import { RootStackParamList, Route, AllRoutes } from '../../../root-navigation';
 import InputAnswers from '../../components/input-answers';
 import Question from '../../components/question';
 import SubmitButton from '../../components/submit-button';
 
 export type ColdBeveragesKeys = keyof ColdBeveragesAnswer;
-type ColdBeveragesNavigationProp = NavigationProp<RootStackParamList, Route<'ColdBeverages'>>;
-type ColdBeveragesProps = {
-  navigation: ColdBeveragesNavigationProp;
-  containerStyle: StyleProp<ViewStyle>;
-};
 
-export default function ColdBeverages({ navigation, containerStyle }: ColdBeveragesProps) {
+export default function ColdBeverages({ containerStyle }: { containerStyle: StyleProp<ViewStyle> }) {
   const [presenter] = useState<WebColdBeveragesQuestionPresenter>(
     diContainer.get<WebColdBeveragesQuestionPresenter>(ColdBeveragesQuestionPresenterToken),
   );
@@ -49,7 +42,6 @@ export default function ColdBeverages({ navigation, containerStyle }: ColdBevera
 
   const saveAnswer = (): void => {
     saveSimulationAnswerUseCase.execute({ coldBeverages: presenter.answerValues });
-    navigation.navigate(AllRoutes.Meals, { containerStyle });
   };
 
   return (

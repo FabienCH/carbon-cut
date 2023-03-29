@@ -18,11 +18,16 @@ export class SaveSimulationAnswerUseCase {
     if (this.#hasNoNull(answer)) {
       this.simulationStore.saveAnswer(answer);
 
-      const nextQuestion = this.#questionsNavigation.getNextQuestion(this.simulationStore.getSimulationsAnswers(), answer);
+      const nextQuestion = this.#questionsNavigation.getNextQuestion(
+        this.simulationStore.getSimulationsAnswers(),
+        this.simulationStore.getCurrentQuestion(),
+        answer,
+      );
 
       console.log('nextQuestion', nextQuestion);
       if (nextQuestion) {
         this.questionsController.showNextQuestion(nextQuestion);
+        this.simulationStore.setCurrentQuestion(nextQuestion);
       }
     }
   }

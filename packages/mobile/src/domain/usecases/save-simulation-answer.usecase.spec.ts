@@ -14,9 +14,14 @@ describe('Save simulation answer use case', () => {
 
   beforeEach(() => {
     simulationStore = diContainer.get(SimulationStoreToken);
+    simulationStore.setCurrentQuestion(QuestionIds.Breakfast);
     questionsController = new FakeQuestionsController();
     saveSimulationAnswerUseCase = new SaveSimulationAnswerUseCase(simulationStore, questionsController);
     showNextQuestionSpy = jest.spyOn(questionsController, 'showNextQuestion');
+  });
+
+  afterEach(() => {
+    showNextQuestionSpy.mockClear();
   });
 
   describe('Saving an answer', () => {
@@ -39,12 +44,14 @@ describe('Save simulation answer use case', () => {
         submitQuestions([{ breakfast: BreakfastTypes.britishBreakfast }]);
 
         expect(showNextQuestionSpy).toHaveBeenLastCalledWith(QuestionIds.HotBeverages);
+        console.log('FIRSDT END');
       });
 
       it('be milk type after hot beverages if breakfast has milk', () => {
         submitQuestions([{ breakfast: BreakfastTypes.milkCerealBreakfast }, { hotBeverages: { coffee: 5, tea: 2, hotChocolate: 0 } }]);
 
         expect(showNextQuestionSpy).toHaveBeenLastCalledWith(QuestionIds.MilkType);
+        console.log('SECOND END');
       });
 
       it('be milk type after hot beverages if hot beverages has milk', () => {
@@ -104,7 +111,7 @@ describe('Save simulation answer use case', () => {
           { electricCar: { size: CarSize.sedan } },
         ]);
 
-        expect(showNextQuestionSpy).not.toHaveBeenLastCalledWith(QuestionIds.ElectricCarSize);
+        expect(showNextQuestionSpy).not.toHaveBeenLastCalledWith(QuestionIds.FuelCarConsumption);
       });
     });
   });

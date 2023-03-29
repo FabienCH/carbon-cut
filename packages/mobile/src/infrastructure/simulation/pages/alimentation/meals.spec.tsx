@@ -4,15 +4,13 @@ import { selectSimulationAnswers } from '@adapters/simulation-results/store/sele
 import { appStore } from '@adapters/commons/store/app-store';
 import Meals from './meals';
 import MockTheme from '@tests/theme-mock';
-import { NavigationProp } from '@react-navigation/native';
-import { RootStackParamList, Route } from '../../../root-navigation';
 
 describe('Meals component', () => {
   beforeEach(() => {
     render(
       <Provider store={appStore}>
         <MockTheme>
-          <Meals navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Route<'Meals'>>} containerStyle={{}} />
+          <Meals containerStyle={{}} />
         </MockTheme>
       </Provider>,
     );

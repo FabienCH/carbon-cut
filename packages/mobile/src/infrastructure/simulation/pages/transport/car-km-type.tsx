@@ -1,4 +1,3 @@
-import { NavigationProp } from '@react-navigation/native';
 import { EngineType } from 'carbon-cut-commons';
 import { useEffect, useState } from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
@@ -11,19 +10,12 @@ import { Answer, CarKmTypeQuestionPresenterToken } from '@domain/ports/presenter
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '@domain/usecases/save-simulation-answer.usecase';
 import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '@domain/usecases/set-input-answer.usecase';
 import { diContainer } from '../../../inversify.config';
-import { RootStackParamList, Route } from '../../../root-navigation';
 import InputAnswers from '../../components/input-answers';
 import Question from '../../components/question';
 import SelectableAnswers from '../../components/selectable-answers';
 import SubmitButton from '../../components/submit-button';
 
-type CarKmTypeNavigationProp = NavigationProp<RootStackParamList, Route<'CarKmType'>>;
-type CarKmTypeProps = {
-  navigation: CarKmTypeNavigationProp;
-  containerStyle: StyleProp<ViewStyle>;
-};
-
-export default function CarKmType({ navigation, containerStyle }: CarKmTypeProps) {
+export default function CarKmType({ containerStyle }: { containerStyle: StyleProp<ViewStyle> }) {
   const [presenter] = useState<WebCarKmTypeQuestionPresenter>(
     diContainer.get<WebCarKmTypeQuestionPresenter>(CarKmTypeQuestionPresenterToken),
   );
@@ -47,7 +39,6 @@ export default function CarKmType({ navigation, containerStyle }: CarKmTypeProps
 
   const saveAnswer = (): void => {
     saveSimulationAnswerUseCase.execute({ carUsage: { ...presenter.answerValues, engineType: presenter.selectedAnswer } });
-    navigation.navigate(presenter.getNextQuestion(), { containerStyle });
   };
 
   const { selectableQuestion, inputQuestion } = viewModel.questions;

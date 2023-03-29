@@ -1,10 +1,11 @@
+import { QuestionIds } from '@domain/entites/questions-navigation';
 import { AnswerToSave } from '@domain/ports/stores/simulation-store';
 import { CarbonFootprint } from '@domain/types/carbon-footprint';
 import { Nullable } from '@domain/types/nullable';
 import { AlimentationAnswers, TransportAnswers } from '@domain/types/simulation-answers';
 import { createReducer } from '@reduxjs/toolkit';
 import { getTypedObjectKeys } from 'carbon-cut-commons';
-import { saveAnswer, setCarbonFootprint } from '../actions/simulation-actions';
+import { saveAnswer, setCarbonFootprint, setCurrentQuestion } from '../actions/simulation-actions';
 
 interface SimulationStateAnswers {
   alimentation: Nullable<AlimentationAnswers>;
@@ -13,6 +14,7 @@ interface SimulationStateAnswers {
 
 export interface SimulationState {
   answers: SimulationStateAnswers;
+  currentQuestionId: QuestionIds;
   simulationResults?: CarbonFootprint;
 }
 
@@ -21,11 +23,12 @@ const initialAnswers: SimulationStateAnswers = {
   transport: { carUsage: null, electricCar: null, fuelCar: null },
 };
 
-const initialState: SimulationState = { answers: initialAnswers };
+const initialState: SimulationState = { answers: initialAnswers, currentQuestionId: QuestionIds.Breakfast };
 
 export const simulationReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(setCarbonFootprint, (state, { payload }) => ({ ...state, simulationResults: payload }))
+    .addCase(setCurrentQuestion, (state, { payload }) => ({ ...state, currentQuestionId: payload }))
     .addCase(saveAnswer, (state, { payload }) => ({ ...state, answers: updateAnswers(state.answers, payload.answer) }))
     .addDefaultCase((state) => state);
 });
