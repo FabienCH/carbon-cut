@@ -1,4 +1,3 @@
-import { NavigationProp } from '@react-navigation/native';
 import { Text, useTheme } from '@rneui/themed';
 import { MealsAnswer } from 'carbon-cut-commons';
 import { useEffect, useState } from 'react';
@@ -10,19 +9,13 @@ import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '@
 import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '@domain/usecases/set-input-answer.usecase';
 import { errorStyle } from '../../../app/style';
 import { diContainer } from '../../../inversify.config';
-import { RootStackParamList, Routes } from '../../../root-navigation';
 import InputAnswers from '../../components/input-answers';
 import Question from '../../components/question';
 import SubmitButton from '../../components/submit-button';
 
 export type MealsAnswerKeys = keyof MealsAnswer;
-type MealsNavigationProp = NavigationProp<RootStackParamList, Routes.Meals>;
-type MealsProps = {
-  navigation: MealsNavigationProp;
-  containerStyle: StyleProp<ViewStyle>;
-};
 
-export default function Meals({ navigation, containerStyle }: MealsProps) {
+export default function Meals({ containerStyle }: { containerStyle: StyleProp<ViewStyle> }) {
   const { theme } = useTheme();
   const [presenter] = useState<WebMealsQuestionPresenter>(diContainer.get<WebMealsQuestionPresenter>(MealsQuestionPresenterToken));
   const [setInputAnswerUseCase] = useState<SetInputAnswerUseCase>(diContainer.get<SetInputAnswerUseCase>(SetInputAnswerUseCaseToken));
@@ -49,7 +42,6 @@ export default function Meals({ navigation, containerStyle }: MealsProps) {
 
   const runCalculation = (): void => {
     saveSimulationAnswerUseCase.execute({ meals: presenter.answerValues });
-    navigation.navigate(Routes.CarKmType, { containerStyle });
   };
 
   return (

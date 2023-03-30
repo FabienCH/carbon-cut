@@ -4,7 +4,7 @@ import { theme } from './theme';
 import Home from '../home/home';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { navigationRef, RootStackParamList, Routes } from '../root-navigation';
+import { navigationRef, RootStackParamList, AllRoutes } from '../root-navigation';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import { styles } from './style';
 import { Provider } from 'react-redux';
@@ -33,24 +33,30 @@ export default function App() {
                   headerShown: false,
                 }}
               >
-                <Stack.Screen name={Routes.Home}>{(props) => <Home {...props} containerStyle={styles.container} />}</Stack.Screen>
-                <Stack.Screen name={Routes.Breakfast}>{(props) => <Breakfast {...props} containerStyle={styles.container} />}</Stack.Screen>
-                <Stack.Screen name={Routes.HotBeverages}>
+                <Stack.Screen name={AllRoutes.Home}>{(props) => <Home {...props} containerStyle={styles.container} />}</Stack.Screen>
+                <Stack.Screen name={AllRoutes.Breakfast}>
+                  {(props) => <Breakfast {...props} containerStyle={styles.container} />}
+                </Stack.Screen>
+                <Stack.Screen name={AllRoutes.HotBeverages}>
                   {(props) => <HotBeverages {...props} containerStyle={styles.container} />}
                 </Stack.Screen>
-                <Stack.Screen name={Routes.MilkType}>{(props) => <MilkType {...props} containerStyle={styles.container} />}</Stack.Screen>
-                <Stack.Screen name={Routes.ColdBeverages}>
+                <Stack.Screen name={AllRoutes.MilkType}>
+                  {(props) => <MilkType {...props} containerStyle={styles.container} />}
+                </Stack.Screen>
+                <Stack.Screen name={AllRoutes.ColdBeverages}>
                   {(props) => <ColdBeverages {...props} containerStyle={styles.container} />}
                 </Stack.Screen>
-                <Stack.Screen name={Routes.Meals}>{(props) => <Meals {...props} containerStyle={styles.container} />}</Stack.Screen>
-                <Stack.Screen name={Routes.CarKmType}>{(props) => <CarKmType {...props} containerStyle={styles.container} />}</Stack.Screen>
-                <Stack.Screen name={Routes.FuelCarConsumption}>
+                <Stack.Screen name={AllRoutes.Meals}>{(props) => <Meals {...props} containerStyle={styles.container} />}</Stack.Screen>
+                <Stack.Screen name={AllRoutes.CarKmType}>
+                  {(props) => <CarKmType {...props} containerStyle={styles.container} />}
+                </Stack.Screen>
+                <Stack.Screen name={AllRoutes.FuelCarConsumption}>
                   {(props) => <FuelCarConsumption {...props} containerStyle={styles.container} />}
                 </Stack.Screen>
-                <Stack.Screen name={Routes.ElectricCarSize}>
+                <Stack.Screen name={AllRoutes.ElectricCarSize}>
                   {(props) => <ElectricCarSize {...props} containerStyle={styles.container} />}
                 </Stack.Screen>
-                <Stack.Screen name={Routes.SimulationResults}>
+                <Stack.Screen name={AllRoutes.SimulationResults}>
                   {(props) => <SimulationResults {...props} containerStyle={styles.container} />}
                 </Stack.Screen>
               </Stack.Navigator>

@@ -1,11 +1,8 @@
-import 'reflect-metadata';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import ColdBeverages from './cold-beverages';
 import { selectSimulationAnswers } from '@adapters/simulation-results/store/selectors/simulation-selectors';
 import { appStore } from '@adapters/commons/store/app-store';
-import { RootStackParamList, Routes } from '../../../root-navigation';
-import { NavigationProp } from '@react-navigation/native';
 import MockTheme from '@tests/theme-mock';
 
 describe('ColdBeverages component', () => {
@@ -13,10 +10,7 @@ describe('ColdBeverages component', () => {
     render(
       <Provider store={appStore}>
         <MockTheme>
-          <ColdBeverages
-            navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.ColdBeverages>}
-            containerStyle={{}}
-          />
+          <ColdBeverages containerStyle={{}} />
         </MockTheme>
       </Provider>,
     );

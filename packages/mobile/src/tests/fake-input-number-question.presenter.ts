@@ -1,5 +1,4 @@
 import { injectable } from 'inversify';
-import 'reflect-metadata';
 import { WebInputNumberQuestionPresenter } from '../adapters/simulation/presenters/web-input-number-question.presenter';
 import { PositiveNumberError } from '../domain/entites/answer-validator';
 import { DefaultQuestionPresenterViewModel } from '../domain/ports/presenters/question.presenter';

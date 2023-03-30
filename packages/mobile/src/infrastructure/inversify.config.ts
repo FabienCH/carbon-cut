@@ -3,6 +3,7 @@ import { ReduxLoadingStore } from '@adapters/commons/store/loading-store';
 import { RestCarbonFootprintGateway } from '@adapters/simulation-results/gateways/rest-carbon-footprint.gateway';
 import { WebSimulationResultsPresenter } from '@adapters/simulation-results/presenters/web-simulation-results.presenter';
 import { ReduxSimulationStore } from '@adapters/simulation-results/store/simulation-store';
+import { RouterQuestionsController } from '@adapters/simulation/controllers/questions-controller';
 import {
   BreakfastViewModel,
   WebBreakfastQuestionPresenter,
@@ -23,6 +24,7 @@ import {
 import { WebCarKmTypeQuestionPresenter } from '@adapters/simulation/presenters/transport/web-car-km-type-question.presenter';
 import { WebElectricCarSizeQuestionPresenter } from '@adapters/simulation/presenters/transport/web-electric-car-size-question.presenter';
 import { WebFuelCarConsumptionQuestionPresenter } from '@adapters/simulation/presenters/transport/web-fuel-car-consumption-question.presenter';
+import { QuestionsController, QuestionsControllerToken } from '@domain/ports/controllers/questions-controller';
 import { CarbonFootprintGateway, CarbonFootprintGatewayToken } from '@domain/ports/gateways/carbon-footprint.gateway';
 import {
   BreakfastQuestionPresenterToken,
@@ -74,6 +76,8 @@ diContainer.bind<WebElectricCarSizeQuestionPresenter>(ElectricCarSizeQuestionPre
 diContainer.bind<SimulationResultsPresenter>(SimulationResultsPresenterToken).to(WebSimulationResultsPresenter);
 diContainer.bind<UserNotifyPresenter>(UserNotifyPresenterToken).to(ReactToastUserNotifyPresenter);
 diContainer.bind<Record<string, string | undefined>>(UserNotifyConfigToken).toConstantValue({ backgroundColor: theme.darkColors?.error });
+
+diContainer.bind<QuestionsController>(QuestionsControllerToken).to(RouterQuestionsController);
 
 diContainer.bind<CarbonFootprintGateway>(CarbonFootprintGatewayToken).to(RestCarbonFootprintGateway);
 

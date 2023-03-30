@@ -1,6 +1,4 @@
 import { StyleProp, View, ViewStyle } from 'react-native';
-import { NavigationProp } from '@react-navigation/native';
-
 import InputAnswers from '../../components/input-answers';
 import Question from '../../components/question';
 import SubmitButton from '../../components/submit-button';
@@ -13,17 +11,10 @@ import {
 import { HotBeveragesQuestionPresenterToken } from '@domain/ports/presenters/question.presenter';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '@domain/usecases/save-simulation-answer.usecase';
 import { diContainer } from '../../../inversify.config';
-import { RootStackParamList, Routes } from '../../../root-navigation';
 import { SetInputAnswerUseCase, SetInputAnswerUseCaseToken } from '@domain/usecases/set-input-answer.usecase';
 import { AnswerValidator } from '@domain/entites/answer-validator';
 
-type HotBeveragesNavigationProp = NavigationProp<RootStackParamList, Routes.HotBeverages>;
-type HotBeveragesProps = {
-  navigation: HotBeveragesNavigationProp;
-  containerStyle: StyleProp<ViewStyle>;
-};
-
-export default function HotBeverages({ navigation, containerStyle }: HotBeveragesProps) {
+export default function HotBeverages({ containerStyle }: { containerStyle: StyleProp<ViewStyle> }) {
   const [presenter] = useState<WebHotBeveragesQuestionPresenter>(
     diContainer.get<WebHotBeveragesQuestionPresenter>(HotBeveragesQuestionPresenterToken),
   );
@@ -43,7 +34,6 @@ export default function HotBeverages({ navigation, containerStyle }: HotBeverage
 
   const saveAnswer = (): void => {
     saveSimulationAnswerUseCase.execute({ hotBeverages: presenter.answerValues });
-    navigation.navigate(presenter.getNextQuestion(), { containerStyle });
   };
 
   return (

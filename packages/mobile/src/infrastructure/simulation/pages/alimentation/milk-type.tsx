@@ -1,4 +1,3 @@
-import { NavigationProp } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 import {
@@ -9,18 +8,11 @@ import {
 import { MilkTypeQuestionPresenterToken } from '@domain/ports/presenters/question.presenter';
 import { SaveSimulationAnswerUseCase, SaveSimulationAnswerUseCaseToken } from '@domain/usecases/save-simulation-answer.usecase';
 import { diContainer } from '../../../inversify.config';
-import { RootStackParamList, Routes } from '../../../root-navigation';
 import Question from '../../components/question';
 import SelectableAnswers from '../../components/selectable-answers';
 import SubmitButton from '../../components/submit-button';
 
-type MilkTypeNavigationProp = NavigationProp<RootStackParamList, Routes.MilkType>;
-type MilkTypeProps = {
-  navigation: MilkTypeNavigationProp;
-  containerStyle: StyleProp<ViewStyle>;
-};
-
-export default function MilkType({ navigation, containerStyle }: MilkTypeProps) {
+export default function MilkType({ containerStyle }: { containerStyle: StyleProp<ViewStyle> }) {
   const [presenter] = useState<WebMilkTypeQuestionPresenter>(diContainer.get<WebMilkTypeQuestionPresenter>(MilkTypeQuestionPresenterToken));
   const [saveSimulationAnswerUseCase] = useState<SaveSimulationAnswerUseCase>(
     diContainer.get<SaveSimulationAnswerUseCase>(SaveSimulationAnswerUseCaseToken),
@@ -37,7 +29,6 @@ export default function MilkType({ navigation, containerStyle }: MilkTypeProps) 
 
   const saveAnswer = (): void => {
     saveSimulationAnswerUseCase.execute({ milkType: presenter.selectedAnswer });
-    navigation.navigate(Routes.ColdBeverages, { containerStyle });
   };
 
   return (

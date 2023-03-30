@@ -1,19 +1,16 @@
-import 'reflect-metadata';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { selectSimulationAnswers } from '@adapters/simulation-results/store/selectors/simulation-selectors';
 import { appStore } from '@adapters/commons/store/app-store';
 import Meals from './meals';
 import MockTheme from '@tests/theme-mock';
-import { NavigationProp } from '@react-navigation/native';
-import { RootStackParamList, Routes } from '../../../root-navigation';
 
 describe('Meals component', () => {
   beforeEach(() => {
     render(
       <Provider store={appStore}>
         <MockTheme>
-          <Meals navigation={{ navigate: () => {} } as NavigationProp<RootStackParamList, Routes.Meals>} containerStyle={{}} />
+          <Meals containerStyle={{}} />
         </MockTheme>
       </Provider>,
     );

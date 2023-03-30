@@ -1,22 +1,27 @@
+import { QuestionIds } from '@domain/entites/questions-navigation';
 import { createNavigationContainerRef } from '@react-navigation/native';
 import { StyleProp, ViewStyle } from 'react-native';
 import 'reflect-metadata';
 import { styles } from './app/style';
 
-export enum Routes {
+export enum NonQuestionsRoutes {
   Home = 'Home',
-  Breakfast = 'Breakfast',
-  HotBeverages = 'HotBeverages',
-  ColdBeverages = 'ColdBeverages',
-  MilkType = 'MilkType',
-  Meals = 'Meals',
-  CarKmType = 'CarKmType',
-  FuelCarConsumption = 'FuelCarConsumption',
-  ElectricCarSize = 'ElectricCarSize',
   SimulationResults = 'SimulationResults',
 }
 
-export type RootStackParamList = Record<keyof typeof Routes, { containerStyle: StyleProp<ViewStyle> }>;
+export const AllRoutes = {
+  ...QuestionIds,
+  ...NonQuestionsRoutes,
+};
+
+export type Routes = QuestionIds | NonQuestionsRoutes;
+export type Route<T extends keyof typeof QuestionIds | keyof typeof NonQuestionsRoutes> = T extends keyof QuestionIds
+  ? QuestionIds[T]
+  : T extends keyof NonQuestionsRoutes
+  ? NonQuestionsRoutes[T]
+  : never;
+
+export type RootStackParamList = Record<Routes, { containerStyle: StyleProp<ViewStyle> }>;
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>();
 

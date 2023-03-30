@@ -1,9 +1,9 @@
 import { Button, Colors, Theme, useTheme } from '@rneui/themed';
 import { Image, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import type { NavigationProp } from '@react-navigation/native';
-import { RootStackParamList, Routes } from '../root-navigation';
+import { AllRoutes, RootStackParamList, Route } from '../root-navigation';
 
-type HomeNavigationProp = NavigationProp<RootStackParamList, Routes.Home>;
+type HomeNavigationProp = NavigationProp<RootStackParamList, Route<'Home'>>;
 type HomeProps = {
   navigation: HomeNavigationProp;
   containerStyle: StyleProp<ViewStyle>;
@@ -24,7 +24,7 @@ export default function Home({ navigation, containerStyle }: HomeProps) {
         accessibilityRole="button"
         titleStyle={styles.button}
         size="lg"
-        onPress={() => navigation.navigate(Routes.Breakfast, { containerStyle })}
+        onPress={() => navigation.navigate(AllRoutes.Breakfast, { containerStyle })}
       >
         C'est parti !
       </Button>
