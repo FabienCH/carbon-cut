@@ -44,14 +44,12 @@ describe('Save simulation answer use case', () => {
         submitQuestions([{ breakfast: BreakfastTypes.britishBreakfast }]);
 
         expect(showNextQuestionSpy).toHaveBeenLastCalledWith(QuestionIds.HotBeverages);
-        console.log('FIRSDT END');
       });
 
       it('be milk type after hot beverages if breakfast has milk', () => {
         submitQuestions([{ breakfast: BreakfastTypes.milkCerealBreakfast }, { hotBeverages: { coffee: 5, tea: 2, hotChocolate: 0 } }]);
 
         expect(showNextQuestionSpy).toHaveBeenLastCalledWith(QuestionIds.MilkType);
-        console.log('SECOND END');
       });
 
       it('be milk type after hot beverages if hot beverages has milk', () => {

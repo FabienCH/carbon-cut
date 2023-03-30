@@ -24,7 +24,6 @@ export class SaveSimulationAnswerUseCase {
         answer,
       );
 
-      console.log('nextQuestion', nextQuestion);
       if (nextQuestion) {
         this.questionsController.showNextQuestion(nextQuestion);
         this.simulationStore.setCurrentQuestion(nextQuestion);

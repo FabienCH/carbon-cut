@@ -31,9 +31,6 @@ export class QuestionsNavigation {
     answer: AnswerToSave,
   ): QuestionIds | undefined {
     const nextQuestionIdx = this.#getNextIndex(answer, simulationAnswers, currentQuestionId);
-    console.log('currentQuestionId', currentQuestionId);
-    console.log('nextQuestionIdx', nextQuestionIdx);
-
     return this.#questions[nextQuestionIdx];
   }
 
